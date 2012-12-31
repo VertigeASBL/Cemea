@@ -63,7 +63,7 @@
 <B_inscriptions>
 	<br />Vos inscriptions passées ou courantes :
 	<ul class="listeul">
-<BOUCLE_inscriptions(ARTICLES auteurs_articles){id_auteur=#GET{idauteur}}{inscrit!=''}{mots_rubriques.id_mot IN 5,3627}{par date_suivi,heure_suivi}>
+<BOUCLE_inscriptions(ARTICLES auteurs_articles){id_auteur=#GET{idauteur}}{inscrit!=''}{mots_rubriques.id_mot IN 5,3627}{par date_suivi,heure_suivi}{0,10}>
 		<li class="listeli">
 			#DATE_SUIVI - <a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero)]</a>
 			[(#GET{idaction}|=={#ID_ARTICLE}|oui)
