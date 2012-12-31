@@ -1,0 +1,15 @@
+<plugin>
+   <nom>Acces intranet</nom>
+   <version>1.0</version>
+   <prefix>intranet</prefix>
+
+   <pipeline>
+      <nom>ajouter_boutons</nom>
+      <action>ajouterBoutons</action>
+      <inclure>intranet_pipelines.php</inclure>
+   </pipeline>
+	<pipeline>
+		<nom>taches_generales_cron</nom>
+		<inclure>intranet_pipelines.php</inclure>
+	</pipeline>
+</plugin>

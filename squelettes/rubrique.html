@@ -1,0 +1,123 @@
+[(#REM)----- Rubrique normale -----]
+<BOUCLE_principale(RUBRIQUES){id_rubrique}>
+	#SET{okactions,#ID_SECTEUR|=={17}|ou{#ID_SECTEUR|=={10}}|ou{#ID_SECTEUR|=={11}}|?{' ',''}}
+	[(#INCLURE{fond=inc-toprubrique}{id_rubrique}{env})]
+	#SET_BALISE{id_mot,#SESSION{idprofil}|et{#GET{okactions}}|?{#SESSION{idprofil},''},ENV}
+	<!-- rubrique #ID_RUBRIQUE -->
+
+<div id="cgauche">
+	<B_chapeaux>
+		[(#REM)----- Liste des chapeaux d'articles -----]
+		<h1 class="htitre surlignable">[(#TITRE|supprimer_numero)]</h1>
+		[<div class="texte surlignable">
+			(#TEXTE|liens_ouvrants|image_reduire{620,0})
+		</div>]
+	<BOUCLE_chapeaux(MOTS){id_rubrique}{id_mot IN 2,3,4}{0,1}>
+		#SET{ordre1,#ID_MOT|=={2}|?{titre,0}} #SET{ordre2,#ID_MOT|=={4}|?{1,0}}
+		<BOUCLE_artichapo(ARTICLES){id_rubrique}{par num #GET{ordre1}}{par date}{inverse #GET{ordre2}}>
+			#SET{varurl,#URL_ARTICLE|parametre_url{retour,1}}
+		[<a href="#GET{varurl}" title="suite">(#LOGO_ARTICLE|image_reduire{200,0})</a>]
+		<h4 class="htitre surlignable">
+			[(#GET{ordre1}|non) [<span style="font-size:80%; font-weight:normal;">(#DATE|affdate_court)</span> - ]]
+			[<a href="#GET{varurl}" class="atitre">(#TITRE|supprimer_numero)</a>]
+		</h4>
+		[<div class="texte surlignable">
+			(#CHAPO|liens_ouvrants|image_reduire{620,0})
+		</div>]
+		<a href="#GET{varurl}" title="suite" class="asuite">en savoir plus</a>
+		<br class="clearall" /><br />
+		</BOUCLE_artichapo>
+	</BOUCLE_chapeaux>
+
+		<B_actions>
+			[(#REM)----- Liste des chapeaux d'actions / mot 5 et 3627 : rubrique actions and meta-actions -----]
+		<h1 class="htitre surlignable">[(#TITRE|supprimer_numero)]</h1>
+		[<div class="texte surlignable">
+			(#TEXTE|liens_ouvrants|image_reduire{620,0})
+		</div>
+		<br class="clearall" /><br />]
+                    
+		<BOUCLE_actions(MOTS){id_rubrique}{id_mot IN 5,3627}{0,1}>
+                        [(#ID_MOT|=={3627}|oui)
+                        <h3>Cette action est disponible sur plusieurs périodes.
+                            Vous pourrez choisir les dates qui vous intéressent lors de votre inscription.</h3>
+                        ]
+                        
+			#SET_BALISE{id_mot,#SESSION{idprofil}|et{#GET{okactions}}|?{#SESSION{idprofil},''}}
+			<BOUCLE_profil(MOTS){id_mot?}{id_groupe=#SESSION{idprofil}|et{#GET{okactions}}|?{15,0}}><h3 class="htitre">[Je suis : (#TITRE|supprimer_numero)]</h3></BOUCLE_profil>
+			<br />
+			
+			<BOUCLE_actionchapo(ARTICLES){id_rubrique}{id_mot?}{par num titre, date}>
+				<BOUCLE_actioncopie(ARTICLES){id_article=#ID_TRAD}{0,1}> #SET{varloc,#ARCHIVE_ACT}</BOUCLE_actioncopie> #SET{varloc,#ARCHIVE_ACT}<//B_actioncopie>
+		[(#GET{varloc}|!={Y}|oui)
+		#SET{varurl,#URL_ARTICLE|parametre_url{retour,1}}
+		[<a href="#GET{varurl}" title="suite">(#LOGO_ARTICLE|image_reduire{200,0})</a>]
+		<h4 class="htitre surlignable">
+			[<a href="#GET{varurl}" class="atitre">(#TITRE|supprimer_numero)</a>]
+		</h4>
+		[<div class="texte surlignable">
+			(#CHAPO|liens_ouvrants|image_reduire{620,0})
+		</div>]
+		<a href="#GET{varurl}" title="suite" class="asuite">en savoir plus</a>
+		<br class="clearall" /><br />]
+			</BOUCLE_actionchapo>
+		</BOUCLE_actions>
+
+			<B_articles>
+				[(#REM)----- Sinon les articles entiers -----]
+		[(#TOTAL_BOUCLE|>{1}|oui)
+		<h1 class="htitre surlignable">[(#TITRE|supprimer_numero)]</h1>
+		[<div class="texte surlignable">
+			(#TEXTE|liens_ouvrants|image_reduire{620,0})
+		</div>
+		<br class="clearall" /><br />]]
+			<BOUCLE_articles(ARTICLES){id_rubrique}{par num titre, date}{'<hr class="spip" />'}>
+				#SET{varloc,#TOTAL_BOUCLE|>{1}|?{2,1}}
+		[<h(#GET{varloc}) class="htitre surlignable">][(#TITRE|supprimer_numero)][</h(#GET{varloc})>]
+		[<div class="texte surlignable">
+			(#TEXTE|liens_ouvrants|image_reduire{620,0})
+		</div>
+		<br class="clearall" />]
+			</BOUCLE_articles>
+
+		[(#ENV{retour}|oui)<div class="precsuiv">
+			<a href="#retour" onclick="window.history.back(); return false;" class="atitre">retour</a>
+		</div>]
+		<//B_actions>
+	<//B_chapeaux>
+
+    [(#REM)--- plan de la rubrique : id_mot=profil ---]
+    <B_sous_rubriques>
+	   	<hr class="spip" /><br />
+		<BOUCLE_jesuis(MOTS){id_mot?}{id_groupe=#SESSION{idprofil}|et{#GET{okactions}}|?{15,0}}><h4 class="htitre">[Je suis : (#TITRE|supprimer_numero)]</h4></BOUCLE_jesuis>
+        <ul class="listeul">
+            <BOUCLE_sous_rubriques(RUBRIQUES){id_parent}{id_mot?}{par num titre, titre}>
+            <li class="listeli">
+                <a href="#URL_RUBRIQUE">[(#TITRE|supprimer_numero)]</a>
+                <B_miniplan>
+                <ul class="listeul">
+                    <BOUCLE_miniplan(RUBRIQUES){id_parent}{!id_mot = 3627}{id_mot?}{par num titre, titre}>
+                    <li class="listeli">
+                        <a href="#URL_RUBRIQUE">[(#TITRE|supprimer_numero)]</a>
+                        <BOUCLE_m2(BOUCLE_miniplan)></BOUCLE_m2>
+                    </li>
+                    </BOUCLE_miniplan>
+                </ul>
+                </B_miniplan>
+            </li>
+            </BOUCLE_sous_rubriques>
+        </ul>
+    </B_sous_rubriques>
+
+	<br class="clearall" />
+</div><!-- cgauche -->
+
+<div id="cdroite">
+	[(#INCLURE{fond=inc-droite}{id_rubrique})]
+	<!-- INCLURE{fond=inc-calendriermini}{env}{ajax} -->
+	<br class="clearall" />
+</div><!-- cdroite -->
+<br class="clearall" />
+
+	<INCLURE{fond=inc-bottom}{ishome=#ID_RUBRIQUE|=={1}|?{'y',''}}>
+</BOUCLE_principale>

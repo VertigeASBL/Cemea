@@ -1,0 +1,22 @@
+[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+ 
+<form action="#ENV{action}" method="post" class="autosubmit">
+        #ACTION_FORMULAIRE{#ENV{action}}
+        <ul class="suivi_statut_ul">
+        	#SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
+			<li class="editer_creer_pdf obligatoire[ (#GET{erreurs}|oui)erreur]">
+				[<span class='erreur_message'>(#GET{erreurs})</span>]
+			    <select name="creer_pdf" class="size_select">
+			    	<option value="">Créer PDF</option>
+			    	
+			    	<BOUCLE_listePDF(ARTICLES){id_rubrique=51}{par titre}>
+			    		<option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>
+			    	</BOUCLE_listePDF>
+			    	
+			    </select>
+			    
+			</li>
+        </ul>
+        
+</form>

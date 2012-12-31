@@ -1,0 +1,17 @@
+<B_suivi>
+<div id="agenda">
+	<hr />
+	<h2 class='titre'>Suivi des inscriptions</h2>
+	<ul class='liste_items liste-items evenements'>
+		<BOUCLE_suivi(ARTICLES auteurs_articles){id_auteur}{inscrit!=''}{par date_suivi,heure_suivi}>
+		<li class='item[ (#EXPOSE)]'>
+			<div class='jour'><a href='[(#URL_ECRIRE{articles,[&id_article=(#ID_ARTICLE)]})]'>#IDACT</a></div>
+			<div class="vevent">
+				<span style="float:right"><b>#STATUTSUIVI</b> &nbsp; &nbsp; #DATE_SUIVI</span>
+				<h3 class="summary"><a href='[(#URL_ECRIRE{suivi,[id_auteur=(#ENV{id_auteur})][&id_article=(#ID_ARTICLE)]})]'>[(#TITRE|supprimer_numero)]</a></h3>
+			</div>
+		</li>
+		</BOUCLE_suivi>
+	</ul>
+</div>
+</B_suivi>

@@ -1,0 +1,17 @@
+<?php 
+if (!defined("_ECRIRE_INC_VERSION")) return;
+// Système de présentation.
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+
+include_spip('fonctions_gestion_cemea');
+include_spip('prive/gestion_update_db');
+
+gros_titre(_T('gestion:gestion_inscription'));
+
+echo debut_cadre_relief();
+?>
+
+<INCLURE{fond=prive/gestion_inscrit/gestion_inscription}{pagination=20}{statutsuivi=#ENV{statutsuivi}}{ajax}>
+
+<?php echo fin_cadre_relief(); ?>

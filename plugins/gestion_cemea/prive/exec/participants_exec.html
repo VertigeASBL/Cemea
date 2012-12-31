@@ -1,0 +1,248 @@
+<?php 
+include_spip('inc/presentation');
+
+include_spip('gestion_autorisation');
+
+include_spip('prive/gestion_update_db');
+?>
+
+[(#REM) On récupère le titre de l'article pour l'afficher dans le titre de la page/PDF ]
+<BOUCLE_getTitre(ARTICLES){id_article}>
+	<?php gros_titre('<:gestion:liste_participant:> - [(#TITRE|supprimer_numero)]'); ?>
+</BOUCLE_getTitre>
+
+<?php
+// On récupère la variable PDF pour déterminer si on est dans un PDF ou non
+$pdf = '#ENV{pdf}';
+// Si on est pas dans un PDF, on affiche le bouton pour télécharger le PDF
+if ($pdf != 1) {
+	echo icone_inline(_T('gestion:telecharger_pdf'), generer_url_ecrire('gestion_dompdf_exec','id_article=#ID_ARTICLE&modele=liste_participant'), 'doc-24.gif', '', 'right');
+
+	echo icone_inline(_T('gestion:retour'), generer_url_ecrire('gestion_activite_exec'), find_in_path('img/gestion-24.png'), '', 'left');
+}
+?>
+<div class="nettoyeur"></div>
+<h2>Liste des inscrits</h2>
+<B_participants>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+	<thead>
+		<tr>
+			<th><:gestion:nom:></th>
+			<th><:gestion:prenom:></th>
+			<th><:gestion:age:></th>
+			[(#ENV{pdf}|non)
+				
+				<th><:gestion:statut:></th>
+			]
+		</tr>
+	</thead>
+	<tbody>
+	
+	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
+<BOUCLE_participants(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=I}{pagination #ENV{pagination}}>
+	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#NOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #NOM ]
+		</td>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#PRENOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #PRENOM ]
+		</td>
+		<td>[(#DATE_NAISSANCE|age)]</td>
+		[(#ENV{pdf}|non)
+			
+			<td>
+				<form method="post" action="#SELF" class="autosubmit">
+				<ul class="suivi_statut_ul">
+					<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+				</ul>
+					<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+					<input type="hidden" name="email" value="#EMAIL" />
+				</form>
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+			</td>
+		]
+	</tr>
+</BOUCLE_participants>
+	</tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_participants>
+<p>Il n'y a aucune personne inscrite à cette action.</p>
+<//B_participants>
+
+<h2>Liste des places réservées</h2>
+<B_reserve>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+	<thead>
+		<tr>
+			<th><:gestion:nom:></th>
+			<th><:gestion:prenom:></th>
+			<th><:gestion:age:></th>
+			[(#ENV{pdf}|non)
+				
+				<th><:gestion:statut:></th>
+			]
+		</tr>
+	</thead>
+	<tbody>
+	
+	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
+<BOUCLE_reserve(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=X}{pagination #ENV{pagination}}>
+	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#NOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #NOM ]
+		</td>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#PRENOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #PRENOM ]
+		</td>
+		<td>[(#DATE_NAISSANCE|age)]</td>
+		[(#ENV{pdf}|non)
+			
+			<td>
+				<form method="post" action="#SELF" class="autosubmit">
+				<ul class="suivi_statut_ul">
+					<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+				</ul>
+					<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+					<input type="hidden" name="email" value="#EMAIL" />
+				</form>
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+			</td>
+		]
+	</tr>
+</BOUCLE_reserve>
+	</tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_reserve>
+<p>Il n'y a aucune place réservée pour cette action.</p>
+<//B_reserve>
+
+
+<h2>Liste des Refusés</h2>
+<B_refuse>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+	<thead>
+		<tr>
+			<th><:gestion:nom:></th>
+			<th><:gestion:prenom:></th>
+			<th><:gestion:age:></th>
+			[(#ENV{pdf}|non)
+				<th><:gestion:statut:></th>
+			]
+		</tr>
+	</thead>
+	<tbody>
+	
+	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
+<BOUCLE_refuse(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=R}{pagination #ENV{pagination}}>
+	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#NOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #NOM ]
+		</td>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#PRENOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #PRENOM ]
+		</td>
+		<td>[(#DATE_NAISSANCE|age)]</td>
+		[(#ENV{pdf}|non)
+			<td>
+				<form method="post" action="#SELF" class="autosubmit">
+				<ul class="suivi_statut_ul">
+					<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+				</ul>
+					<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+					<input type="hidden" name="email" value="#EMAIL" />
+				</form>
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+			</td>	
+		]
+	</tr>
+</BOUCLE_refuse>
+	</tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_refuse>
+<p>Il n'y a aucune personne refusée pour cette action.</p>
+<//B_refuse>
+
+<h2>Liste des Cemea</h2>
+<B_cemea>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+	<thead>
+		<tr>
+			<th><:gestion:nom:></th>
+			<th><:gestion:prenom:></th>
+			<th><:gestion:age:></th>
+			[(#ENV{pdf}|non)
+				<th><:gestion:statut:></th>
+			]
+		</tr>
+	</thead>
+	<tbody>
+	
+	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
+<BOUCLE_cemea(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=C}{pagination #ENV{pagination}}>
+	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#NOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #NOM ]
+		</td>
+		<td>
+			[(#ENV{pdf}|non)
+				[<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#PRENOM)</a>]
+			]
+			[(#ENV{pdf}|oui) #PRENOM ]
+		</td>
+		<td>[(#DATE_NAISSANCE|age)]</td>
+		[(#ENV{pdf}|non)
+			<td>
+				<form method="post" action="#SELF" class="autosubmit">
+				<ul class="suivi_statut_ul">
+					<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+				</ul>
+					<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+					<input type="hidden" name="email" value="#EMAIL" />
+				</form>
+				
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+			</td>	
+		]
+	</tr>
+</BOUCLE_cemea>
+	</tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_cemea>
+<//B_cemea>

@@ -1,0 +1,69 @@
+#SET{today, #DATE}
+
+<B_echeance>
+	[<p class="pagination">(#PAGINATION)</p>]
+	<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+		<thead>
+			<th><:gestion:nom_activite:></th>
+			<th><:gestion:date_debut:></th>
+			<th><:gestion:personne:></th>
+			<th><:gestion:age:></th>
+			<th><:gestion:limit:></th>
+			<th><:gestion:statut_payement:></th>
+			<th><:gestion:statut:></th>
+			<th><:gestion:solde:></th>
+			<th><:gestion:jour:></th>
+			<th><:gestion:date_validation:></th>
+		</thead>
+		<tbody>
+
+		<BOUCLE_echeance(auteurs_articles articles auteurs mots_rubriques) {tableau_exception = oui} {date_debut != 0000-00-00 }{inscrit=Y} {id_mot=5} {id_auteur ?= #ENV{id_auteur}} {id_article ?= #ENV{id_article}} {par date_suivi}{inverse} {pagination 20}>
+			[(#REM) On séléctionne le type de prix de la personne ]
+			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
+			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
+			[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT}]
+			
+			[(#REM) Calcule du solde ]
+			#SET{solde, (#HISTORIQUE_PAYEMENT|calculer_payement|moins{#GET{prix_a_paye}})}
+			
+			[(#REM) Nombre de jour restant avant exiration de l'inscription ]
+			#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
+			
+			<tr [(#COMPTEUR_BOUCLE|alterner{class="tr_liste", ''})]>
+				<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
+				<td>[(#DATE_DEBUT|affdate)]</td>
+				<td><a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="#NOM #PRENOM">#NOM #PRENOM</a></td>
+				<td>[(#DATE_NAISSANCE|age)]</td>
+				<td><INCLURE{fond=prive/gestion_activite/max_inscrit}{id_article}></td>
+				<td>
+					#FORMULAIRE_CHANGER_STATUT{#ID_AUTEUR, #ID_ARTICLE, #STATUT_PAYEMENT}
+				</td>
+				<td>
+					<form method="post" action="#SELF" class="autosubmit">
+					<ul class="suivi_statut_ul">
+						<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+					</ul>
+						<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+						<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+						<input type="hidden" name="email" value="#EMAIL" />
+					</form>
+						#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+						[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+				</td>
+				<td>
+					[(#GET{solde}|>{0}|oui) <span class="error_inscrit">#GET{solde}</span>]
+					[(#GET{solde}|<={0}|oui) <span class="good_inscrit">#GET{solde}</span>]
+				</td>
+				<td>
+					[(#GET{jour_restant}|>{0}|oui) <span class="error_inscrit">#GET{jour_restant}</span>]
+					[(#GET{jour_restant}|<={0}|oui) <span class="good_inscrit">#GET{jour_restant}</span>]
+				</td>
+				<td>[(#STATUTSUIVI|=={I}|oui)[(#DATE_VALIDATION|affdate)]]</td>
+				<td>#FORMULAIRE_PAYEMENT_RAPIDE{#ID_AUTEUR, #ID_ARTICLE}</td>
+			</tr>
+		</BOUCLE_echeance>
+		
+		</tbody>
+	</table>
+	[<p class="pagination">(#PAGINATION)</p>]
+</B_echeance>

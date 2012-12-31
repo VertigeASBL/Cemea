@@ -1,0 +1,22 @@
+#CACHE{0}
+[Bienvenue <b>(#SESSION{prenom})</b>,<br /><br />]
+#SET{idauteur,#SESSION{statut}|<={6forum}|?{#SESSION{id_auteur},0}}
+[(#GET{idauteur}|non)
+	#LOGIN_PUBLIC<br />]
+
+<B_inscriptions>
+	<br />Vos inscriptions passées ou courantes :
+	<ul class="listeul">
+<BOUCLE_inscriptions(ARTICLES auteurs_articles){id_auteur=#GET{idauteur}}{inscrit!=''}{mots_rubriques.id_mot IN 5,3627}{par date_suivi,heure_suivi}>
+		<li class="listeli">
+			#DATE_SUIVI - <a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero)]</a>
+			[(#GET{idaction}|=={#ID_ARTICLE}|oui) #SET{idaction,0} #SET{varloc,' '} ]
+		</li>
+</BOUCLE_inscriptions>
+	</ul>
+</B_inscriptions>
+
+[(#GET{idauteur}|oui)
+	<br style="clear:both;" />
+	<a href="[(#URL_ARTICLE{21})]">Modifier vos données personnelles</a><br />
+	<a href="[(#URL_LOGOUT)]">Cliquez ici pour vous déconnecter</a><br />]

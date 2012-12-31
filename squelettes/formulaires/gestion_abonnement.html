@@ -1,0 +1,65 @@
+#CACHE{0}
+<div class="formulaire_spip formulaire_gestion_abonnement">
+	[<p class="reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[<a class="reponse_formulaire_erreur">(#ENV{errormsg})</a>]
+
+	[(#ENV{id_auteur}|non)
+	<script type='text/javascript'>
+  $('a.reponse_formulaire_erreur').bind('click', function () {
+      $('html').animate({scrollTop: $('#titrelogin').offset().top-10}, 'fast');
+  });
+	</script>
+ ]
+	<form [(#ENV{id_auteur}|non)style="display: none;" ]method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<input type="hidden" name="d" value="[(#ENV{d})]" />
+		<ul>
+			<B_listes>
+			<li class="liste-des-listes fieldset">
+				<fieldset><b>[(#TOTAL_BOUCLE|=={1}|?{<:spiplistes:abo_1_lettre:>,<:spiplistes:listes_de_diffusion_:>})]</b><br />
+				<p class="explication"><:spiplistes:vous_etes_abonne_aux_listes_selectionnees_:></p>
+			<BOUCLE_listes(LISTES){id_liste?}{lang}{statut=liste}{0,1}{par id_liste}>
+				#SET{checked,non}<BOUCLE_inscription(AUTEURS){tous}{id_liste}{id_auteur=#ENV{id_auteur}}>#SET{checked,oui}</BOUCLE_inscription>
+				<div class="choix">
+				<label for="liste_#ID_LISTE">
+					<input type="checkbox" name="listes[]" value="#ID_LISTE" id="liste_#ID_LISTE"[(#GET{checked}|=={oui}|oui) checked="checked"] class="checkbox" />
+					[(#TITRE|supprimer_numero)][<br /> &nbsp; &nbsp; &nbsp; (#TEXTE|textebrut|couper{80})]
+				</label>
+				</div>
+			</BOUCLE_listes>
+				</fieldset>
+			</li>
+			</B_listes>
+
+			<li class="bloc-formats fieldset">
+				<fieldset><b><:spiplistes:format_de_reception:></b><br />
+				<div class="choix">
+					<input type="radio" name="suppl_abo" [(#ENV{format}|=={html}|?{'checked="checked"',''})] value="html" id='fslhtml' class="radio" />
+					<label for='fslhtml'><:spiplistes:html:><:spiplistes:html_description:></label>
+				</div>
+				<div class="choix">
+					<input type="radio" name="suppl_abo" [(#ENV{format}|=={texte}|?{'checked="checked"',''})] value="texte" id='fsltexte' class="radio" />
+					<label for='fsltexte'><:spiplistes:texte_brut:></label>
+				</div>
+				</fieldset>
+			</li>
+
+			<li class="desabonnement fieldset">
+				<fieldset><b><:spiplistes:suspendre_abonnement_:></b><br />
+				<div class="choix">
+					<input type="radio" name="suppl_abo" value="non" id='fslnon' class="radio" />
+					<label for='fslnon'><:spiplistes:desabonnement:></label>
+				</div>
+				</fieldset>
+			</li>
+		</ul>
+	Vos centres d'intérêt :
+	
+	[(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+	<!--extra-->
+		<p class="spip_bouton">
+			<input type='submit' class='submit roundies' name='valider' value="<:bouton_enregistrer:>" />
+		</p>
+	</form>
+</div>

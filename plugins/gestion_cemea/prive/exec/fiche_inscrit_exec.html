@@ -1,0 +1,98 @@
+<?php
+if (!defined("_ECRIRE_INC_VERSION")) return;
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+
+include_spip('fonctions_gestion_cemea');
+
+include_spip('prive/gestion_update_db');
+
+gros_titre('Fiche de l\'inscrit');
+
+echo icone_inline(_T('gestion:modifier_inscrit'), generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "auteur-24.gif","edit.gif", 'left');
+?>
+<BOUCLE_inscrit(AUTEURS auteurs_articles){id_auteur}{tout}>
+<div class="nettoyeur"></div>
+
+[(#REM) Cette boucle creer le formulaire pour inscrire une personne a une activité ]
+#FORMULAIRE_INSCRIRE_ACTIVITE
+
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px; margin-top: 10px;">
+	
+	<tr class="tr_liste">
+		<td><:gestion:nom:>:</td> 
+		<td><strong>#NOM</strong></td>
+	</tr>
+	<tr>
+		<td><:gestion:prenom:>:</td> 
+		<td><strong>#PRENOM</strong></td>
+	</tr>
+	<tr class="tr_liste">
+		<td><:gestion:age:></td> 
+		<td><strong>[(#DATE_NAISSANCE|age)]</strong></td>
+	</tr>
+	<tr>
+		<td><:gestion:adresse:>:</td> 
+		<td>
+			<strong>
+			#ADRESSE
+			[<br />(#CODEPOSTAL) #LOCALITE]
+			</strong>
+		</td>
+	</tr>
+	<tr class="tr_liste">
+		<td><:gestion:telephone:>:</td>
+		<td>
+			#TEL1 
+			[<br />(#TEL2)]
+		</td>
+	</tr>
+	<tr>
+		<td><:gestion:gsm:>:</td>
+		<td>
+			#GSM1
+			[<br />(#GSM2)]
+		</td>
+	</tr>
+	<tr class="tr_liste">
+		<td><:gestion:fax:>:</td>
+		<td>
+			#FAX1
+			[<br />(#FAX2)]
+		</td>
+	</tr>
+	<tr>
+		<td><:gestion:demandeur_emploi:></td>
+		<td>
+			[(#DEMANDEUR_EMPLOI|non) Non]
+			[(#DEMANDEUR_EMPLOI|oui) Oui]
+		</td>
+	</tr>
+	<tr class="tr_liste">
+		<td><:gestion:email:>:</td>
+		<td>
+			[<a href="mailto: #EMAIL">(#EMAIL)</a>]
+			[<br /><a href="mailto: #EMAIL2">(#EMAIL2)</a>]
+		</td>
+	</tr>
+	<tr>
+		<td>Statut Form Cemea</td>
+		<td>[(#STATUT_FORM_CEMEA)]</td>
+	</tr>
+	<tr class="tr_liste">
+		<td>Statut anim Cemea</td>
+		<td>[(#STATUT_ANIM_CEMEA)]</td>
+	</tr>
+	<tr>
+		<td>Statut EP</td>
+		<td>[(#STATUT_EP)]</td>
+	</tr>
+	<tr class="tr_liste">
+		<td>Statut SJ</td>
+		<td>[(#STATUT_SJ)]</td>
+	</tr>
+</table>
+
+<h2><:gestion:activite:></h2>
+<INCLURE{fond=prive/fiche_inscrit/fiche_activite}{env}{ajax}>
+</BOUCLE_inscrit>

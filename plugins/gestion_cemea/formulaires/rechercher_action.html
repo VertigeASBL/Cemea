@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#activite").autoComplete({
+			dataSupply: [
+							<BOUCLE_action(ARTICLES mots_rubriques){id_mot=5}>
+								{value: '[(#IDACT)]', display: '[(#IDACT)]'},
+							</BOUCLE_action>
+						]
+		});
+	});
+</script>
+
+<div class="formulaire_spip formulaire_#FORM">
+
+[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+ 
+<form action="#ENV{action}" method="post">
+    #ACTION_FORMULAIRE{#ENV{action}}
+    <ul>
+		<li class="editer_#FORM [(#GET{erreurs}|oui)erreur]">
+			<label for="activite">Référence de l'action</label>
+		    <input type="text" name="activite" id="activite" />
+		</li>
+    </ul>
+    <p class="boutons"><input type="submit" class="submit" value="<:gestion:rechercher:>" /></p>
+</form>
+</div>

@@ -1,0 +1,53 @@
+<B_annule>
+	[<p class="pagination">(#PAGINATION)</p>]
+	<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+		<thead>
+			<th><:gestion:nom_activite:></th>
+			<th><:gestion:date_debut:></th>
+			<th><:gestion:personne:></th>
+			<th><:gestion:statut:></th>
+			<th><:gestion:solde:></th>
+		</thead>
+		<tbody>
+
+		<BOUCLE_annule(auteurs_articles articles auteurs mots_rubriques){inscrit=Y} {id_mot=5} {statutsuivi = A} {par date_validation_payement} {inverse} {pagination 5}>
+			[(#REM) On séléctionne le type de prix de la personne ]
+			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
+			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
+			[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT} ]
+			
+			[(#REM) Calcule du solde ]
+			#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
+			
+			<tr [(#COMPTEUR_BOUCLE|alterner{class="tr_liste", ''})]>
+				<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
+				<td>[(#DATE_DEBUT|affdate)]</td>
+				<td><a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="#NOM #PRENOM">#NOM #PRENOM</a></td>
+				<td>
+					<form method="post" action="#SELF" class="autosubmit">
+					<ul class="suivi_statut_ul">
+						<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+					</ul>
+						<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+						<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+					</form>
+					
+					#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
+					[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
+						#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+						[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+					]
+					
+				</td>
+				<td>
+					[(#GET{solde}|>{0}|oui) <span class="error_inscrit">#GET{solde}</span>]
+					[(#GET{solde}|<={0}|oui) <span class="good_inscrit">#GET{solde}</span>]
+				</td>
+				<td>#FORMULAIRE_PAYEMENT_RAPIDE{#ID_AUTEUR, #ID_ARTICLE}</td>
+			</tr>
+		</BOUCLE_annule>
+		
+		</tbody>
+	</table>
+	[<p class="pagination">(#PAGINATION)</p>]
+</B_annule>
