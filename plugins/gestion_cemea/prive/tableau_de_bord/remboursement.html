@@ -21,7 +21,7 @@
 			[(#REM) Calcule du solde ]
 			#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
 			
-			<tr [(#COMPTEUR_BOUCLE|alterner{class="tr_liste", ''})]>
+			<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][(#CLOTURER|oui) cloturer]">
 				<td>#IDACT</td>
 				<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
 				<td>[(#DATE_DEBUT|affdate)]</td>

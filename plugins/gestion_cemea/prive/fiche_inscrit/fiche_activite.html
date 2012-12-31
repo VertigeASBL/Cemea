@@ -13,8 +13,8 @@
 		<th><:gestion:statut:></th>
 		<th><:gestion:date_validation:></th>
 	</thead>
-<BOUCLE_activite(ARTICLES auteurs auteurs_articles mots_rubriques) {id_auteur}{id_mot=5} {par date_suivi} {inverse}>
-	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
+	<BOUCLE_activite(ARTICLES auteurs auteurs_articles mots_rubriques) {id_auteur}{id_mot=5} {par date_suivi} {inverse}>
+	<tr class="[(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})][(#CLOTURER|oui) cloturer]">
 		<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
 		<td>[(#DATE_DEBUT|affdate)]</td>
 		<td>
@@ -33,7 +33,7 @@
 				<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
 				<input type="hidden" name="id_article" value="#ID_ARTICLE" />
 			</form>
-		</td>		
+		</td>
 		<td>
 			<form method="post" action="#SELF" class="autosubmit">
 				<ul class="suivi_statut_ul">
@@ -46,13 +46,13 @@
 			
 			#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
 			[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
-				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
-				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+			#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+			[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
 			]
 			
 		</td>
 		<td>[(#STATUTSUIVI|=={I}|oui)[(#DATE_VALIDATION|affdate)]]</td>
 	</tr>
-</BOUCLE_activite>
+	</BOUCLE_activite>
 </table>
 </B_activite>

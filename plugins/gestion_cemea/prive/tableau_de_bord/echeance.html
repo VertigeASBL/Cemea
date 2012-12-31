@@ -46,7 +46,7 @@
 		[(#REM) Test si la date est plus ancienne que 3 ans ]
 		[(#GET{oldInsc}|calculer_jour|>={1095}|oui) #SET{class3y, error_annee}]
 		
-		<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][ (#GET{class3y})]">
+		<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][ (#GET{class3y})] [(#CLOTURER|oui) cloturer]">
 			<td>#IDACT</td>
 			<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
 			<td>[(#DATE_DEBUT|affdate)]</td>
