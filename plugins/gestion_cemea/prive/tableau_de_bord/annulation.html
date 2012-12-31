@@ -2,6 +2,7 @@
 	[<p class="pagination">(#PAGINATION)</p>]
 	<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
 		<thead>
+			<th><:gestion:reference:></th>
 			<th><:gestion:nom_activite:></th>
 			<th><:gestion:date_debut:></th>
 			<th><:gestion:personne:></th>
@@ -20,6 +21,7 @@
 			#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
 			
 			<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][(#CLOTURER|oui) cloturer]">
+				<td>#IDACT</td>
 				<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
 				<td>[(#DATE_DEBUT|affdate)]</td>
 				<td><a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="#NOM #PRENOM">#NOM #PRENOM</a></td>
