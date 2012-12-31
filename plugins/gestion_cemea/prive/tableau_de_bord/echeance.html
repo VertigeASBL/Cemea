@@ -32,20 +32,21 @@
 		
 		[(#REM) Initialisation ]
 		[(#SET{brevet, ''})]
+		[(#SET{oldInsc, ''})]
+		[(#SET{class3y, ''})]
 		
 		[(#REM) On fait un brevet animateur ? ]
 		[(#BREVET_ANIMATEUR|oui) #SET{brevet, oui} ]
 		
 		[(#REM) Boucle qui récupère la date de l'inscription la plus ancienne. ]
 		<BOUCLE_test_date_anim(auteurs_articles){id_auteur}{par date_suivi}{0,1}>
-			
-			[(#GET{brevet}|oui) #ID_ARTICLE <br /> [(#SET{oldInsc, #DATE_SUIVI})] ]
+			[(#GET{brevet}|oui) [(#SET{oldInsc, #DATE_SUIVI})] ]
 		</BOUCLE_test_date_anim>
 
 		[(#REM) Test si la date est plus ancienne que 3 ans ]
+		[(#GET{oldInsc}|calculer_jour|>={1095}|oui) #SET{class3y, error_annee}]
 		
-		
-		<tr [(#COMPTEUR_BOUCLE|alterner{class="tr_liste", ''})]>
+		<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][ (#GET{class3y})]">
 			<td>#IDACT</td>
 			<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
 			<td>[(#DATE_DEBUT|affdate)]</td>

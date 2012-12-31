@@ -33,21 +33,6 @@ function calculer_jour ($date1) {
 	return $diff->format('%a');
 }
 
-// Cette fonction calcule l'interval entre un date et maintenant
-// La class php DateTime est présente dans PHP 5.2.
-// La methode DateTime::diff demande PHP 5.3 !
-function calculer_annee ($date1) {
-	/* Création des deux objet dateTime */
-	$d1 = new DateTime($date1);
-	$d2 = new DateTime('now');
-
-	/* Comparaison */
-	$diff = $d1->diff($d2); 
-
-	/* On retourne l'année */
-	return $diff->format('%y');
-}
-
 // Cette fonction "Calcules" les balises placé dans le champs texte pour les PDF
 function balise_pdf($texte, $id_activite, $id_personne) {
 	// On inclut les fonctions pour faire joli

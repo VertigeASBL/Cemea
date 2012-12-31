@@ -76,3 +76,7 @@
 	cursor: pointer;
 	float: right;
 }
+
+.error_annee {
+	background: #faadad;
+}
