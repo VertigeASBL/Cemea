@@ -7,6 +7,7 @@
 <table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
 	<thead>
 		<th><:gestion:nom_activite:></th>
+		<th><:gestion:date_debut:></th>
 		<th><:gestion:limit:></th>
 		<th><:gestion:statut_payement:></th>
 		<th><:gestion:statut:></th>
@@ -15,6 +16,7 @@
 <BOUCLE_activite(ARTICLES auteurs auteurs_articles mots_rubriques) {id_auteur}{id_mot=5} {par date_suivi} {inverse}>
 	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
 		<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
+		<td>[(#DATE_DEBUT|affdate)]</td>
 		<td>
 			<INCLURE{fond=prive/gestion_activite/max_inscrit}{id_article}{env}>
 		</td>
