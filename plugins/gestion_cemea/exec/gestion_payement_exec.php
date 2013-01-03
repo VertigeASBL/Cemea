@@ -10,6 +10,13 @@ function exec_gestion_payement_exec() {
 	$commencer_page = charger_fonction('commencer_page','inc');
 	echo $commencer_page(_T('gestion:gestion_payement'));
 	
+	echo '
+	<style type="text/css">
+		#conteneur, .table_page, div.messages {
+			width: 960px;
+		}
+	</style>';
+	
 	if (session_get('statut') != '0minirezo') {
 		include_spip('inc/minipres');
 		echo minipres('Vous n\'avez pas les autorisations');

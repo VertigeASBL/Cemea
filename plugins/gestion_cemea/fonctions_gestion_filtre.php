@@ -86,7 +86,7 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 			$activite['heure_formation'],
 			$activite['dates_ra'],
 			$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite'],
-			'<div style="page-break-after : always;"></div>'
+			'<div style="page-break-after: always;"></div>'
 		);
 
 	// On remplace les balises
