@@ -1,19 +1,23 @@
 [<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
 [<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
- 
+
 <form action="#ENV{action}" method="post" class="autosubmit">
-        #ACTION_FORMULAIRE{#ENV{action}}
-        <ul class="suivi_statut_ul">
-        	#SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
-			<li class="editer_ajouterInscrit obligatoire[ (#GET{erreurs}|oui)erreur]">
-				[<span class='erreur_message'>(#GET{erreurs})</span>]
-			    <select name="id_certif" class="size_select">
-			    	<option>Creer les certificats</option>
-			    	
-			    	<BOUCLE_certificat(ARTICLES){id_rubrique=52}>
-			    		<option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>	
-			    	</BOUCLE_certificat>
-			    </select>
-			</li>
-        </ul>
+	#ACTION_FORMULAIRE{#ENV{action}}
+	<ul class="suivi_statut_ul">
+		#SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
+		<li class="editer_ajouterInscrit obligatoire[ (#GET{erreurs}|oui)erreur]">
+			[<span class='erreur_message'>(#GET{erreurs})</span>]
+			<select name="id_certif" class="size_select">
+				<option>Creer les certificats</option>
+
+				<BOUCLE_certificat(ARTICLES){id_rubrique=52}{asbl=#ASBL}>
+				<option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>	
+				</BOUCLE_certificat>
+					<BOUCLE_All_certificat(ARTICLES){id_rubrique=52}>
+					<option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>	
+					</BOUCLE_All_certificat>
+				<//B_certificat>
+			</select>
+		</li>
+	</ul>
 </form>

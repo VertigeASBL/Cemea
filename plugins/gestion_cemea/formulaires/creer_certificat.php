@@ -1,7 +1,7 @@
 <?php
-function formulaires_creer_certificat_charger_dist() {
+function formulaires_creer_certificat_charger_dist($id_article, $asbl) {
         $contexte = array(
-                '' => '',
+                'asbl' => $asbl
         );
         return $contexte;
 }
