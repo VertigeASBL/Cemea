@@ -12,6 +12,14 @@ function exec_gestion_dompdf_exec() {
 	include_spip('PDFMerger/PDFMerger');
 	include_spip('fonctions_gestion_cemea');
 
+	/* fonction destinnée à évité de ce retrouvé avec n'importe quoi comme nom de fichier après la purification. */
+	function filtre_filename($str) {
+		$search = array('é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ï', 'î', 'ù', 'ç', ' ');
+		$replace = array('e', 'e', 'e', 'e', 'a', 'a', 'a', 'i', 'i', 'u', 'c', '_');
+
+		return str_replace($search, $replace, $str);
+	}
+
 	// Récupération des variables
 
 	// Le squelette ou l'article qui sera utilisé pour créer le pdf.
@@ -33,17 +41,31 @@ function exec_gestion_dompdf_exec() {
 	// Initialisation de la lib et création du PDF
 	$dompdf = new DOMPDF();
 
+	// On récupère les informations de l'auteur
+	$personne = sql_fetsel('nom, prenom, email', 'spip_auteurs', 'id_auteur='.sql_quote($id_auteur));
+	// On récupère les informations de l'action
+	$action = sql_fetsel('titre, idact as reference', 'spip_articles', 'id_article='.sql_quote($id_article));
+
 	// On créer le nom du fichier pour vérifier son éventuel existance.
-	$filename = '';
+	$filename = $personne['nom'].'_'.$personne['prenom'].'_'.$action['reference'].'_'.supprimer_numero($action['titre']);
 	if ($modele == 'liste_participant') {
-		$filename = $modele.'_'.$id_article;
+		$filename = $modele.'_'.$action['reference'];
 	}
 	elseif (!empty($id_certif)) {
-		$filename = $id_certif.'_'.$id_article;	
+		// Dans le cas d'un certificat, on va rechercher le titre du certificat.
+		$certificat = sql_fetsel('titre', 'spip_articles', 'id_article='.sql_quote($id_certif));
+		
+		$filename = supprimer_numero($action['titre']).'_'.$certificat['titre'];
 	}
 	else {
-		$filename = $modele.'_'.$id_article.'_'.$id_auteur;
+		// Dans le cas d'un modèle générique, on va chercher le titre du document
+		$document = sql_fetsel('titre', 'spip_articles', 'id_article='.sql_quote($modele));
+
+		$filename .= '_'.supprimer_numero($document['titre']);
 	}
+	
+	// On purifie la variable, par sécurité.
+	$filename = filter_var(filtre_filename($filename), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 
 	// On vérifie l'éventuel existence du fichier sur le serveur
 	// Si le fichier existe déjà on appel l'interface de confimation.
@@ -74,9 +96,9 @@ function exec_gestion_dompdf_exec() {
 		if ($modele === 'liste_participant') {
 			$html = '
 			<html>
-				<head>
-				<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-				</head>
+			<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			</head>
 			<body>';
 			$html .= recuperer_fond('prive/exec/participants_exec', array('pdf' => 1, 'id_article' => $id_article, 'pagination' => 9999999), array('ajax' => false));
 			$html .= '</body></html>';
@@ -85,25 +107,25 @@ function exec_gestion_dompdf_exec() {
 		elseif (!empty($id_certif)) {
 			$dompdf->set_paper('A4', 'landscape');
 			$html = recuperer_fond(
-									'squelettes/certificat', 
-									array(
-											'id_certif' => $id_certif,
-											'id_activite' => $id_article
-											), 
-									array('ajax' => false)
-									);
+				'squelettes/certificat', 
+				array(
+					'id_certif' => $id_certif,
+					'id_activite' => $id_article
+					), 
+				array('ajax' => false)
+				);
 		}
 		// Sinon on récupère un squelette modèle
 		else {
 			$html = recuperer_fond(
-									'squelettes/generique', 
-									array(
-											'id_pdf' => _request('modele'),
-											'id_activite' => $id_article,
-											'id_personne' => $id_auteur
-											), 
-									array('ajax' => false)
-									);
+				'squelettes/generique', 
+				array(
+					'id_pdf' => _request('modele'),
+					'id_activite' => $id_article,
+					'id_personne' => $id_auteur
+					), 
+				array('ajax' => false)
+				);
 		}
 
 		// echo $html;
@@ -124,9 +146,6 @@ function exec_gestion_dompdf_exec() {
 			if ($envoyer_par_mail == 0) $dompdf->stream($filename.'.pdf');
 			// Sinon, on envoie le PDF à la personne via swift
 			else {
-				// On récupère les informations de l'auteur
-				$personne = sql_fetsel('nom, prenom, email', 'spip_auteurs', 'id_auteur='.$id_auteur);
-
 				// On construit le tableau pour envoyer le mail.
 				$send = array($personne['email'] => $personne['nom'].' '.$personne['prenom']);
 				$sujet = 'A déterminer';
@@ -135,14 +154,10 @@ function exec_gestion_dompdf_exec() {
 				swift_envoyer_mail($send, $sujet, $body, $file, true);
 			}
 		}
-			if ($redirect) header('location: '.urldecode($redirect).'&pdf_envoye=1');
+		if ($redirect) header('location: '.urldecode($redirect).'&pdf_envoye=1');
 	}
 	//Si on a demander de renvoyer le fichier existant.
 	elseif (_request('renvoyer')) {
-		
-		// On récupère les informations de l'auteur
-		$personne = sql_fetsel('nom, prenom, email', 'spip_auteurs', 'id_auteur='.$id_auteur);
-
 		// On construit le tableau pour envoyer le mail.
 		$send = array($personne['email'] => $personne['nom'].' '.$personne['prenom']);
 		$sujet = 'A déterminer';

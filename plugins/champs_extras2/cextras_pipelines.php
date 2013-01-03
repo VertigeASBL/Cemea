@@ -799,6 +799,4 @@ function cextras_rechercher_liste_des_champs($tables){
 	}
 	return $tables;
 }
-
-
 ?>
