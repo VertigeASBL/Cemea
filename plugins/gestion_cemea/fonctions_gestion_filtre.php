@@ -66,7 +66,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 			'#TELEPHONE_ORGANISATION',
 			'#TEXTE_PRESENTATION',
 			'#HEURE_FORMATION',
-			'#DATE_FIN'
+			'#DATE_FIN',
+			'#ADRESSE'
 		);
 
 	$conversion = array(
@@ -82,7 +83,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 			$activite['telephone_orga'],
 			$activite['text_presentation'],
 			$activite['heure_formation'],
-			$activite['dates_ra']
+			$activite['dates_ra'],
+			$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite']
 		);
 
 	// On remplace les balises
