@@ -129,7 +129,7 @@ function formulaires_editer_champ_extra_traiter_dist($extra_id='new', $redirect=
 			}
 		}
 	}
-	
+
 	// l'enregistrer les modifs
 	iextras_set_extras($extras);
 	

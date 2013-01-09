@@ -289,7 +289,7 @@ function cextras_editer_contenu_objet($flux){
 	}
 	else if ($flux['args']['type']=='auteurs_article') {
 		//--- Suivi des inscriptions ---
-		$taff = array('statutsuivi','date_suivi','heure_suivi','alimentation','responsable','responsable_lien','remarques_inscription','sante_comportement','ecole','places_voitures','brevet_animateur','statut_payement', 'historique_payement', 'extrait_de_compte', 'tableau_exception');
+		$taff = array('statutsuivi','date_suivi','heure_suivi','alimentation','responsable','responsable_lien','remarques_inscription','sante_comportement','ecole','places_voitures','brevet_animateur','statut_payement', 'historique_payement', 'extrait_de_compte', 'tableau_exception', 'recus_fiche_medical');
 	}
 // echo '<pre>'; print_r($flux['args']['contexte']); echo '</pre><hr />',"\n";
 	if (! count($taff))
