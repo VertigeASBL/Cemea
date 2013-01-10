@@ -1,7 +1,7 @@
 <?php
-function formulaires_creer_pdf_charger_dist() {
+function formulaires_creer_pdf_charger_dist($id_article, $id_auteur, $asbl) {
         $contexte = array(
-                '' => '',
+                'asbl' => $asbl
         );
         return $contexte;
 }

@@ -18,6 +18,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'changement_statut' => 'Le statut de cette personne à été changé.',
 	'confirmer_inscription' => 'Cette personne à été inscrite',
 	'confirmer' => 'Confirmer ?',
+	'copie' => 'Copie ?',
+	'est_copie' => 'Cet article est une copie de',
 
 	// D
 	'derniere_inscription' => 'Dernière Inscription',

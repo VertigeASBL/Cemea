@@ -8,6 +8,7 @@
 		<th><:gestion:date_debut:></th>
 		<th><:gestion:inscription:></th>
 		<th><:gestion:action:></th>
+		<th><:gestion:copie:></th>
 	</thead>
 	<tbody>
 		
@@ -23,6 +24,7 @@
 				<a href="[(#URL_ECRIRE{participants_exec, id_article=#ID_ARTICLE&pagination=30})]" title="<:gestion:liste_participant:>"><:gestion:liste_participant:></a>
 				#FORMULAIRE_CREER_CERTIFICAT{#ID_ARTICLE, #ASBL}
 			</td>
+			<td>[(#ID_TRAD|!={0}|oui)<a href="#URL_ECRIRE{articles, id_article=#ID_TRAD}" title="modifier ?"><:gestion:est_copie:> #ID_TRAD</a>]</td>
 		</tr>
 		</BOUCLE_action>
 	</tbody>

@@ -3,7 +3,7 @@
 		$("#activite").autoComplete({
 			dataSupply: [
 							<BOUCLE_action(ARTICLES mots_rubriques){id_mot=5}>
-								{value: '[(#IDACT)]', display: '[(#IDACT)]'},
+								{value: '[(#IDACT)]', display: '[(#IDACT) [(#TITRE|supprimer_numero)] [(#DATE_DEBUT|affdate)]]'},
 							</BOUCLE_action>
 						]
 		});
