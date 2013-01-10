@@ -122,10 +122,15 @@ function exec_generer_etiquette() {
 			// On met à jour le compteur d'étiquette
 			$i++;
 			
+			/* On test l'age de la personne pour ajouter "Au parent de..." S'il à 15 ans ou moins */
+
+			if (age($res['date_naissance']) <= 15) $parent = 'Aux parents de ';
+			else $parent = '';
+
 			// On ajoute l'étiquette
 			$html[$c] .= '
 				<td>
-					'.$res['nom'].' '.$res['prenom'].'
+					'.$parent.''.$res['nom'].' '.$res['prenom'].'
 					<br />'.$res['adresse'].'
 					<br /> '.$res['codepostal'].' '.$res['localite'].'
 				</td>

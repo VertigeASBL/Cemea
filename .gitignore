@@ -4,3 +4,5 @@ local/
 IMG/
 .DS_Store
 plugins/gestion_cemea/dompdf/lib/fonts/log.htm
+
+plugins/gestion_cemea/largePDF/dompdf/lib/fonts/log.htm
