@@ -35,8 +35,8 @@ echo icone_inline(_T('gestion:modifier_inscrit'), generer_url_ecrire("editer_ins
 		<td><:gestion:adresse:>:</td> 
 		<td>
 			<strong>
-			#ADRESSE
-			[<br />(#CODEPOSTAL) #LOCALITE]
+				#ADRESSE
+				[<br />(#CODEPOSTAL) #LOCALITE]
 			</strong>
 		</td>
 	</tr>
@@ -90,6 +90,34 @@ echo icone_inline(_T('gestion:modifier_inscrit'), generer_url_ecrire("editer_ins
 	<tr class="tr_liste">
 		<td>Statut SJ</td>
 		<td>[(#STATUT_SJ)]</td>
+	</tr>
+	<tr>
+		<td>Stage pratique animateur</td>
+		<td>
+			[(#STAGE_PRATIQUE_ANIMATEUR|oui) oui]
+			[(#STAGE_PRATIQUE_ANIMATEUR|non) non]
+		</td>
+	</tr>
+	<tr>
+		<td>Stage pratique coordinateur adjoint</td>
+		<td>
+			[(#STAGE_PRATIQUE_COORDINATEUR_ADJOINT|oui) oui ]
+			[(#STAGE_PRATIQUE_COORDINATEUR_ADJOINT|non) non ]
+		</td>
+	</tr>
+	<tr>
+		<td>Stage pratique coordinateur</td>
+		<td>
+			[(#STAGE_PRATIQUE_COORDINATEUR|oui) oui ]
+			[(#STAGE_PRATIQUE_COORDINATEUR|non) non ]
+		</td>
+	</tr>
+	<tr>
+		<td>Membre</td>
+		<td>
+			[(#MEMBRE|oui) oui ]
+			[(#MEMBRE|non) non ]
+		</td>
 	</tr>
 </table>
 
