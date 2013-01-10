@@ -1,23 +1,25 @@
-<div class="formulaire_spip" style="border: none;">
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
-</div>
+<div style="position: relative;">
+	<div class="formulaire_spip" style="border: none;">
+		[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+		[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	</div>
 
-<a href="" class="openQuickPay"><img src="#CHEMIN{img/payement-24.png}" alt="openQuick" style="width: 20px;" /></a>
+	<a href="" class="openQuickPay"><img src="#CHEMIN{img/payement-24.png}" alt="openQuick" style="width: 20px;" /></a>
 
-<div class="formulaire_spip formulaire_#FORM">
-	<img src="#CHEMIN{images/croix-rouge.gif}" alt="x" class="close_form" />
+	<div class="formulaire_spip formulaire_#FORM">
+		<img src="#CHEMIN{images/croix-rouge.gif}" alt="x" class="close_form" />
 
-	<form action="#ENV{action}" method="post">
-		#ACTION_FORMULAIRE{#ENV{action}}
-		<ul>
-			#SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
-			<li class="editer_#FORM obligatoire[ (#GET{erreurs}|oui)erreur]">
-				[<span class='erreur_message'>(#GET{erreurs})</span>]
-				<p class="explication">Payement</p>
-				<input type="text" name="payementRapide" />
-			</li>
-		</ul>
-		<p class="boutons"><input type="submit" class="submit" value="<:pass_ok:>" /></p>
-	</form>
+		<form action="#ENV{action}" method="post">
+			#ACTION_FORMULAIRE{#ENV{action}}
+			<ul>
+				#SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
+				<li class="editer_#FORM obligatoire[ (#GET{erreurs}|oui)erreur]">
+					[<span class='erreur_message'>(#GET{erreurs})</span>]
+					<p class="explication">Payement</p>
+					<input type="text" name="payementRapide" />
+				</li>
+			</ul>
+			<p class="boutons"><input type="submit" class="submit" value="<:pass_ok:>" /></p>
+		</form>
+	</div>
 </div>

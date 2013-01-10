@@ -61,6 +61,7 @@
 	position: absolute;
 	width: 100px;
 	z-index: 2;
+	left: -100px;
 }
 .formulaire_payement_rapide li, .formulaire_payement_rapide li.gauche {
 	padding: 0;
