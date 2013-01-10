@@ -14,19 +14,20 @@ function exec_suivi() {
 	$statutsuivi = '';
 	$date_suivi = '';
 	$heure_suivi = '';
-        
-        //Addon fields
-        $sante_comportement = '';
-        $alimentation = '';
-        $remarques_inscription = '';
-        $ecole = '';
-        $places_voitures = '';
-        $brevet_animateur = '';
-        $historique_payement = '';
-        $extrait_de_compte = '';
-        $statut_payement = '';
-        $tableau_exception = '';
-        
+
+	//Addon fields
+	$sante_comportement = '';
+	$alimentation = '';
+	$remarques_inscription = '';
+	$ecole = '';
+	$places_voitures = '';
+	$brevet_animateur = '';
+	$historique_payement = '';
+	$extrait_de_compte = '';
+	$statut_payement = '';
+	$tableau_exception = '';
+	$recus_fiche_medical = '';
+
 
 	//----------- lire DB ---------- AND id_secteur=2
 	$req = sql_select('id_article,idact,titre', 'spip_articles', "id_article=$id_article");
@@ -37,7 +38,7 @@ function exec_suivi() {
 	else
 		$id_article = 0;
 
-	$req = sql_select('idper,nom,prenom,statut,inscrit,statutsuivi,date_suivi,heure_suivi,sante_comportement,alimentation,remarques_inscription,ecole,brevet_animateur,places_voitures, historique_payement, extrait_de_compte, statut_payement, tableau_exception', "spip_auteurs AS A LEFT JOIN spip_auteurs_articles AS S ON S.id_auteur=$id_auteur AND S.id_article=$id_article AND S.inscrit<>''", "A.id_auteur=$id_auteur");
+	$req = sql_select('idper,nom,prenom,statut,inscrit,statutsuivi,date_suivi,heure_suivi,sante_comportement,alimentation,remarques_inscription,ecole,brevet_animateur,places_voitures, historique_payement, extrait_de_compte, statut_payement, tableau_exception, recus_fiche_medical', "spip_auteurs AS A LEFT JOIN spip_auteurs_articles AS S ON S.id_auteur=$id_auteur AND S.id_article=$id_article AND S.inscrit<>''", "A.id_auteur=$id_auteur");
 	if ($data = sql_fetch($req)) {
 		$idper = $data['idper'];
 		$nom = $data['nom'];
@@ -48,17 +49,19 @@ function exec_suivi() {
 			$statutsuivi = $data['statutsuivi'];
 			$date_suivi = $data['date_suivi'];
 			$heure_suivi = $data['heure_suivi'];
-                        
-                        $sante_comportement = $data['sante_comportement'];
-                        $alimentation = $data['alimentation'];
-                        $remarques_inscription = $data['remarques_inscription'];
-                        $ecole = $data['ecole'];
-                        $places_voitures = $data['places_voitures'];
-                        $brevet_animateur = $data['brevet_animateur'];
-                        $historique_payement = $data['historique_payement'];
-                        $extrait_de_compte = $data['extrait_de_compte'];
-                        $statut_payement = $data['statut_payement'];
-                        $tableau_exception = $data['tableau_exception'];
+
+			$sante_comportement = $data['sante_comportement'];
+			$alimentation = $data['alimentation'];
+			$remarques_inscription = $data['remarques_inscription'];
+			$ecole = $data['ecole'];
+			$places_voitures = $data['places_voitures'];
+			$brevet_animateur = $data['brevet_animateur'];
+			$historique_payement = $data['historique_payement'];
+			$extrait_de_compte = $data['extrait_de_compte'];
+			$statut_payement = $data['statut_payement'];
+			$tableau_exception = $data['tableau_exception'];
+			$recus_fiche_medical = $data['recus_fiche_medical'];
+
 		}
 	}
 	else
@@ -73,16 +76,17 @@ function exec_suivi() {
 			$date_suivi = _request('date_suivi');
 			$heure_suivi = _request('heure_suivi');
                         
-                        $sante_comportement = _request('sante_comportement');
-                        $alimentation = _request('alimentation');
-                        $remarques_inscription = _request('remarques_inscription');
-                        $ecole = _request('ecole');
-                        $places_voitures = _request('places_voitures');
-                        $brevet_animateur = _request('brevet_animateur');
-                        $extrait_de_compte = _request('extrait_de_compte');
-                        $historique_payement = str_replace(',', '.', _request('historique_payement'));
-                        $statut_payement = _request('statut_payement');
-                        $tableau_exception = _request('tableau_exception');
+                $sante_comportement = _request('sante_comportement');
+                $alimentation = _request('alimentation');
+                $remarques_inscription = _request('remarques_inscription');
+                $ecole = _request('ecole');
+                $places_voitures = _request('places_voitures');
+                $brevet_animateur = _request('brevet_animateur');
+                $extrait_de_compte = _request('extrait_de_compte');
+                $historique_payement = str_replace(',', '.', _request('historique_payement'));
+                $statut_payement = _request('statut_payement');
+                $tableau_exception = _request('tableau_exception');
+                $recus_fiche_medical = _request('recus_fiche_medical');
 
 			include_spip('inc/date_gestion');
 			$contexte['erreurs'] = array();
@@ -122,7 +126,8 @@ function exec_suivi() {
                                                	'extrait_de_compte' => $extrait_de_compte,
                                                	'historique_payement' => $historique_payement,
                                                	'statut_payement' => $statut_payement,
-                                               	'tableau_exception' => $tableau_exception
+                                               	'tableau_exception' => $tableau_exception,
+                                               	'recus_fiche_medical' => $recus_fiche_medical
                                             ), "id_auteur=$id_auteur AND id_article=$id_article");
 				$contexte['message_ok'] = 'Ok, l\'inscription est mise à jour';
 				$inscrit = 'Y';
@@ -149,53 +154,54 @@ function exec_suivi() {
 		}
 
 	//--------- page + formulaire ---------
-	$commencer_page = charger_fonction('commencer_page', 'inc');
-	echo $commencer_page('Suivi des inscriptions', '', '');
-	
-	echo '<br />',gros_titre('Suivi des inscriptions');
+		$commencer_page = charger_fonction('commencer_page', 'inc');
+		echo $commencer_page('Suivi des inscriptions', '', '');
 
-	echo debut_gauche('', true);
-	echo debut_boite_info(true);
-	echo 'Suivi des inscriptions<br /><br />Explications',"\n";
-	echo fin_boite_info(true);
+		echo '<br />',gros_titre('Suivi des inscriptions');
 
-	echo debut_droite('', true);
-	
-	include_spip('fonctions_gestion_cemea');
-	include_spip('prive/gestion_update_db');
+		echo debut_gauche('', true);
+		echo debut_boite_info(true);
+		echo 'Suivi des inscriptions<br /><br />Explications',"\n";
+		echo fin_boite_info(true);
 
-	echo debut_cadre_relief('', true, '', '');
+		echo debut_droite('', true);
 
-	$contexte['id_article'] = $id_article;
-	$contexte['id_auteur'] = $id_auteur;
-	$contexte['idact'] = $idact;
-	$contexte['titre'] = $titre;
-	$contexte['idper'] = $idper;
-	$contexte['nom'] = $nom;
-	$contexte['prenom'] = $prenom;
-	$contexte['inscrit'] = $inscrit;
-	$contexte['statutsuivi'] = $statutsuivi;
-	$contexte['date_suivi'] = $date_suivi;
-	$contexte['heure_suivi'] = $heure_suivi;
-        
-        $contexte['sante_comportement'] = $sante_comportement;
-        $contexte['alimentation'] = $alimentation;
-        $contexte['remarques_inscription'] = $remarques_inscription;
-        $contexte['ecole'] = $ecole;
-        $contexte['places_voitures'] = $places_voitures;
-        $contexte['brevet_animateur'] = $brevet_animateur;
-        $contexte['extrait_de_compte'] = $extrait_de_compte;
-        $contexte['historique_payement'] = str_replace('.', ',', $historique_payement);
-        $contexte['statut_payement'] = $statut_payement;
-        $contexte['tableau_exception'] = $tableau_exception;
-	
-        $contexte['editable'] = ' ';
+		include_spip('fonctions_gestion_cemea');
+		include_spip('prive/gestion_update_db');
 
-	$milieu = recuperer_fond("prive/form_suivi", $contexte);
-	echo pipeline('editer_contenu_objet',array('args'=>array('type'=>'auteurs_article','contexte'=>$contexte),'data'=>$milieu));
+		echo debut_cadre_relief('', true, '', '');
 
-	echo fin_cadre_relief(true);
-	echo fin_gauche();
-	echo fin_page();
+		$contexte['id_article'] = $id_article;
+		$contexte['id_auteur'] = $id_auteur;
+		$contexte['idact'] = $idact;
+		$contexte['titre'] = $titre;
+		$contexte['idper'] = $idper;
+		$contexte['nom'] = $nom;
+		$contexte['prenom'] = $prenom;
+		$contexte['inscrit'] = $inscrit;
+		$contexte['statutsuivi'] = $statutsuivi;
+		$contexte['date_suivi'] = $date_suivi;
+		$contexte['heure_suivi'] = $heure_suivi;
+
+		$contexte['sante_comportement'] = $sante_comportement;
+		$contexte['alimentation'] = $alimentation;
+		$contexte['remarques_inscription'] = $remarques_inscription;
+		$contexte['ecole'] = $ecole;
+		$contexte['places_voitures'] = $places_voitures;
+		$contexte['brevet_animateur'] = $brevet_animateur;
+		$contexte['extrait_de_compte'] = $extrait_de_compte;
+		$contexte['historique_payement'] = str_replace('.', ',', $historique_payement);
+		$contexte['statut_payement'] = $statut_payement;
+		$contexte['tableau_exception'] = $tableau_exception;
+		$contexte['recus_fiche_medical'] = $recus_fiche_medical;
+
+		$contexte['editable'] = ' ';
+
+		$milieu = recuperer_fond("prive/form_suivi", $contexte);
+		echo pipeline('editer_contenu_objet',array('args'=>array('type'=>'auteurs_article','contexte'=>$contexte),'data'=>$milieu));
+
+		echo fin_cadre_relief(true);
+		echo fin_gauche();
+		echo fin_page();
 }
 ?>
