@@ -128,7 +128,6 @@ function exec_gestion_dompdf_exec() {
 				);
 		}
 
-		// echo $html;
 
 		if ($modele != 'etiquette') {
 			// On charge le HTML

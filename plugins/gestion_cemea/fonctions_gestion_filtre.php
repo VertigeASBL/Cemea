@@ -2,13 +2,19 @@
 
 // Calcule la date déchéance de payement
 function echeance($date, $plus = false) {
-    if ($plus) return date('Y-m-d H:m:s',strtotime($date)+(3600*24*15));
-    else return date('Y-m-d H:m:s',strtotime($date)-(3600*24*15));
+	if ($plus) return date('Y-m-d H:m:s',strtotime($date)+(3600*24*15));
+	else return date('Y-m-d H:m:s',strtotime($date)-(3600*24*15));
+}
+
+// Calcule la date déchéance de début d'activité
+function echeance_activite($date, $plus = false) {
+	if ($plus) return date('Y-m-d H:m:s',strtotime($date)+(3600*24*31));
+	else return date('Y-m-d H:m:s',strtotime($date)-(3600*24*31));
 }
 
 // Calcule l'age en fonction de la date de naissance
 function age($date) {
-    return (int) ((time() - strtotime($date)) / 3600 / 24 / 365);
+	return (int) ((time() - strtotime($date)) / 3600 / 24 / 365);
 }
 
 // Retourne le montant totale payé par la personne. 
@@ -54,39 +60,39 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 	// $texte = str_replace('#TELEPHONE_ORGANISATION', , $texte);
 	
 	$balise_pdf = array(
-			'#DATE_ANNULATION',
-			'#DATE_DEBUT',
-			'#REFERENCE',
-			'#LIEU_DEROULEMENT',
-			'#NOM_FORMATION',
-			'#NOM',
-			'#PRENOM',
-			'#DATE_NAISSANCE',
-			'#LIEU_NAISSANCE',
-			'#TELEPHONE_ORGANISATION',
-			'#TEXTE_PRESENTATION',
-			'#HEURE_FORMATION',
-			'#DATE_FIN',
-			'#ADRESSE',
-			'#PAGE'
+		'#DATE_ANNULATION',
+		'#DATE_DEBUT',
+		'#REFERENCE',
+		'#LIEU_DEROULEMENT',
+		'#NOM_FORMATION',
+		'#NOM',
+		'#PRENOM',
+		'#DATE_NAISSANCE',
+		'#LIEU_NAISSANCE',
+		'#TELEPHONE_ORGANISATION',
+		'#TEXTE_PRESENTATION',
+		'#HEURE_FORMATION',
+		'#DATE_FIN',
+		'#ADRESSE',
+		'#PAGE'
 		);
 
 	$conversion = array(
-			affdate(echeance($inscription['date_suivi'], true)),
-			affdate($activite['date_debut']),
-			$activite['idact'],
-			propre($adresse),
-			supprimer_numero($activite['titre']),
-			$auteur['nom'],
-			$auteur['prenom'],
-			affdate($auteur['date_naissance']),
-			$auteur['lieunaissance'],
-			$activite['telephone_orga'],
-			$activite['text_presentation'],
-			$activite['heure_formation'],
-			$activite['dates_ra'],
-			$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite'],
-			'<div style="page-break-after: always;"></div>'
+		affdate(echeance($inscription['date_suivi'], true)),
+		affdate($activite['date_debut']),
+		$activite['idact'],
+		propre($adresse),
+		supprimer_numero($activite['titre']),
+		$auteur['nom'],
+		$auteur['prenom'],
+		affdate($auteur['date_naissance']),
+		$auteur['lieunaissance'],
+		$activite['telephone_orga'],
+		$activite['text_presentation'],
+		$activite['heure_formation'],
+		$activite['dates_ra'],
+		$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite'],
+		'<div style="page-break-after: always;"></div>'
 		);
 
 	// On remplace les balises
@@ -117,7 +123,7 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 
 	return $texte;
 }
- 
+
 function spip_replace($subject, $search, $replace) {
 	return str_replace($search, $replace, $subject);
 }

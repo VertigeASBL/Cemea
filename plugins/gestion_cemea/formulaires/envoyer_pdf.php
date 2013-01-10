@@ -9,7 +9,7 @@ function formulaires_envoyer_pdf_charger_dist() {
 function formulaires_envoyer_pdf_verifier_dist() {
         $erreurs = array();
         if (!_request('envoyer_pdf')) {
-                $erreurs['message_erreur'] = 'Vous devez choisir un document PDF';
+                $erreurs['message_erreur'] = 'Vous devez choisir un document PDF.';
                 $erreurs['NomErreur'] = '';
         }
         return $erreurs;

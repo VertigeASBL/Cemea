@@ -67,6 +67,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// M
 	'modifier_inscrit' => 'Modifier',
 	'mettre_auteur_poubelle' => 'Supprimer cette personne',
+	'mass_mail' => 'Mail massif',
 
 	// O
 	'option' => 'Option de tri',

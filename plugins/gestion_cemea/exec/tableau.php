@@ -44,6 +44,13 @@ function exec_tableau() {
 		// Ligne suivante du tableau de bord.
 		echo '<div class="nettoyeur"></div>';
 
+		// Tableau des échéances des action
+		echo debut_cadre_relief('', false, '', '<a href="'.generer_url_ecrire('gestion_payement_exec').'" title="'._T('gestion:echeance').'">'._T('gestion:echeance').'</a>', '', '');
+		echo recuperer_fond('prive/tableau_de_bord/start_action', array(), array('ajax' => true) );
+		echo fin_cadre_relief();
+
+		// Ligne suivante du tableau de bord.
+		echo '<div class="nettoyeur"></div>';
 		
 		// Tableau des dernières inscritpions annulée.
 		echo debut_cadre_relief('', false, '', _T('gestion:dernier_annule'), '', 'float');

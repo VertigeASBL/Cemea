@@ -40,7 +40,7 @@
 		
 		[(#REM) Boucle qui récupère la date de l'inscription la plus ancienne. ]
 		<BOUCLE_test_date_anim(auteurs_articles){id_auteur}{par date_suivi}{0,1}>
-			[(#GET{brevet}|oui) [(#SET{oldInsc, #DATE_SUIVI})] ]
+		[(#GET{brevet}|oui) [(#SET{oldInsc, #DATE_SUIVI})] ]
 		</BOUCLE_test_date_anim>
 
 		[(#REM) Test si la date est plus ancienne que 3 ans ]
