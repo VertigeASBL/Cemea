@@ -1,20 +1,20 @@
 <script type="text/javascript">
 	$(document).ready(function () {
-		$("#participant").autoComplete({
-			dataSupply: [
+		$("#participant").autocomplete({
+			source: [
 							<BOUCLE_dataNom(AUTEURS){tout}>
-								{value: '#NOM #PRENOM', display: '#NOM #PRENOM'},
+								{value: '#NOM #PRENOM'},
 							</BOUCLE_dataNom>
-							<BOUCLE_dataPrenom(AUTEURS){tout}>
-								{value: '#PRENOM #NOM', display: '#NOM #PRENOM'},
-							</BOUCLE_dataPrenom>
 						]
 		});
 
-		$("#activite").autoComplete({
-			dataSupply: [
+		$("#activite").autocomplete({
+			source: [
 							<BOUCLE_action(ARTICLES mots_rubriques){id_mot=5}>
-								{value: '[(#IDACT)]', display: '[(#IDACT)]'},
+								{
+									value: '[(#IDACT)]',
+									label: "[(#IDACT)] [(#TITRE|supprimer_numero|addslashes|html_entity_decode)] [(#DATE_DEBUT|affdate)]",
+								},
 							</BOUCLE_action>
 						]
 		});

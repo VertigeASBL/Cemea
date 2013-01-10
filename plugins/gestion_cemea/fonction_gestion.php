@@ -10,8 +10,8 @@ function gestion_header_prive($flux) {
  	$flux .= '<!-- Auto-Complete Sytème -->';
 
 	// On ajoute le script auto-complete
-	$flux .= '<script type="text/javascript" src="'.(find_in_path('js/auto-complete/jquery.auto-complete.min.js')).'"></script>';
-	$flux .= '<link rel="stylesheet" href="'.(find_in_path('js/auto-complete/jquery.auto-complete.css')).'" type="text/css" media="all" />';
+	$flux .= '<script type="text/javascript" src="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.js')).'"></script>';
+	$flux .= '<link rel="stylesheet" href="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.css')).'" type="text/css" media="all" />';
 
     // L'auto submit du <select> des statuts
     $flux .= '<script type="text/javascript" src="'.(find_in_path('js/jquery.formStatut.js')).'"></script>';

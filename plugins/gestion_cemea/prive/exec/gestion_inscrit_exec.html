@@ -13,14 +13,13 @@ gros_titre(_T('gestion:gestion_inscrit'));
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$("#recherche").autoComplete({
-			dataSupply: [
+		$("#recherche").autocomplete({
+			source: [
 							<BOUCLE_dataNom(AUTEURS){tout}>
-								{value: '#NOM #PRENOM', display: '#NOM #PRENOM'},
+								{
+									value: '#NOM #PRENOM'
+								},
 							</BOUCLE_dataNom>
-							<BOUCLE_dataPrenom(AUTEURS){tout}>
-								{value: '#PRENOM #NOM', display: '#NOM #PRENOM'},
-							</BOUCLE_dataPrenom>
 						]
 		});
 	});

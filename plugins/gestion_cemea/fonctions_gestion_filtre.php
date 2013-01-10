@@ -121,4 +121,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 function spip_replace($subject, $search, $replace) {
 	return str_replace($search, $replace, $subject);
 }
+
+function decode_entities($str) {
+	return html_entity_decode($str);
+}
 ?>
