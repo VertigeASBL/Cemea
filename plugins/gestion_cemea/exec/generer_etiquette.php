@@ -31,7 +31,7 @@ function exec_generer_etiquette() {
 		$sql = fonclistewhere($lilang);
 
 		// On récupère les auteurs pour générer le PDF
-		$query = sql_select('*', 'spip_auteurs', $sql, null, 'date_maj');
+		$query = sql_select('*', 'spip_auteurs', $sql, 'nom', 'date_naissance');
 
 		// Ce tableau contiendra les pages html qui serviront à créer les multiples PDF
 		$html = array();
