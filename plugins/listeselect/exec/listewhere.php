@@ -49,6 +49,10 @@ function fonclistewhere(&$lilang) {
 		$sql .= ' AND statut_sj=\''.$tab.'\'';
 	}
 	
+	if ($tab = _request('membre')){
+		$sql .= ' AND membre=\'oui\'';
+	}
+
 	if (($tab = _request('diffusion')) && count($tab) < _request('n_diffusion')) {
 		$sql .= ' AND (';
 		reset($tab); $g = false;

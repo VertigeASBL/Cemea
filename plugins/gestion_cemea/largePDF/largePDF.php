@@ -4,7 +4,6 @@
 * Class de création de PDF destinée à générer de fichier de garde taille
 * Basé sur DOMPDF pour créer les PDF et PDFMerger pour les fusions de PDF
 */
-
 class largePDF 
 {	
 	var $filename = 'tmppdf';
@@ -100,7 +99,7 @@ class largePDF
 		$javascript = '
 			<script>
 			jQuery(document).ready(function ($) {
-				var i = 1;
+				var i = 0;
 				var a = '.$nb_pdf.';
 				
 				setInterval(function () {
