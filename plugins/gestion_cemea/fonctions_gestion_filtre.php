@@ -131,4 +131,16 @@ function spip_replace($subject, $search, $replace) {
 function decode_entities($str) {
 	return html_entity_decode($str);
 }
+
+/*Converti la chaine du champ Ndiffusion en tableau utilisable...*/
+function Ndiffusion2Array($liste) {
+	$tab = explode(',', $liste);
+	$chn = array();
+	for ($k = 0, $g = 1; isset($tab[$k]); $k = ++$g, $g++)
+		if ($tab[$g]) {
+			$chn[$tab[$k]] = $tab[$g];
+		}
+	return $chn;
+}
+
 ?>

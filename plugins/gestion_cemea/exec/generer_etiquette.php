@@ -106,30 +106,38 @@ function exec_generer_etiquette() {
 		</head>
 		<body>';
 
-		// La fin de chaque page html
+		/*La fin de chaque page html*/
 		$fin_html .= '</body></html>';
 
-		// Le compteur d'étiquettes
+		/*Le compteur d'étiquettes*/
 		$i = 0;
-		// Le compteur de PDF
+		/*Le compteur de PDF*/
 		$c = 0;
-		// On boucle sur le SQL
+		/*On boucle sur le SQL*/
 		while ($res = sql_fetch($query)) {
-			// Toute les 14 étiquette con créé une nouvelle page
+			/*Toute les 14 étiquette con créé une nouvelle page*/
 			if ($i%14 == 0) $html[$c] = $debut_html.'<table style="width: 100%; text-align: center;"><tbody>';
-			// Toute les 2 étiquettes on créer une nouvelle ligne
+			/*Toute les 2 étiquettes on créer une nouvelle ligne*/
 			if ($i%2 == 0) $html[$c] .= '<tr>';
-			// On met à jour le compteur d'étiquette
+			/*On met à jour le compteur d'étiquette*/
 			$i++;
 			
 			/* On test l'age de la personne pour ajouter "Au parent de..." S'il à 15 ans ou moins */
-
 			if (age($res['date_naissance']) <= 15) $parent = 'Aux parents de ';
 			else $parent = '';
 
-			// On ajoute l'étiquette
+			/*On test PRG pour savoir si on dois l'afficher.*/
+			/*En premier lieu il nous faut avoir une variable utilisable, on va explode la chaine pour avoir un tableau*/
+			$Ndiffusion = Ndiffusion2array($res['ndiffusion']);
+
+			/*Maintenant que l'on a un beau tableau, il suffit de tester PRG*/
+			if ($Ndiffusion['PRG'] > 1) $diff = '<p style="text-align: right; margin-right: 30px;">PRG: '.trim($Ndiffusion['PRG']).'</p>';
+			else $diff = '';
+
+			/*On ajoute l'étiquette*/
 			$html[$c] .= '
 				<td>
+					'.$diff.'
 					'.$parent.''.$res['nom'].' '.$res['prenom'].'
 					<br />'.$res['adresse'].'
 					<br /> '.$res['codepostal'].' '.$res['localite'].'
