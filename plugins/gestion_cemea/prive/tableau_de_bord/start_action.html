@@ -10,7 +10,7 @@
 		<th><:gestion:mass_mail:></th>
 	</thead>
 	<tbody>
-		<BOUCLE_action_start(ARTICLES){date_debut > #GET{today}} {date_debut < #GET{echeance}} {pagination 5}>
+		<BOUCLE_action_start(ARTICLES){date_debut > #GET{today}} {date_debut < #GET{echeance}} {pagination 5} {origine_traduction}>
 		<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][ (#GET{class3y})] [(#CLOTURER|oui) cloturer]">
 			<td>#IDACT</td>
 			<td>[<a href="[(#URL_ECRIRE{articles,id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>

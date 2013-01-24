@@ -96,6 +96,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'rechercher' => 'Rechercher',
 	'recherche' => 'Recherche',
 	'retour' => 'Retour',
+	'retour_action' => 'Retour',
 	'recreer_fichier' => 'Ce fichier existe déjà, êtes vous sur de vouloir le recréer ?',
 	'reference' => 'Référence',
 	'renvoyer_existant' => 'Renvoyer le fichier existant'

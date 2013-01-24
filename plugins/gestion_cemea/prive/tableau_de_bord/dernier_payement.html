@@ -16,7 +16,8 @@
 			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
 			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
 			[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT} ]
-			
+			[(#PRIX_SPECIAL|oui) #SET{prix_a_paye, #PRIX_SPECIAL} ]
+						
 			[(#REM) Calcule du solde ]
 			#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
 			

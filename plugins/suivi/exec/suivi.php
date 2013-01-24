@@ -38,7 +38,7 @@ function exec_suivi() {
 	else
 		$id_article = 0;
 
-	$req = sql_select('idper,nom,prenom,statut,inscrit,statutsuivi,date_suivi,heure_suivi,sante_comportement,alimentation,remarques_inscription,ecole,brevet_animateur,places_voitures, historique_payement, extrait_de_compte, statut_payement, tableau_exception, recus_fiche_medical', "spip_auteurs AS A LEFT JOIN spip_auteurs_articles AS S ON S.id_auteur=$id_auteur AND S.id_article=$id_article AND S.inscrit<>''", "A.id_auteur=$id_auteur");
+	$req = sql_select('idper,nom,prenom,statut,inscrit,statutsuivi,date_suivi,heure_suivi,sante_comportement,alimentation,remarques_inscription,ecole,brevet_animateur,places_voitures, historique_payement, extrait_de_compte, statut_payement, tableau_exception, recus_fiche_medical, prix_special', "spip_auteurs AS A LEFT JOIN spip_auteurs_articles AS S ON S.id_auteur=$id_auteur AND S.id_article=$id_article AND S.inscrit<>''", "A.id_auteur=$id_auteur");
 	if ($data = sql_fetch($req)) {
 		$idper = $data['idper'];
 		$nom = $data['nom'];
@@ -61,7 +61,7 @@ function exec_suivi() {
 			$statut_payement = $data['statut_payement'];
 			$tableau_exception = $data['tableau_exception'];
 			$recus_fiche_medical = $data['recus_fiche_medical'];
-
+			$prix_special = $data['prix_special'];
 		}
 	}
 	else
@@ -87,6 +87,7 @@ function exec_suivi() {
                 $statut_payement = _request('statut_payement');
                 $tableau_exception = _request('tableau_exception');
                 $recus_fiche_medical = _request('recus_fiche_medical');
+                $prix_special = _request('prix_special');
 
 			include_spip('inc/date_gestion');
 			$contexte['erreurs'] = array();
@@ -127,7 +128,8 @@ function exec_suivi() {
                                                	'historique_payement' => $historique_payement,
                                                	'statut_payement' => $statut_payement,
                                                	'tableau_exception' => $tableau_exception,
-                                               	'recus_fiche_medical' => $recus_fiche_medical
+                                               	'recus_fiche_medical' => $recus_fiche_medical,
+                                               	'prix_special' => $prix_special
                                             ), "id_auteur=$id_auteur AND id_article=$id_article");
 				$contexte['message_ok'] = 'Ok, l\'inscription est mise à jour';
 				$inscrit = 'Y';
@@ -194,6 +196,7 @@ function exec_suivi() {
 		$contexte['statut_payement'] = $statut_payement;
 		$contexte['tableau_exception'] = $tableau_exception;
 		$contexte['recus_fiche_medical'] = $recus_fiche_medical;
+		$contexte['prix_special'] = $prix_special;
 
 		$contexte['editable'] = ' ';
 

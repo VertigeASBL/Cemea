@@ -18,11 +18,12 @@
 		</thead>
 		<tbody>
 
-		<BOUCLE_echeance(auteurs_articles articles auteurs mots_rubriques) {tableau_exception = oui} {date_debut != 0000-00-00 }{inscrit=Y} {id_mot=5} {id_auteur ?= #ENV{id_auteur}} {id_article ?= #ENV{id_article}} {par date_suivi}{inverse} {pagination 20}>
+		<BOUCLE_echeance(auteurs_articles articles auteurs mots_rubriques) {tableau_exception = oui} {inscrit=Y} {id_mot=5} {id_auteur ?= #ENV{id_auteur}} {id_article ?= #ENV{id_article}} {par date_suivi}{inverse} {pagination 20}>
 			[(#REM) On séléctionne le type de prix de la personne ]
 			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
 			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
-			[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT}]
+			[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT} ]
+			[(#PRIX_SPECIAL|oui) #SET{prix_a_paye, #PRIX_SPECIAL} ]
 			
 			[(#REM) Calcule du solde ]
 			#SET{solde, (#HISTORIQUE_PAYEMENT|calculer_payement|moins{#GET{prix_a_paye}})}

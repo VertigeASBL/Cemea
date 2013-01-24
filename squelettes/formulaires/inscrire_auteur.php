@@ -403,6 +403,12 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 		}
 		set_request('ndiffusion', $t2);
 		unset($t0, $t1, $t2);
+
+		/* Didier: Mise à jours de Fin diffusion quand on s'inscrit à une action. */
+		/* Récupération de la date de début d'activité. */
+		$debut_activite = sql_getfetsel('date_debut', 'spip_articles', 'id_article='.sql_quote($id_article));
+		/* Mettre à jours la date de Fin diffusion */
+		sql_update('spip_auteurs', array('date_fin_diffusion' => 'DATE_ADD(\''.$debut_activite.'\', INTERVAL 3 YEAR)'), 'id_auteur='.sql_quote($id_auteur));
 	}
 	if (! ($p = _request('localite')) && ($p = _request('otr_localite'))) //--- autre localite
 		set_request('localite', $p);
