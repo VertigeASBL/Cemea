@@ -63,6 +63,12 @@ function fonclistewhere(&$lilang) {
 		$sql .= ')';
 	}
 
+	/* Didier: Si une action est envoyée, on filtre uniquement selon les inscrit à cette action */
+	if (_request('action_eti') != 'none') {
+		$tab = _request('action_eti');
+		$sql .= ' AND id_auteur IN (SELECT id_auteur FROM `spip_auteurs_articles` WHERE id_article = '.$tab.')';
+	}
+
 	/* Didier: Ajoute a la fin de la requête une restriction pour évité que des gens qui sont arrivé a la fin de la diffusion ne soit séléctionné. */
 	$sql .= ' AND date_fin_diffusion >= CURDATE()';
 

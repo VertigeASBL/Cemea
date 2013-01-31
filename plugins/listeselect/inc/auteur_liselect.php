@@ -45,7 +45,8 @@ function inc_auteur_liselect_dist($auteur, $new, $echec, $edit, $id_article, $re
 		'new'=>$new == "oui"?$new:$id_auteur,
 		'config_fonc'=>'auteurs_edit_config',
 		'lier_id_article' => $id_article,
-		'auteur' => $auteur
+		'auteur' => $auteur,
+		'action_eti' => _request('action_eti')
 	);
 
 	$corps .= recuperer_fond("plugins/listeselect/auteursel", $contexte);

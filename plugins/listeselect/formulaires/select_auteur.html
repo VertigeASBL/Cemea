@@ -37,7 +37,7 @@
 			</div>
 		</li>
 		<li class="editer_typepart">
-			<label for="typepart">Type</label>[
+			<label for="typepart">Type #ENV**{typepart}</label>[
 			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{typepart})</span>
 			]<div class='choix'>
 				<input type='checkbox' name='typepart[]' id='typepart_s' value="S"[(#ENV**{typepart}et{#VAL{S}|in_array{#ENV**{typepart}}}|oui) checked='checked'] /><label for='typepart_s'>personne</label> &nbsp;
@@ -60,8 +60,8 @@
 				<input type='checkbox' name='adherent[]' id='adherent_y' value="Y"[(#ENV**{adherent}et{#VAL{Y}|in_array{#ENV**{adherent}}}|oui) checked='checked'] /><label for='adherent_y'>oui</label> &nbsp;
 			</div>
 		</li>
-		<li class="editer_adherent">
-			<label for="adherent">Membre</label>[
+		<li class="editer_membre">
+			<label for="membre">Membre</label>[
 			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{membre})</span>
 			]<div class='choix'>
 				<input type='checkbox' name='membre[]' id='membre' value="Y"[(#ENV**{membre}et{#VAL{Y}|in_array{#ENV**{membre}}}|oui) checked='checked'] /><label for='membre'>oui</label> &nbsp;
@@ -84,6 +84,19 @@
 		
 	</ul>
 
+	<ul>
+	  	<li>
+	  		<label for="action_eti">Action:</label>
+	  		<select name="action_eti" id="action_eti">
+	  			<B_action>
+	  			<option value="none">-</option>
+	  			<BOUCLE_action(ARTICLES mots_rubriques) {id_mot=5} {par date} {id_article ?} {inverse} {tout} {origine_traduction}>
+	  				<option value="#ID_ARTICLE" [(#ENV**{action_eti}|=={#ID_ARTICLE}|oui) selected="selected" ]>[(#TITRE|supprimer_numero)]</option>
+	  			</BOUCLE_action>
+	  			</B_action>
+	  		</select>
+	  	</li>
+	  </ul>
 	  [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
 	  <!--extra-->
 

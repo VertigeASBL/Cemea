@@ -27,6 +27,9 @@ function formulaires_select_auteur_charger_dist($id_auteur='new', $retour='', $l
 	// c'est trop hasardeux selon le contenud de $row
 	$valeurs['_forcer_request'] = true;
 	$valeurs['exportdlim'] = 'p';
+
+	$valeurs['action_eti'] = _request('action_eti');
+
 	return $valeurs;
 }
 

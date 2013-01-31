@@ -85,7 +85,7 @@ function exec_listeselect() {
 		include_spip('plugins/listeselect/exec/listewhere');
 		$sql = fonclistewhere($lilang);
 		
-//echo '<hr />',$sql,'<hr />';
+		echo '<hr />',$sql,'<hr />';
 
 		$k = sql_countsel('spip_auteurs', $sql);
 		echo '<b>Exporter les coordonnées en PDF</b><br />Nombre de destinataires sélectionnés : ',$k,"\n";
@@ -109,7 +109,7 @@ function exec_listeselect() {
 	$auteur_infos = charger_fonction('auteur_liselect', 'inc');
 	echo $auteur_infos($auteur, $new, $echec, _request('edit'), intval(_request('lier_id_article')), $redirect, 'edit');
 
-//--- echo fin_cadre_relief(true);
+	//--- echo fin_cadre_relief(true);
 	echo fin_gauche();
 	echo fin_page();
 }
