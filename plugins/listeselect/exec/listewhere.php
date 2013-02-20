@@ -70,7 +70,7 @@ function fonclistewhere(&$lilang) {
 	}
 
 	/* Didier: Ajoute a la fin de la requête une restriction pour évité que des gens qui sont arrivé a la fin de la diffusion ne soit séléctionné. */
-	$sql .= ' AND date_fin_diffusion >= CURDATE()';
+	/*$sql .= ' AND date_fin_diffusion >= CURDATE()';*/
 
 
 	return $sql;
