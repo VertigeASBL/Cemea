@@ -12,13 +12,12 @@ function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream
 	elseif (!is_string($sujet)) echo 'Erreur, le sujet dois être une chaine de caractère';
 	elseif (!is_string($body)) echo 'Erreur, le corps du message dois être une chaine de caractère';
 	else {
-		
-        // Transporter via smtp perso
+        /*Transporter via smtp perso*/
 		$transporter = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl');
-        // $transporter->setUsername('phenix0factory@gmail.com');
-        // $transporter->setPassword('hmp827W1');
-        // Transporter par la fonction mail de PHP
-        // $transporter = Swift_MailTransport::newInstance();
+        $transporter->setUsername('phenix0factory@gmail.com');
+        $transporter->setPassword('hmp827W1qrekjx4m');
+        /*Transporter par la fonction mail de PHP*/
+        /*$transporter = Swift_MailTransport::newInstance();*/
 		
 		$mailer = Swift_Mailer::newInstance($transporter);
 
@@ -33,7 +32,7 @@ function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream
 			$mail->attach(Swift_Attachment::newInstance($fichier, 'fichier.pdf', 'application/pdf'));
 		}
         // Send the message
-        // $result = $mailer->send($mail);
+        $result = $mailer->send($mail);
 	}
 }
 

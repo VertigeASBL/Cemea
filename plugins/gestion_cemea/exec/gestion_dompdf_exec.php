@@ -6,9 +6,11 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 function exec_gestion_dompdf_exec() {
 
 	include_spip('inc/presentation');
+	include_spip('inc/documents');
 	include_spip('gestion_autorisation');
 
 	include_spip('dompdf/dompdf_config.inc');
+
 	include_spip('PDFMerger/PDFMerger');
 	include_spip('fonctions_gestion_cemea');
 
@@ -24,6 +26,15 @@ function exec_gestion_dompdf_exec() {
 
 	// Le squelette ou l'article qui sera utilisé pour créer le pdf.
 	$modele = _request('modele');
+
+	/*On récupère les documents PDF du modèle*/
+	$documents = sql_allfetsel("D.id_document", "spip_documents AS D LEFT JOIN spip_documents_liens AS T ON T.id_document=D.id_document", "T.id_objet=" . intval($modele) . " AND T.objet=" . sql_quote('article') . " AND extension = ".sql_quote('pdf'));
+
+	/* On va créer un tableau qui contiendra les URL des documents. */
+	$pdf_static = array();
+	foreach ($documents as $key => $value) {
+		$pdf_static[] = generer_url_document_dist($value['id_document']);
+	}
 
 	// En cas de certificat !
 	$id_certif = _request('id_certif');
@@ -141,9 +152,23 @@ function exec_gestion_dompdf_exec() {
 			// Quoi qu'il arrive en sauvegarde le PDF dans le dossier IMG/gestion
 			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
 
-			// Si il n'y a pas de mail on télécharge le PDF.
-			if ($envoyer_par_mail == 0) $dompdf->stream($filename.'.pdf');
-			// Sinon, on envoie le PDF à la personne via swift
+			/* On fusion les PDF ensemble*/
+			$merge = new PDFMerger;
+			/* Page 1, le PDF qu'on viens de créer avec domPDF */
+			$merge->addPDF(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf');
+			/*On ajoute les PDF lié */
+			foreach ($pdf_static as $key => $value) {
+				$merge->addPDF($value);
+			}
+			/*Fuuuuusion !*/
+			$file = $merge->merge('string');
+			
+			/*On sauvegarde le nouveau fichier*/
+			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
+
+			/*Si il n'y a pas de mail on télécharge le PDF.*/
+			if ($envoyer_par_mail == 0) $merge->merge('browser');
+			/*Sinon, on envoie le PDF à la personne via swift*/
 			else {
 				// On construit le tableau pour envoyer le mail.
 				$send = array($personne['email'] => $personne['nom'].' '.$personne['prenom']);
