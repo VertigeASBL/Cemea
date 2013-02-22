@@ -30,7 +30,10 @@ function fonclistewhere(&$lilang) {
 		$sql .= ' AND adherent=\''.$tab[0].'\'';
 
 	if (($tab = _request('envoi_diffusion')) && $tab[0] == 'Y')
-		$sql .= ' AND envoi_diffusion=\'Y\' AND date_debut_diffusion<=CURDATE() AND date_fin_diffusion>=CURDATE()';
+		$sql .= ' AND envoi_diffusion=\'Y\' AND (
+													(date_debut_diffusion<=CURDATE() AND date_fin_diffusion>=CURDATE()) 
+													OR DATEDIFF(date_naissance, CURDATE()) < 5840 
+												)';
 
 	
 	if ($tab = _request('statut_form_cemea')) {
