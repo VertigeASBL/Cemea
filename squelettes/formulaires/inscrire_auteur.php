@@ -315,8 +315,6 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 			$res['editable'] = false;
 			return $res;
 		}
-
-		set_request('statut', '6forum');
 		
                 //Check if login exists
                 if ($found_logins=sql_getfetsel('login', 'spip_auteurs', 'login LIKE "'.$auteurlogin.'%"','login','login DESC')) {
@@ -338,6 +336,7 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                 
 		$userpasse = substr(md5(time()), 0, 8);
 		set_request('pass', $userpasse);
+		set_request('statut', '6forum');
 		set_request('idper', date('Y'));
 		set_request('archive_per', 'N');
 		set_request('adherent', 'N');
@@ -346,8 +345,41 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 		set_request('date_maj', $k);
 		set_request('personne_reference', 'inscr');
 		set_request('envoi_diffusion', 'Y');
-		set_request('date_debut_diffusion', $k);
-		set_request('date_fin_diffusion', date('Y-m-d', time()+126230400));
+		
+		/* Didier: On teste l'age de la personne */
+		/* On a besoin de mes fonctions de gestion pour faire ça */
+		include_spip('fonctions_gestion_filtre');
+		$age = age(_request('date_naissance'));
+
+		echo '<br />age = '.$age;
+
+		/* Didier: S'il a plus de 16 ans on fait comme d'habiture */
+		if ($age > 16) {
+			set_request('date_debut_diffusion', $k);
+			set_request('date_fin_diffusion', date('Y-m-d', time()+126230400));
+		}
+		/* S'il a moins de 16 ans */
+		else {
+			/* Le début de la date_diffusion est à l'age de 16 ans (anniversaire) */
+			
+			/* On créer un Objet DateTime, c'est tellement plus pratique pour manipuler les dates. */
+			$date_debut = new DateTime(_request('date_naissance'));
+
+			/* On ajoute 16 ans grace à cette objet, la méthode add fait tout pour nous. */
+			$date_debut->add(new DateInterval('P16Y'));
+
+			/* On ajoute a la base de donnée. */
+			set_request('date_debut_diffusion', $date_debut->format('Y-m-d'));
+			
+			echo '<br />date_debut_diffusion: '.$date_debut->format('Y-m-d');
+
+			/* On ajoute encore 3 ans pour avoir la date de fin de diffusion. */
+			$date_debut->add(new DateInterval('P3Y'));			
+			/* Go dans la base de donnée. */
+			set_request('date_fin_diffusion', $date_debut->format('Y-m-d'));
+
+			echo '<br />date_fin_diffusion: '.$date_debut->format('Y-m-d');
+		}
 
 		$p = _request('diffusion'); //--- envoyer 1 exemplaire par diffusion cochee
 		if (is_array($p)) {
@@ -373,12 +405,19 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 		}
 		set_request('ndiffusion', $t2);
 		unset($t0, $t1, $t2);
+
+		/* Didier: Mise à jours de Fin diffusion quand on s'inscrit à une action. */
+		/* Récupération de la date de début d'activité. */
+		$debut_activite = sql_getfetsel('date_debut', 'spip_articles', 'id_article='.sql_quote($id_article));
+		/* Mettre à jours la date de Fin diffusion */
+		sql_update('spip_auteurs', array('date_fin_diffusion' => 'DATE_ADD(\''.$debut_activite.'\', INTERVAL 3 YEAR)'), 'id_auteur='.sql_quote($id_auteur));
 	}
 	if (! ($p = _request('localite')) && ($p = _request('otr_localite'))) //--- autre localite
 		set_request('localite', $p);
 //
 	//--- creation ou mise a jour de l'auteur
 	$res = formulaires_editer_objet_traiter('auteur',$id_auteur,0,0,$retour,$config_fonc,$row,$hidden);
+
 	if (isset($res['id_auteur']) && $res['id_auteur'] && is_numeric($res['id_auteur']))
 		$id_auteur = (int) $res['id_auteur'];
 
@@ -443,7 +482,8 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                                 'sante_comportement'=>$sante_comportement,
                                 'alimentation'=>$alimentation,
                                 'remarques_inscription'=>$remarques_inscription,
-                                'ecole'=>$ecole
+                                'ecole'=>$ecole,
+                                'etudiant' => _request('demandeur_emploi')
                                 ));
                 $list_articles=$id_article;
 

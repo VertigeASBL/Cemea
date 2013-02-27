@@ -1,5 +1,6 @@
 #CACHE{0}
 [(#REM) ----- les infos de l'action ou de la meta-action ----- ]
+
 #SET{idaction,#ENV{lier_id_article}|plus{0}|?{#ENV{lier_id_article},0}}
 #SET{idrubrique,#ENV{lier_id_rubrique}|plus{0}|?{#ENV{lier_id_rubrique},0}}
 <BOUCLE_action(ARTICLES){id_article=#GET{idaction}}{mots_rubriques.id_mot=5}{archive_act!=Y}{id_trad IN 0,#GET{idaction}}>
@@ -62,7 +63,7 @@
 <B_inscriptions>
 	<br />Vos inscriptions passées ou courantes :
 	<ul class="listeul">
-<BOUCLE_inscriptions(ARTICLES auteurs_articles){id_auteur=#GET{idauteur}}{inscrit!=''}{mots_rubriques.id_mot IN 5,3627}{par date_suivi,heure_suivi}>
+<BOUCLE_inscriptions(ARTICLES auteurs_articles){id_auteur=#GET{idauteur}}{inscrit!=''}{mots_rubriques.id_mot IN 5,3627}{par date_suivi,heure_suivi}{0,10}>
 		<li class="listeli">
 			#DATE_SUIVI - <a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero)]</a>
 			[(#GET{idaction}|=={#ID_ARTICLE}|oui)
@@ -81,6 +82,7 @@
         
 </B_inscriptions>
 
+
 [(#REM)--- refuser les institutions ---]
 <BOUCLE_institution(AUTEURS){id_auteur=#GET{idauteur}}{typepart!='S'}>
 	<br /><span style="color:#cc0000;font-weight:bold;">Désolé, une institution ne peut pas s'inscrire.</span><br />
@@ -88,11 +90,12 @@
 </BOUCLE_institution>
 
 <hr class="spip" />
+
 [(#REM) ----- formulaire : modifier l'auteur et l'inscrire à l'action ----- ]
 <div class="formulaire_spip formulaire_editer formulaire_inscrire_auteur formulaire_inscrire_auteur-#ENV{id_auteur,nouveau}" id="fo_inscrire_auteur">
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
-
+	
 	<form method='post' action='#ENV{action}#fo_inscrire_auteur' enctype='multipart/form-data' [(#ENV{editable}|non)style="display:none;"]><div>
 		[(#REM) declarer les hidden qui declencheront le service du formulaire parametre : url d'action ]
 		#ACTION_FORMULAIRE{#ENV{action}}
@@ -113,6 +116,7 @@
 	    </li-->
 	</ul>
 	  [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+	  #ENV{idaction}
 	  <!--extra-->
 
 	[(#ENV{id_auteur}|non)
@@ -168,8 +172,8 @@ jQuery(document).ready(function(){
 		$(".editer_description_institution").hide();
 	}
 	vobj = $("LI.editer_prenom > LABEL"); vobj.text(vobj.text()+"*");
-        vobj = $("LI.editer_nom > LABEL"); vobj.text(vobj.text()+"*");
-        vobj = $("LI.editer_email > LABEL"); vobj.text(vobj.text()+"*");
+    vobj = $("LI.editer_nom > LABEL"); vobj.text(vobj.text()+"*");
+    vobj = $("LI.editer_email > LABEL"); vobj.text(vobj.text()+"*");
 	vobj = $("LI.editer_date_naissance > LABEL"); vobj.text(vobj.text()+"*");
 	vobj = $("LI.editer_adresse > LABEL"); vobj.text(vobj.text()+"*");
 	vobj = $("LI.editer_codepostal > LABEL"); vobj.text(vobj.text()+"*");
