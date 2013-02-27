@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -460,7 +460,7 @@ function import_affiche_javascript($taille)
 
 
 // http://doc.spip.org/@affiche_progression_javascript
-function affiche_progression_javascript($abs_pos,$size, $table="", $retour='') {
+function affiche_progression_javascript($abs_pos,$size, $table="") {
 
 	include_spip('inc/charsets');
 	echo "\n<script type='text/javascript'><!--\n";
@@ -472,9 +472,8 @@ function affiche_progression_javascript($abs_pos,$size, $table="", $retour='') {
 			echo "document.progression.recharge.value='".str_replace("'", "\\'", unicode_to_javascript(html2unicode(_T('avis_erreur').": $x")))." ';\n";
 		}
 		else {
-			if (!$retour) $retour = self();
 			echo "document.progression.recharge.value='".str_replace("'", "\\'", unicode_to_javascript(html2unicode(_T('info_fini'))))."';\n";
-			echo "window.setTimeout('location.href=\"$retour\";',0);";
+			echo "window.setTimeout('location.href=\"".self()."\";',0);";
 		}
 	}
 	else {

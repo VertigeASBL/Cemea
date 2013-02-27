@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -69,7 +69,7 @@ function ecrire_tableau_edition($edition) {
 // http://doc.spip.org/@signale_edition
 function signale_edition ($id, $auteur, $type='article') {
 	$edition = lire_tableau_edition();
-	if (isset($auteur['id_auteur']) and $id_a = $auteur['id_auteur'])
+	if ($id_a = $auteur['id_auteur'])
 		$nom = $auteur['nom'];
 	else
 		$nom = $id_a = $GLOBALS['ip'];

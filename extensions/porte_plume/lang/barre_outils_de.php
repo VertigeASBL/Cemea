@@ -1,6 +1,4 @@
 <?php
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
 $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 // B Nouveautes
@@ -38,7 +36,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 'barre_italic' => 'In {kursiv} umwandeln',
 'barre_lien' => 'In [Hyperlink->http://...] umwandeln',
 'barre_lien_input' => 'Bitte geben sie die Adresse ihrer Website an (Sie k&ouml;nnen eine Webadresse im Format http://www.meineseite.de, eine Mailadresse oder die Nummer eines Artikels dieser Website angeben.)',
-'barre_note' => 'In [[Fuï¿½note]] umwandeln',
+'barre_note' => 'In [[Fußnote]] umwandeln',
 'barre_paragraphe' => 'Absatz einf&uuml;gen',
 'barre_quote' => '<quote>Nachricht zitieren</quote>',
 

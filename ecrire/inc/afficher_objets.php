@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -16,7 +16,7 @@ $GLOBALS['my_sites']=array();
 
 // http://doc.spip.org/@icone_table
 function icone_table($type){
-  $derog = array('document'=> 'doc-24.gif', 'mot'=>'mot-cle-24.gif','syndic_article'=>'site-24.gif', 'message' => 'messagerie-24.gif', 'groupes_mot'=>'mot-cle-24.gif', 'signature' => 'suivi-petition-24.gif');
+	$derog = array('document'=> 'doc-24.gif', 'mot'=>'mot-cle-24.gif','syndic_article'=>'site-24.gif', 'message' => 'messagerie-24.gif', 'groupes_mot'=>'mot-cle-24.gif');
 	if (isset($derog[$type]))
 		return $derog[$type];
 	return "$type-24.gif";
@@ -197,7 +197,7 @@ function inc_afficher_objets_dist($type, $titre,$requete,$formater='', $force=fa
 
 	$presenter_liste = charger_fonction('presenter_liste', 'inc');
 	$tmp_var = 't_' . substr(md5(join('', $requete)), 0, 4);
-	$styles = array(array('arial11', 7), array('arial11'), array('arial1'), array('arial1'), array('arial1 centered', 100), array('arial1', 42));
+	$styles = array(array('arial11', 7), array('arial11'), array('arial1'), array('arial1'), array('arial1 centered', 100), array('arial1', 38));
 
 	$tableau = array(); // ne sert pas ici
 	return $presenter_liste($requete, $skel, $tableau, $arg, $force, $styles, $tmp_var, $titre, icone_table($type));

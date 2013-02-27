@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -66,23 +66,21 @@ function inc_aider_dist($aide='', $skel='', $env=array()) {
 	return aider_icone(generer_url_ecrire("aide_index", $args));
 }
 
-function aider_icone($url, $clic= '')
+function aider_icone($url)
 {
 	global $spip_lang, $spip_lang_rtl;
 
-	if (!$clic) {
-		$t = _T('titre_image_aide');
-		$clic = http_img_pack("aide-12".aide_lang_dir($spip_lang,$spip_lang_rtl).".png",
-			_T('info_image_aide'),
-		      " title=\"$t\" class='aide'");
-	}
+	$t = _T('titre_image_aide');
+
 	return "\n&nbsp;<a class='aide'\nhref='"
 	.  $url
 	. "'\nonclick=\"javascript:window.open(this.href,"
 	. "'spip_aide', "
 	. "'scrollbars=yes, resizable=yes, width=740, height=580'); "
 	. "return false;\">"
-	. $clic
+	. http_img_pack("aide-12".aide_lang_dir($spip_lang,$spip_lang_rtl).".png",
+			_T('info_image_aide'),
+			" title=\"$t\" class='aide'")
 	. "</a>";
 }
 

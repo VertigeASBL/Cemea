@@ -7,8 +7,6 @@
  * le 
  */
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 	$test = 'couleur_extraire';
 	$remonte = "../";
 	while (!is_dir($remonte."ecrire"))

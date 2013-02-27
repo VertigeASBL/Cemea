@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -258,7 +258,7 @@ function echappe_retour($letexte, $source='', $filtre = "") {
 	if (strpos($letexte,"base64$source")) {
 		# spip_log(htmlspecialchars($letexte));  ## pour les curieux
 		if (strpos($letexte,"<")!==false AND
-		  preg_match_all(',<(span|div)\sclass=[\'"]base64'.$source.'[\'"]\s(.*)>\s*</\1>,UmsS',
+		  preg_match_all(',<(span|div) class=[\'"]base64'.$source.'[\'"]\s(.*)>\s*</\1>,UmsS',
 		$letexte, $regs, PREG_SET_ORDER)) {
 			foreach ($regs as $reg) {
 				$rempl = base64_decode(extraire_attribut($reg[0], 'title'));
@@ -306,7 +306,7 @@ function couper($texte, $taille=50, $suite = '&nbsp;(...)') {
 	if (	$offset<$length
 			&& ($p_tag_ouvrant = strpos($texte,'<',$offset))!==NULL){
 		$p_tag_fermant = strpos($texte,'>',$offset);
-		if ($p_tag_fermant && ($p_tag_fermant<$p_tag_ouvrant))
+		if ($p_tag_fermant<$p_tag_ouvrant)
 			$offset = $p_tag_fermant+1; // prolonger la coupe jusqu'au tag fermant suivant eventuel
 	}
 	$texte = substr($texte, 0, $offset); /* eviter de travailler sur 10ko pour extraire 150 caracteres */
@@ -576,9 +576,7 @@ function corriger_typo($letexte, $lang='') {
 // Tableaux
 //
 
-define('_RACCOURCI_CAPTION', ',^\|\|([^|]*)(\|(.*))?$,sS');
 define('_RACCOURCI_TH_SPAN', '\s*(?:{{[^{}]+}}\s*)?|<');
-define('_RACCOURCI_THEAD', true);
 
 // http://doc.spip.org/@traiter_tableau
 function traiter_tableau($bloc) {
@@ -593,31 +591,31 @@ function traiter_tableau($bloc) {
 	// Traiter chaque ligne
 	$reg_line1 = ',^(\|(' . _RACCOURCI_TH_SPAN . '))+$,sS';
 	$reg_line_all = ',^'  . _RACCOURCI_TH_SPAN . '$,sS';
-	$num_cols = 0;
 	foreach ($regs[1] as $ligne) {
 		$l ++;
 
 		// Gestion de la premiere ligne :
-		if (($l == 1) AND preg_match(_RACCOURCI_CAPTION, rtrim($ligne,'|'), $cap)) {
+		if ($l == 1) {
 		// - <caption> et summary dans la premiere ligne :
 		//   || caption | summary || (|summary est optionnel)
-			$l = 0;
-			if ($caption = trim($cap[1]))
-				$debut_table .= "<caption>".$caption."</caption>\n";
+			if (preg_match(',^\|\|([^|]*)(\|(.*))?$,sS', rtrim($ligne,'|'), $cap)) {
+				$l = 0;
+				if ($caption = trim($cap[1]))
+					$debut_table .= "<caption>".$caption."</caption>\n";
 				$summary = ' summary="'.entites_html(trim($cap[3])).'"';
-		} else {
-		// - <th> sous la forme |{{titre}}|{{titre}}|
-			if (preg_match($reg_line1, $ligne)) {
-				preg_match_all('/\|([^|]*)/S', $ligne, $cols);
+			}
+		// - <thead> sous la forme |{{titre}}|{{titre}}|
+		//   Attention thead oblige a avoir tbody
+			else if (preg_match($reg_line1,	$ligne)) {
+			  	preg_match_all('/\|([^|]*)/S', $ligne, $cols);
 				$ligne='';$cols= $cols[1];
 				$colspan=1;
-				$num_cols = count($cols);
-				for($c=$num_cols-1; $c>=0; $c--) {
+				for($c=count($cols)-1; $c>=0; $c--) {
 					$attr='';
 					if($cols[$c]=='<') {
 					  $colspan++;
 					} else {
-					  if ($colspan>1) {
+					  if($colspan>1) {
 						$attr= " colspan='$colspan'";
 						$colspan=1;
 					  }
@@ -626,9 +624,15 @@ function traiter_tableau($bloc) {
 					  $ligne= "<th scope='col'$attr>$cols[$c]</th>$ligne";
 					}
 				}
-				$lignes[] = $ligne;
-		  } else {
-			// Sinon ligne normale
+
+				$debut_table .= "<thead><tr class='row_first'>".
+					$ligne."</tr></thead>\n";
+				$l = 0;
+			}
+		}
+
+		// Sinon ligne normale
+		if ($l) {
 			// Gerer les listes a puce dans les cellules
 			if (strpos($ligne,"\n-*")!==false OR strpos($ligne,"\n-#")!==false)
 				$ligne = traiter_listes($ligne);
@@ -639,7 +643,6 @@ function traiter_tableau($bloc) {
 			// tout mettre dans un tableau 2d
 			preg_match_all('/\|([^|]*)/S', $ligne, $cols);
 			$lignes[]= $cols[1];
-			}
 		}
 	}
 
@@ -648,7 +651,7 @@ function traiter_tableau($bloc) {
 	// du nombre de colonnes dans la premiere ligne.
 	// Reperer egalement les colonnes numeriques pour les cadrer a droite
 	$rowspans = $numeric = array();
-	$n = $num_cols ? $num_cols : count($lignes[0]);
+	$n = count($lignes[0]);
 	$k = count($lignes);
 	// distinguer les colonnes numeriques a point ou a virgule,
 	// pour les alignements eventuels sur "," ou "."
@@ -657,7 +660,6 @@ function traiter_tableau($bloc) {
 	  $align = true;
 	  for ($j=0;$j<$k;$j++) $rowspans[$j][$i] = 1;
 	  for ($j=0;$j<$k;$j++) {
-	    if (!is_array($lignes[$j])) continue; // cas du th
 	    $cell = trim($lignes[$j][$i]);
 	    if (preg_match($reg_line_all, $cell)) {
 		if (!preg_match('/^\d+([.,]?)\d*$/', $cell, $r))
@@ -674,14 +676,10 @@ function traiter_tableau($bloc) {
 
 	for($l=count($lignes)-1; $l>=0; $l--) {
 		$cols= $lignes[$l];
-		if (!is_array($cols)) {
-		  $class = 'first';
-		  $ligne = $cols;
-		} else {
-		  $ligne='';
-		  $colspan=1;
-		  $class = alterner($l+1, 'even', 'odd');
-		  for($c=count($cols)-1; $c>=0; $c--) {
+		$colspan=1;
+		$ligne='';
+
+		for($c=count($cols)-1; $c>=0; $c--) {
 			$attr= $numeric[$c];
 			$cell = trim($cols[$c]);
 			if($cell=='<') {
@@ -700,17 +698,17 @@ function traiter_tableau($bloc) {
 			  }
 			  $ligne= "\n<td".$attr.'>'.$cols[$c].'</td>'.$ligne;
 			}
-		  }
 		}
+
+		// ligne complete
+		$class = alterner($l+1, 'even', 'odd');
 		$html = "<tr class='row_$class'>$ligne</tr>\n$html";
 	}
-	if (_RACCOURCI_THEAD
-	AND preg_match("@^(<tr class='row_first'.*?</tr>)(.*)$@s", $html, $m))
-		$html = "<thead>$m[1]</thead>\n<tbody>$m[2]</tbody>\n";
-
 	return "\n\n<table".$GLOBALS['class_spip_plus'].$summary.">\n"
 		. $debut_table
+		. "<tbody>\n"
 		. $html
+		. "</tbody>\n"
 		. "</table>\n\n";
 }
 

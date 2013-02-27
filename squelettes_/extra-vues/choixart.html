@@ -1,0 +1,16 @@
+#SET{ident,0}
+[(#ENV{champ_extra}|=={ev_org}|oui) #SET{ident,2}]
+
+[(#ENV{valeur_extra}|oui)
+	[(#ENV{valeur_extra}|is_array|oui) #SET{valtab,#ENV{valeur_extra}}]
+	[(#ENV{valeur_extra}|is_array|non) #SET{valtab,#ENV{valeur_extra}|explode{","}}]]
+[(#GET{valtab}|non) #SET{valtab,#ARRAY}]
+
+<B_choix>
+<div class="#ENV{champ_extra}">
+	<strong>#ENV{label_extra}</strong>
+<BOUCLE_choix(ARTICLES){id_rubrique=#GET{ident}}{id_article IN #GET**{valtab}}{", "}>
+	[(#TITRE|supprimer_numero)]
+</BOUCLE_choix>
+</div>
+</B_choix>

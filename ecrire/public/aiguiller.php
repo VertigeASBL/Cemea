@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -14,13 +14,11 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 function securiser_redirect_action($redirect){
 	if (tester_url_absolue($redirect) AND !defined('_AUTORISER_ACTION_ABS_REDIRECT')){
-		$base = $GLOBALS['meta']['adresse_site']."/";
-		// si l'url est une url du site, on la laisse passer sans rien faire
-		// c'est encore le plus simple
+		$base = $GLOBALS['meta']['adresse_site']."/".(_DIR_RESTREINT?'':_DIR_RESTREINT_ABS);
 		if (strlen($base) AND strncmp($redirect,$base,strlen($base))==0)
-			return $redirect;
-		else
-			return "";
+			$redirect = substr($redirect,strlen($base));
+	  else
+		  $redirect = "";
 	}
 	return $redirect;
 }
@@ -112,8 +110,6 @@ function traiter_appels_inclusions_ajax(){
 			$page = recuperer_fond($fond,$contexte,array('trim'=>false));
 			$texte = $page;
 			if ($ancre = _request('var_ajax_ancre')){
-				// pas n'importe quoi quand meme dans la variable !
-				$ancre = str_replace(array('<','"',"'"),array('&lt;','&quot;',''),$ancre);
 				$texte = "<a href='#$ancre' name='ajax_ancre' style='display:none;'>anchor</a>".$texte;
 			}
 		}

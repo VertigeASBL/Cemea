@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -350,7 +350,7 @@ function exec_affiche_message_dist($id_message, $cherche_auteur, $forcer_dest)
 		echo creer_colonne_droite('', true);	
 
 		echo http_calendrier_ics_titre($lannee,$lemois,$lejour,generer_url_ecrire('calendrier'));
-		echo http_calendrier_ics($lannee,$lemois, $lejour, '', '', 90, array($sh, $ah),  '', ' calendrier-msg');
+		echo http_calendrier_ics($lannee,$lemois, $lejour, '', '', 90, array($sh, $ah));
 	}
 
 	echo debut_droite('', true);

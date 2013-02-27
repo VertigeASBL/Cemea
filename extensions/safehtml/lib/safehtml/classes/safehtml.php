@@ -10,8 +10,6 @@
  * @link    http://pixel-apes.com/safehtml/
  */
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 require_once(XML_HTMLSAX3 . 'HTMLSax3.php');
 
 class SafeHTML 

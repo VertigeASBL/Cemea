@@ -7,8 +7,6 @@
  * le 
  */
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 	$test = 'multiple_de_trois';
 	$remonte = "../";
 	while (!is_dir($remonte."ecrire"))

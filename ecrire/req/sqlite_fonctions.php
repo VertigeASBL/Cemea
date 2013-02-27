@@ -3,14 +3,13 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
 \***************************************************************************/
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
 
 /*
  * Des fonctions pour les requetes SQL
@@ -167,8 +166,12 @@ function _sqlite_func_instr ($s, $search) {
 
 // http://doc.spip.org/@_sqlite_func_least
 function _sqlite_func_least () {
+	$numargs = func_num_args();
 	$arg_list = func_get_args();
-    $least = min($arg_list);
+	$least=$arg_list[0];
+	for ($i = 0; $i < $numargs; $i++) {
+		if ($arg_list[$i] < $least) $least=$arg_list[$i];
+	}
 	#spip_log("Passage avec LEAST : $least",'debug');
 	return $least;
 }
@@ -230,16 +233,9 @@ function _sqlite_func_strftime($date, $conv){
 	return strftime($conv, $date);	
 }
 
-/**
- * Nombre de jour entre 0000-00-00 et $d
- * http://doc.spip.org/@_sqlite_func_to_days
- * cf http://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_to-days
- * @param string $d
- * @return int
- */
+// http://doc.spip.org/@_sqlite_func_to_days
 function _sqlite_func_to_days ($d) {
-    $offset = 719528; // nb de jour entre 0000-00-00 et timestamp 0=1970-01-01
-	$result = $offset+(int)ceil(_sqlite_func_unix_timestamp($d)/(24*3600));
+	$result = date("z", _sqlite_func_unix_timestamp($d));
 	#spip_log("Passage avec TO_DAYS : $d, $result",'debug');
 	return $result;
 }

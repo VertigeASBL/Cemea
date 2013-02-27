@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -60,7 +60,11 @@ function spip_connect($serveur='', $version='') {
 		if (!isset($GLOBALS['db_ok'])) {
 		  // fera mieux la prochaine fois
 			if ($install) return false;
-			spip_log("spip_connect: serveur $index mal defini dans '$f'. spip_connect_version: " . @$GLOBALS['spip_connect_version']);
+			if ($f AND $readable)
+				spip_log("spip_connect: fichier de connexion '$f' OK.");
+			else
+				spip_log("spip_connect: fichier de connexion '$f' non trouve");
+			spip_log("spip_connect: echec connexion ou serveur $index mal defini dans '$f'.");
 			// ne plus reessayer si ce n'est pas l'install
 			return $connexions[$index]=false;
 		}
@@ -341,75 +345,6 @@ function table_jointure($x, $y) {
 	if ($table = $GLOBALS['tables_jointures'][$ty][$ix]) return $table;
 	if ($table = $GLOBALS['tables_jointures'][$tx][$iy]) return $table;
 	return '';
-}
-
-/**
- * Echapper les textes entre ' ' ou " " d'une requete SQL
- * avant son pre-traitement
- * On renvoi la query sans textes et les textes separes, dans
- * leur ordre d'apparition dans la query
- *
- * @param string $query
- * @return array
- */
-function query_echappe_textes($query){
-	static $codeEchappements = array("''"=>"\x1@##@\x1", "\'"=>"\x2@##@\x2", "\\\""=>"\x3@##@\x3");
-	$query = str_replace(array_keys($codeEchappements), array_values($codeEchappements), $query);
-	if (preg_match_all("/((['])[^']*(\\2))|(([\"])[^\"]*(\\5))/S",$query,$textes)){
-		$textes = reset($textes); // indice 0 du match
-		switch(count($textes)){
-			case 0:$replace=array();break;
-			case 1:$replace=array('%1$s');break;
-			case 2:$replace=array('%1$s','%2$s');break;
-			case 3:$replace=array('%1$s','%2$s','%3$s');break;
-			case 4:$replace=array('%1$s','%2$s','%3$s','%4$s');break;
-			case 5:$replace=array('%1$s','%2$s','%3$s','%4$s','%5$s');break;
-			default:
-				$replace = range(1,count($textes));
-				$replace = '%'.implode('$s,%',$replace).'$s';
-				$replace = explode(',',$replace);
-				break;
-		}
-		$query = str_replace($textes,$replace,$query);
-	}
-	else
-		$textes = array();
-
-	return array($query, $textes);
-}
-
-/**
- * Reinjecter les textes d'une requete SQL a leur place initiale,
- * apres traitement de la requete
- *
- * @param string $query
- * @param array $textes
- * @return string
- */
-function query_reinjecte_textes($query, $textes){
-	static $codeEchappements = array("''"=>"\x1@##@\x1", "\'"=>"\x2@##@\x2", "\\\""=>"\x3@##@\x3");
-	# debug de la substitution
-	#if (($c1=substr_count($query,"%"))!=($c2=count($textes))){
-	#	spip_log("$c1 ::". $query,"tradquery"._LOG_ERREUR);
-	#	spip_log("$c2 ::". var_export($textes,1),"tradquery"._LOG_ERREUR);
-	#	spip_log("ini ::". $qi,"tradquery"._LOG_ERREUR);
-	#}
-	switch (count($textes)){
-		case 0:break;
-		case 1:$query=sprintf($query,$textes[0]);break;
-		case 2:$query=sprintf($query,$textes[0],$textes[1]);break;
-		case 3:$query=sprintf($query,$textes[0],$textes[1],$textes[2]);break;
-		case 4:$query=sprintf($query,$textes[0],$textes[1],$textes[2],$textes[3]);break;
-		case 5:$query=sprintf($query,$textes[0],$textes[1],$textes[2],$textes[3],$textes[4]);break;
-		default:
-			array_unshift($textes,$query);
-			$query = call_user_func_array('sprintf',$textes);
-			break;
-	}
-
-	$query = str_replace(array_values($codeEchappements), array_keys($codeEchappements), $query);
-
-	return $query;
 }
 
 // Pour compatibilite. Ne plus utiliser.

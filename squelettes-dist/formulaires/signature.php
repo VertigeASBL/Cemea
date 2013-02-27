@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -113,7 +113,7 @@ function formulaires_signature_verifier_dist($id_article, $petition, $texte, $si
 }
 
 function formulaires_signature_traiter_dist($id_article, $petition, $texte, $site_obli, $message) {
-
+	$reponse = _T('form_pet_probleme_technique');
 	include_spip('base/abstract_sql');
 	if (spip_connect()) {
 		$controler_signature = charger_fonction('controler_signature', 'inc');
@@ -121,7 +121,7 @@ function formulaires_signature_traiter_dist($id_article, $petition, $texte, $sit
 		_request('session_nom'), _request('session_email'),
 		_request('message'), _request('signature_nom_site'),
 		_request('signature_url_site'), _request('url_page'));
-	} else 	$reponse = _T('form_pet_probleme_technique');
+	}
 
 	return array('message_ok'=>$reponse);
 }
@@ -307,49 +307,38 @@ function signature_a_confirmer($id_article, $url_page, $nom, $mail, $site, $url,
 			_T('form_pet_signature_validee');
 	}
 
+
 	//
 	// Cas normal : envoi d'une demande de confirmation
 	//
-
-	list($titre, $url_page) = signature_langue($id_article, $url_page);
+	$row = sql_fetsel('titre,lang', 'spip_articles', "id_article=$id_article");
+	$lang = lang_select($row['lang']);
+	$titre = textebrut(typo($row['titre']));
+	if ($lang) lang_select();
 
 	if (!strlen($statut))
 		$statut = signature_test_pass();
 
-	list($sujet, $corps) =  signature_demande_confirmation($id_article, $url_page, $nom, $site, $url, $msg, $titre, $statut);
-
-	$envoyer_mail = charger_fonction('envoyer_mail','inc');
-	if ($envoyer_mail($mail, $sujet, $corps))
-		return _T('form_pet_envoi_mail_confirmation',array('email'=>$mail));
-	return false; # erreur d'envoi de l'email
-}
-
-function signature_langue($id_article, $url_page)
-{
-	$row = sql_fetsel('titre,lang', 'spip_articles', "id_article=$id_article");
-	$lang = lang_select($row['lang']);
-	$titre = textebrut(typo($row['titre']));
-
-	if ($lang) lang_select();
 	if ($lang != $GLOBALS['meta']['langue_site'])
 		  $url_page = parametre_url($url_page, "lang", $lang,'&');
 
-	return array($titre, $url_page);
-}
-
-function signature_demande_confirmation($id_article, $url_page, $nom, $site, $url, $msg, $titre, $statut)
-{
 	$url_page = parametre_url($url_page, 'var_confirm', $statut, '&')
 	. "#sp$id_article";
 
-	return array(_T('form_pet_confirmation')." ". $titre, 
-		     _T('form_pet_mail_confirmation',
-			 array('titre' => $titre,
-			       'nom_email' => $nom,
-			       'nom_site' => $site,
-			       'url_site' => $url, 
-			       'url' => $url_page,
-			       'message' => $msg)));
+	$r = _T('form_pet_mail_confirmation',
+		 array('titre' => $titre,
+		       'nom_email' => $nom,
+		       'nom_site' => $site,
+		       'url_site' => $url, 
+		       'url' => $url_page,
+		       'message' => $msg));
+
+	$titre = _T('form_pet_confirmation')." ". $titre;
+	$envoyer_mail = charger_fonction('envoyer_mail','inc');
+	if ($envoyer_mail($mail,$titre, $r))
+		return _T('form_pet_envoi_mail_confirmation',array('email'=>$mail));
+
+	return false; # erreur d'envoi de l'email
 }
 
 // Pour eviter le recours a un verrou (qui bloque l'acces a la base),
@@ -358,27 +347,26 @@ function signature_demande_confirmation($id_article, $url_page, $nom, $site, $ur
 // (mail ou site). S'il y en a plus qu'une on les retire sauf la premiere
 // En cas d'acces concurrents il y aura des requetes de retraits d'elements
 // deja detruits. Bizarre ?  C'est mieux que de bloquer!
-// De plus, ca supprime les doublons "en attente de validation".
 
 // http://doc.spip.org/@signature_entrop
 function signature_entrop($where)
 {
-	$query = sql_select('id_signature, statut', 'spip_signatures', $where,'',"date_time desc");
-	$entrop = array();
-	$id_ok = 0;
-	$double = false;
-	while($r = sql_fetch($query)) {
-	  if (!$id_ok AND $r['statut'] == 'publie')
-	    $id_ok = $r['id_signature'];
-	  else {
-	    $double |= ($r['statut'] == 'publie');
-	    $entrop[]= $r['id_signature'];
-	  }
+	$where .= " AND statut='publie'";
+	$query = sql_select('id_signature', 'spip_signatures', $where,'',"date_time desc");
+	$n = sql_count($query);
+	if ($n>1) {
+		$entrop = array();
+		for ($i=$n-1;$i;$i--) {
+			$r = sql_fetch($query);
+			$entrop[]=$r['id_signature'];
+		}
+		sql_free($query);
+		$where .= " OR " . sql_in('id_signature', $entrop);
+	
+		sql_delete('spip_signatures', $where);
 	}
-	if (!$entrop) return false;
-	spip_log("signature $id_ok confirmee, suppression des doublons " . join(' ', $entrop));
-	sql_delete('spip_signatures', sql_in('id_signature', $entrop));
-	return $double;
+
+	return $entrop;
 }
 
 // Creer un mot de passe aleatoire et verifier qu'il est unique

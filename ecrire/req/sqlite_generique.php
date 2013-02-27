@@ -3,14 +3,12 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
 \***************************************************************************/
-
-if (!defined('_ECRIRE_INC_VERSION')) return;
 
 // infos :
 // il ne faut pas avoir de PDO::CONSTANTE dans ce fichier sinon php4 se tue !
@@ -1309,16 +1307,16 @@ function _sqlite_charger_version($version=''){
 function _sqlite_modifier_table($table, $colonne, $opt=array(), $serveur=''){
 
 	if (is_array($table)) {
-		reset($table);
-		list($table_origine,$table_destination) = each($table);
+		$table_origine = array_shift(array_keys($table));
+		$table_destination = array_shift($table);
 	} else {
 		$table_origine = $table_destination = $table;
 	}
 	// ne prend actuellement qu'un changement
 	// mais pourra etre adapte pour changer plus qu'une colonne a la fois
 	if (is_array($colonne)) {
-		reset($colonne);
-		list($colonne_origine,$colonne_destination) = each($colonne);
+		$colonne_origine = array_shift(array_keys($colonne));
+		$colonne_destination = array_shift($colonne);
 	} else {
 		$colonne_origine = $colonne_destination = $colonne;
 	}	
@@ -1666,6 +1664,7 @@ class sqlite_traiter_requete{
 	
 	// Pour les corrections a effectuer sur les requetes :
 	var $textes = array(); 	// array(code=>'texte') trouvé
+	var $codeEchappements = "%@##@%";
 	
 	
 	// constructeur
@@ -1748,13 +1747,16 @@ class sqlite_traiter_requete{
 	// enleve les textes, transforme la requete pour quelle soit
 	// bien interpretee par sqlite, puis remet les textes
 	// la fonction affecte $this->query
-	// http://doc.spip.org/@traduire_requete
+// http://doc.spip.org/@traduire_requete
 	function traduire_requete(){
 		//
 		// 1) Protection des textes en les remplacant par des codes
 		//
-		// enlever les 'textes' et initialiser avec
-		list($this->query, $textes) = query_echappe_textes($this->query);
+		// enlever les echappements ''
+		$this->query = str_replace("''", $this->codeEchappements, $this->query);
+		// enlever les 'textes'
+		$this->textes = array(); // vider 
+		$this->query = preg_replace_callback("/('[^']*')/", array(&$this, '_remplacerTexteParCode'), $this->query);
 		
 		//
 		// 2) Corrections de la requete
@@ -1855,12 +1857,12 @@ class sqlite_traiter_requete{
 		//
 		// 3) Remise en place des textes d'origine
 		//
-		// Correction Antiquotes et echappements
-		// ` => rien
-		if (strpos($this->query,'`')!==false)
-			$this->query = str_replace('`','', $this->query);
-
-		$this->query = query_reinjecte_textes($this->query, $textes);
+		// remettre les 'textes'
+		foreach ($this->textes as $cle=>$val){
+			$this->query = str_replace($cle, $val, $this->query);
+		}
+		// remettre les echappements ''
+		$this->query = str_replace($this->codeEchappements,"''",$this->query);
 	}
 	
 

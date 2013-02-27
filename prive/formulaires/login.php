@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -56,7 +56,7 @@ function formulaires_login_charger_dist($cible="",$login="",$prive=null)
 		'_pipeline' => 'affiche_formulaire_login', // faire passer le formulaire dans un pipe dedie pour les methodes auth
 		);
 
-	if ($erreur OR !isset($GLOBALS['visiteur_session']['id_auteur']) OR !$GLOBALS['visiteur_session']['id_auteur'])
+	if ($erreur OR !$GLOBALS['visiteur_session']['id_auteur'])
 		$valeurs['editable'] = true;
 
 	if (is_null($prive) ? is_url_prive($cible) : $prive) {
@@ -64,7 +64,7 @@ function formulaires_login_charger_dist($cible="",$login="",$prive=null)
 		$loge = autoriser('ecrire');
 	} 
 	else
-		$loge = (isset($GLOBALS['visiteur_session']['auth']) AND $GLOBALS['visiteur_session']['auth'] != '');
+		$loge = ($GLOBALS['visiteur_session']['auth'] != '');
 
 	// Si on est connecte, appeler traiter()
 	// et lancer la redirection si besoin

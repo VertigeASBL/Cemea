@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -13,7 +13,7 @@
 if (!defined('_ECRIRE_INC_VERSION')) return;
 include_spip('inc/forum');
 include_spip('inc/filtres');
-include_spip('inc/auth'); // pour ask_php_auth
+include_spip('inc/actions');
 
 // Ce fichier est inclus par dist/formulaires/forum.php
 
@@ -150,11 +150,13 @@ function forum_insert_base($c, $id_forum, $id_article, $id_breve, $id_syndic, $i
 	if ($afficher_texte AND forum_insert_noprevisu()) {
 		return false;
 	}
+
 	if (array_reduce($_POST, 'reduce_strlen', (20 * 1024)) < 0) {
 		ask_php_auth(_T('forum_message_trop_long'),
 			_T('forum_cliquer_retour',
 				array('retour_forum' => $retour)));
 	}
+
 	// Entrer le message dans la base
 	$id_message = sql_insertq('spip_forum', array(
 		'date_heure'=> date('Y-m-d H:i:s'),

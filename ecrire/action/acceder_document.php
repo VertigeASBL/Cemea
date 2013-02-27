@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -14,8 +14,9 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 include_spip('inc/headers');
 
-// acces aux documents joints securises
-// verifie que le document est publie, c'est-a-dire
+// acces aux documents joints securise
+// verifie soit que le demandeur est authentifie
+// soit que le document est publie, c'est-a-dire
 // joint a au moins 1 article, breve ou rubrique publie
 
 // http://doc.spip.org/@action_acceder_document_dist
@@ -35,11 +36,8 @@ function action_acceder_document_dist() {
 	else if (!file_exists($file) OR !is_readable($file)) {
 		$status = 404;
 	} else {
-		$path = set_spip_doc($file);
-		$path2 = generer_acceder_document($f, $arg);
-		$where = "(documents.fichier=".sql_quote($path)
-		  . ' OR documents.fichier=' . sql_quote($path2) . ')'
-		  . ($arg ? (" AND documents.id_document=".intval($arg)) : '');
+		$where = "documents.fichier=".sql_quote(set_spip_doc($file))
+		. ($arg ? " AND documents.id_document=".intval($arg): '');
 
 		$doc = sql_fetsel("documents.id_document, documents.titre, documents.fichier, types.mime_type, types.inclus, documents.extension", "spip_documents AS documents LEFT JOIN spip_types_documents AS types ON documents.extension=types.extension",$where);
 		if (!$doc) {

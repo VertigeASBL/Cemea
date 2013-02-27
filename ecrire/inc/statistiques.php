@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -584,26 +584,27 @@ function statistiques_moyenne($tab)
 // http://doc.spip.org/@statistiques_signatures_dist
 function statistiques_signatures_dist($duree, $interval, $type, $id_article, $serveur)
 {
-	$where = "id_article=$id_article AND statut='publie'";
+	$where = "id_article=$id_article";
 	$total = sql_countsel("spip_signatures", $where);
 	if (!$total) return '';
 
 	$order = 'date_time';
 	if ($duree)
-		$where2 = "$where AND $order > DATE_SUB(".sql_quote(date('Y-m-d H:i:s')).",INTERVAL $duree $type)";
+		$where .= " AND $order > DATE_SUB(".sql_quote(date('Y-m-d H:i:s')).",INTERVAL $duree $type)";
 
-	$log = statistiques_collecte_date('COUNT(*)', "(FLOOR(UNIX_TIMESTAMP($order) / $interval) *  $interval)", 'spip_signatures', $where2, $serveur);
+	$log = statistiques_collecte_date('COUNT(*)', "(FLOOR(UNIX_TIMESTAMP($order) / $interval) *  $interval)", 'spip_signatures', $where, $serveur);
 
 	$script = generer_url_ecrire('controle_petition', "id_article=$id_article");
 	if (count($log) > 1) {
-		$res = statistiques_tous($log, $id_article, "spip_signatures", $where, "date_time", $serveur, $duree, $interval, $total, 0, '', array(), $script);
+		$res = statistiques_tous($log, $id_article, "spip_signatures", "id_article=$id_article", "date_time", $serveur, $duree, $interval, $total, 0, '', array(), $script);
 		$res = gros_titre(_T('titre_page_statistiques_signatures_jour'),'', false) . cadre_stat($res, 'spip_signatures', $id_article);
 	} else $res = '';
 
 	$mois = statistiques_collecte_date( "COUNT(*)",
 		"DATE_FORMAT(date_time,'%Y%m')",
 		"spip_signatures",
-		"$where AND date_time > DATE_SUB(".sql_quote(date('Y-m-d H:i:s')).",INTERVAL 2700 DAY)",
+		"date_time > DATE_SUB(".sql_quote(date('Y-m-d H:i:s')).",INTERVAL 2700 DAY)"
+		. (" AND id_article=$id_article"),
 		$serveur);
 
 	return "<br />"

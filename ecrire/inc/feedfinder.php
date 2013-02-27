@@ -1,7 +1,5 @@
 <?php
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 /**********************************
 adaptation en php de feedfinder.py :
 
@@ -44,7 +42,7 @@ $verif_complete = 0; //mettez le a 1 si vous voulez controler la validite des fe
                      //est alors plus long
 
 //une fonction qui permet de si un lien est un feed ou nom, si c'est un feed elle retourne son type
-//si c'est pas un feed elle retourne 0, cette verification est evidemment tres tres legere
+//si c'est pas un feed elle retourne 0, cette v�rification est �videmment tres tres l�g�re
 // http://doc.spip.org/@is_feed
 function is_feed($url){
 

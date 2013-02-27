@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -88,7 +88,7 @@ function action_charger_plugin_dist() {
 
 		if (preg_match(",^Content-Type:\s*application/zip$,Uims",$head))
 			$extension = "zip";
-		elseif (preg_match(',^Content-Disposition:\s*attachment;\s*filename="?([^"]+)"?$,Uims',$head,$m)){
+		elseif (preg_match(",^Content-Disposition:\s*attachment;\s*filename=(.*)$,Uims",$head,$m)){
 			$f = $m[1];
 			if (pathinfo($f, PATHINFO_EXTENSION)=="zip"){
 				$fichier = (_request('fichier')?

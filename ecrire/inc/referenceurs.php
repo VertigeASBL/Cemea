@@ -1,7 +1,5 @@
 <?php
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 //
 // Afficher les referers d'un article (ou du site)
 //
@@ -147,8 +145,8 @@ function stats_show_keywords($kw_referer, $kw_referer_host) {
 		$path  = $url['path'];
 	} else $query = $host = $path ='';
 
-	// construire un array des variables directement depuis la query-string
-	parse_str($query, $Tquery);
+	// Cette fonction affecte directement les variables selon la query-string !
+	parse_str($query);
 
 	$keywords = '';
 	$found = false;
@@ -171,9 +169,9 @@ function stats_show_keywords($kw_referer, $kw_referer_host) {
 			
 			if (strpos($arr_engines[$cnt][1],'=')!==false) {
 			
-				// Fonctionnement simple: la variable existe dans l'array
+				// Fonctionnement simple: la variable existe
 				$v = str_replace('=', '', $arr_engines[$cnt][1]);
-				$keywords = isset($Tquery[$v]) ? $Tquery[$v]: "";
+				$keywords = isset($$v)?$$v:"";
 				
 				// Si on a defini le nom de la variable en expression reguliere, chercher la bonne variable
 				if (! strlen($keywords) > 0) {

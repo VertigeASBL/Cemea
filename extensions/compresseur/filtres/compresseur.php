@@ -1,7 +1,5 @@
 <?php
 
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
 // Si la source est un chemin, on retourne un chemin avec le contenu compacte
 // dans _DIR_VAR/cache_$format/
 // Si c'est un flux on le renvoit compacte

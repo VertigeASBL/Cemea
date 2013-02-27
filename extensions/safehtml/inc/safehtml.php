@@ -34,19 +34,6 @@ function inc_safehtml_dist($t) {
 	}
 
 	if ($test > 0) {
-		# autoriser des trucs
-		# ex: l'embed de youtube
-		if (
-		false !== strpos($t, 'iframe')) {
-			foreach (extraire_balises($t, 'iframe') as $iframe) {
-				if (preg_match(',^http://(www\.)?(youtube\.com|(player\.)?vimeo\.com)/.*,', extraire_attribut($iframe, 'src'))) {
-					$re = '___IFRAME___'.md5($iframe);
-					$ok[$re] = $iframe;
-					$t = str_replace($iframe, $re, $t);
-				}
-			}
-		}
-
 		# reset ($process->clear() ne vide que _xhtml...),
 		# on doit pouvoir programmer ca plus propremement
 		$process->_counter = array();
@@ -58,11 +45,6 @@ function inc_safehtml_dist($t) {
 #		$process->parse(''); # cas particulier ?
 		$process->clear();
 		$t = $process->parse($t);
-
-		# reinserer les trucs autorises
-		if ($ok)
-		foreach ($ok as $re => $v)
-			$t = str_replace($re, $v, $t);
 	}
 	else
 		$t = entites_html($t); // tres laid, en cas d'erreur

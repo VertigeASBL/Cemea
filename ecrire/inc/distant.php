@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -15,10 +15,6 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 if (!defined('_INC_DISTANT_VERSION_HTTP')) define('_INC_DISTANT_VERSION_HTTP', "HTTP/1.0");
 if (!defined('_INC_DISTANT_CONTENT_ENCODING')) define('_INC_DISTANT_CONTENT_ENCODING', "gzip");
 if (!defined('_INC_DISTANT_USER_AGENT')) define('_INC_DISTANT_USER_AGENT', 'SPIP-' .$GLOBALS['spip_version_affichee']. " (" .$GLOBALS['home_server']. ")");
-
-define('_REGEXP_COPIE_LOCALE', ',' . 
-       preg_replace('@^https?:@', 'https?:', $GLOBALS['meta']['adresse_site'])
-       . "/?spip.php[?]action=acceder_document.*file=(.*)$,");
 
 //@define('_COPIE_LOCALE_MAX_SIZE',2097152); // poids (inc/utils l'a fait)
 //
@@ -34,11 +30,12 @@ define('_REGEXP_COPIE_LOCALE', ',' .
 // http://doc.spip.org/@copie_locale
 function copie_locale($source, $mode='auto') {
 
-	// si c'est la protection de soi-meme, retourner le path
-	if ($mode !== 'force' AND preg_match(_REGEXP_COPIE_LOCALE, $source, $local)) {
-		$source = substr(_DIR_IMG,strlen(_DIR_RACINE)) . urldecode($local[1]);
-		return @file_exists($source) ? $source : false;
-	}
+	// si c'est la protection de soi-meme
+	$reg = ',' . $GLOBALS['meta']['adresse_site']
+	  . "/?spip.php[?]action=acceder_document.*file=(.*)$,";
+
+	if (preg_match($reg, $source, $local)) return substr(_DIR_IMG,strlen(_DIR_RACINE)) . urldecode($local[1]);
+
 	$local = fichier_copie_locale($source);
 	$localrac = _DIR_RACINE.$local;
 	$t = ($mode=='force') ? false  : @file_exists($localrac);
@@ -407,18 +404,8 @@ function fichier_copie_locale($source) {
 		if (file_exists(_DIR_RACINE  . $f))
 		  return $f;
 	}
-
 	// Ping  pour voir si son extension est connue et autorisee
-	// avec mise en cache du resultat du ping
-
-	$cache = sous_repertoire(_DIR_CACHE,'rid').md5($source);
-	if (!@file_exists($cache)
-	OR !$path_parts = @unserialize(spip_file_get_contents($cache))
-	OR _request('var_mode') == 'recalcul'
-	) {
-		$path_parts = recuperer_infos_distantes($source,0,false) ;
-		ecrire_fichier($cache, serialize($path_parts));
-	}
+	$path_parts = recuperer_infos_distantes($source,0,false) ;
 	$ext = $path_parts ? $path_parts['extension'] : '';
 	if ($ext AND sql_getfetsel("extension", "spip_types_documents", "extension=".sql_quote($ext))) {
 		return nom_fichier_copie_locale($source, $ext);
@@ -461,22 +448,12 @@ function recuperer_infos_distantes($source, $max=0, $charger_si_petite_image = t
 		while (isset($mime_alias[$mime_type]))
 			$mime_type = $mime_alias[$mime_type];
 
-		// Si on a un mime-type insignifiant
-		// text/plain,application/octet-stream ou vide
-		// c'est peut-etre que le serveur ne sait pas
+		// Si on a text/plain, c'est peut-etre que le serveur ne sait pas
 		// ce qu'il sert ; on va tenter de detecter via l'extension de l'url
-		// ou le Content-Disposition: attachment; filename=...
 		$t = null;
-		if (in_array($mime_type,array('text/plain','','application/octet-stream'))){
-			if (!$t
-				AND preg_match(',\.([a-z0-9]+)(\?.*)?$,', $source, $rext)) {
-				$t = sql_fetsel("extension", "spip_types_documents", "extension=" . sql_quote($rext[1]));
-			}
-			if (!$t
-				  AND preg_match(",^Content-Disposition:\s*attachment;\s*filename=(.*)$,Uims",$headers,$m)
-					AND preg_match(',\.([a-z0-9]+)(\?.*)?$,', $m[1], $rext)){
-				$t = sql_fetsel("extension", "spip_types_documents", "extension=" . sql_quote($rext[1]));
-			}
+		if (($mime_type == 'text/plain' OR $mime_type == '')
+		AND preg_match(',\.([a-z0-9]+)(\?.*)?$,', $source, $rext)) {
+			$t = sql_fetsel("extension", "spip_types_documents", "extension=" . sql_quote($rext[1]));
 		}
 
 		// Autre mime/type (ou text/plain avec fichier d'extension inconnue)
@@ -615,7 +592,7 @@ function lance_requete($method, $scheme, $user, $host, $path, $port, $noproxy, $
 	if ($user) $user = urlencode($user[0]).":".urlencode($user[1]);
 
 	if ($http_proxy) {
-		$path = (($scheme=='ssl') ? 'https://' : "$scheme://")
+		$path = "$scheme://"
 			. (!$user ? '' : "$user@")
 			. "$host" . (($port != 80) ? ":$port" : "") . $path;
 		$t2 = @parse_url($http_proxy);

@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -291,14 +291,8 @@ function traite_query($query, $db='', $prefixe='') {
 	} else {
 		$suite = strstr($query, $regs[0]);
 		$query = substr($query, 0, -strlen($suite));
-		// propager le prefixe en cas de requete imbriquee
-		// il faut alors echapper les chaine avant de le faire, pour ne pas risquer de
-		// modifier une requete qui est en fait juste du texte dans un champ
-		if (strpos(strtoupper($suite),"SELECT")!==false) {
-			list($suite,$textes) = query_echappe_textes($suite);
-			if (preg_match('/^(.*?)([(]\s*SELECT\b.*)$/si', $suite, $r))
-		    $suite = $r[1] . traite_query($r[2], $db, $prefixe);
-			$suite = query_reinjecte_textes($suite, $textes);
+		if (preg_match('/^(.*?)([(]\s*SELECT\b.*)$/si', $suite, $r)) {
+		  $suite = $r[1] . traite_query($r[2], $db, $prefixe);
 		}
 	}
 	$r = preg_replace(_SQL_PREFIXE_TABLE, '\1'.$pref, $query) . $suite;
@@ -320,8 +314,7 @@ function spip_mysql_selectdb($db) {
 
 // http://doc.spip.org/@spip_mysql_listdbs
 function spip_mysql_listdbs($serveur='',$requeter=true) {
-	$res = spip_mysql_query("SHOW DATABASES");
-	return $res;
+	return @mysql_list_dbs();
 }
 
 // Fonction de creation d'une table SQL nommee $nom

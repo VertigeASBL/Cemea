@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -59,7 +59,7 @@ function inc_auteur_infos_dist($auteur, $new, $echec, $edit, $id_article, $redir
 	$contexte = array(
 		'icone_retour'=>($retour)?icone_inline(_T('icone_retour'),$retour,"auteur-24.gif","rien.gif",$GLOBALS['spip_lang_left'],false,($editer&$redirect)?"":" onclick=\"jQuery('#auteur_infos_edit').hide();jQuery('#auteur-voir').show();return false;\""):"",
 		'redirect'=>$redirect?rawurldecode($redirect):generer_url_ecrire('auteur_infos','id_auteur='.$id_auteur, '&',true),
-		'titre'=>($auteur['nom']?$auteur['nom']:_T('item_nouvel_auteur')),
+		'titre'=>($auteur['nom']?$auteur['nom']:_T('nouvel_auteur')),
 		'new'=>$new == "oui"?$new:$id_auteur,
 		'config_fonc'=>'auteurs_edit_config',
 		'lier_id_article' => $id_article,

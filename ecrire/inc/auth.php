@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -220,9 +220,6 @@ function auth_init_droits($row)
 	$connect_login = $row['login'];
 	$connect_statut = acces_statut($connect_id_auteur, $row['statut'], $row['bio']);
 
-	// on force l'écriture de cette info dans le fichier de session
-	// pour pouvoir récupérer #SESSION{en_ligne} dans les squelettes
-	session_set('en_ligne', $row['en_ligne']);
 
 	$GLOBALS['visiteur_session'] = array_merge((array)$GLOBALS['visiteur_session'], $row);
 	$r = @unserialize($row['prefs']);

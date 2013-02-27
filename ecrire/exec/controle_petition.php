@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -29,19 +29,16 @@ function exec_controle_petition_dist()
 function exec_controle_petition_args($id_article, $type, $date, $debut, $id_signature, $pas=NULL)
 {
 	if ($id_signature) {
-		$r = sql_fetsel("id_article, statut", "spip_signatures", "id_signature=$id_signature");
-		$id_article = $r['id_article'];
-		$s = $r['statut'];
-		$type = ($s=='publie' OR $s=='poubelle') ? 'public' : 'interne';
+		$id_article = sql_getfetsel("id_article", "spip_signatures", "id_signature=$id_signature");
 		$where = '(id_signature=' . sql_quote($id_signature) . ') AND ';
 	} else 	$where = '';
 	if ($id_article AND !($titre = sql_getfetsel("titre", "spip_articles", "id_article=$id_article"))) {
 		include_spip('inc/minipres');
                 echo minipres(_T('public:aucun_article'));
-	}	else controle_petition_args($id_article, $type, $date, $debut, $titre, $where, $pas, $id_signature);
+	}	else controle_petition_args($id_article, $type, $date, $debut, $titre, $where, $pas);
 }
 
-function controle_petition_args($id_article, $type, $date, $debut, $titre, $where, $pas, $id_signature=0)
+function controle_petition_args($id_article, $type, $date, $debut, $titre, $where, $pas)
 {
 	if (!preg_match('/^\w+$/',$type)) $type = 'public';
 	if ($id_article) $where .= "id_article=$id_article AND ";
@@ -63,37 +60,32 @@ function controle_petition_args($id_article, $type, $date, $debut, $titre, $wher
 	$res = $signatures('controle_petition', $id_article, $debut, $pas, $where, $order, $type);
 
 	if (_AJAX) {
-		ajax_retour($res);
+			ajax_retour($res);
 	} else {
-		$count = ($type != 'interne') ? 0 : sql_countsel("spip_signatures", $where);
-		controle_petition_page($id_article, $titre, $id_signature ? '' : $type, $res, $count);
+
+		if (autoriser('modererpetition')
+		OR (
+			$id_article > 0
+			AND autoriser('modererpetition', 'article', $id_article)
+			))
+			$ong = controle_petition_onglet($id_article, $debut, $type);
+		else {
+		  $type = 'public';
+		  $ong = '';
+		}
+		controle_petition_page($id_article, $titre, $ong, $res);
 	}
 }
 
 // http://doc.spip.org/@controle_petition_page
-function controle_petition_page($id_article, $titre, $type,  $corps, $count)
+function controle_petition_page($id_article, $titre,  $ong, $corps)
 {
-	$args = array();
-	$rac = '';
+	if ($id_article) {
+		$a =  generer_url_ecrire("statistiques_visites","id_article=$id_article");
+		$rac = "<br /><br /><br /><br /><br />" .
+		bloc_des_raccourcis(icone_horizontale(_T('icone_statistiques_visites'),$a, "statistiques-24.gif","rien.gif", false));
 
-	if (!(autoriser('modererpetition')
-	OR (
-		$id_article > 0
-		AND autoriser('modererpetition', 'article', $id_article)
-	    ))) {
-		$ong = '';
-	} else {
-		$ong = controle_petition_onglet($id_article, $debut, $type, '');
-		if ($id_article) {
-			$h = generer_url_ecrire("statistiques_visites","id_article=$id_article");
-			$rac = icone_horizontale(_T('icone_statistiques_visites'), $h, "statistiques-24.gif","rien.gif", false);
-			if ($type !== 'public') {
-
-				$h = redirige_action_auteur('editer_signatures', $id_article . 'A', 'controle_petition', "id_article=$id_article&type=interne");
-				$rac .= icone_horizontale(_T('icone_relancer_signataire') . " ($count)", $h, "envoi-message-24.gif","rien.gif", false);
-			}
-			$rac = bloc_des_raccourcis($rac);
-			$titre = "<a href='" .
+		$titre = "<a href='" .
 			generer_url_entite($id_article,'article') .
 			"'>" .
 			typo($titre) .
@@ -103,36 +95,15 @@ function controle_petition_page($id_article, $titre, $type,  $corps, $count)
 			$id_article .
 			")</span>";
 
-			if (!sql_countsel('spip_petitions', "id_article=$id_article"))
-				$titre .= '<br >' . _T('info_petition_close');
+		if (!sql_countsel('spip_petitions', "id_article=$id_article"))
+			$titre .= '<br >' . _T('info_petition_close');
 
-			$args = array('id_article' => $id_article);
-		} else {
-
-		  $q = sql_select('A.titre, A.date, A.id_article, count(*) AS n', 
-			     'spip_signatures AS S LEFT JOIN spip_articles AS A ON A.id_article=S.id_article',
-			     '',
-			     'A.id_article',
-				  'n desc',
-				  "0,10");
-		  while ($r = sql_fetch($q)) {
-		    $id = $r['id_article'];
-		    $h = generer_url_entite($id, 'article');
-		    $title = affdate_jourcourt($r['date']) . "\n" .$r['titre'];
-		    $rac .= "<li><a href='$h' title=\"" .  attribut_html($title).  '">' . _T('info_numero_abbreviation') . " $id" . '</a>&nbsp;: '. $r['n'] . ' ' . _T('signatures') . "</li>";
-		  }
-		  $rac = "<ul>$rac</ul>";
-		  $rac = debut_cadre_enfonce('',true)
-		    . "\n<div style='font-size: x-small' class='verdana1'><b>"
-		    ._T('public:articles_populaires')
-		    ."</b>"
-		    . $rac
-		    . "</div>"
-		    . fin_cadre_enfonce(true);
-
-		}
-		$rac = "<br /><br /><br /><br /><br />" . $rac;
+		$args = array('id_article' => $id_article);
+	} else  {
+		$args = array();
+		$rac = $titre = '';
 	}
+
 	$head = _T('titre_page_controle_petition');
 	$idom = "editer_signature-" . $id_article;
 	$commencer_page = charger_fonction('commencer_page', 'inc');

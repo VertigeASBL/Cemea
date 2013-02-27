@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -104,18 +104,6 @@ function _image_valeurs_trans($img, $effet, $forcer_format = false, $fonction_cr
 		$source = $img;
 		$img = "<img src='$source' />";
 	}
-	# gerer img src="data:....base64"
-	else if (preg_match('@^data:image/(jpe?g|png|gif);base64,(.*)$@isS', $source, $regs)) {
-		$local = sous_repertoire(_DIR_VAR,'image-data').md5($regs[2]).'.'.str_replace('jpeg', 'jpg', $regs[1]);
-		if (!file_exists($local)) {
-			ecrire_fichier($local, base64_decode($regs[2]));
-		}
-		$source = $local;
-		$img = inserer_attribut($img, 'src', $source);
-		# eviter les mauvaises surprises lors de conversions de format
-		$img = inserer_attribut($img, 'width', '');
-		$img = inserer_attribut($img, 'height', '');
-	}
 
 	// les protocoles web prennent au moins 3 lettres
 	if (preg_match(';^(\w{3,7}://);', $source)){
@@ -129,8 +117,8 @@ function _image_valeurs_trans($img, $effet, $forcer_format = false, $fonction_cr
 	}
 
 	$terminaison_dest = "";
-	if (preg_match(",\.(gif|jpe?g|png)($|[?]),i", $fichier, $regs)) {
-		$terminaison = strtolower($regs[1]);
+	if (preg_match(",^(?>.*)(?<=\.(gif|jpg|png)),", $fichier, $regs)) {
+		$terminaison = $regs[1];
 		$terminaison_dest = $terminaison;
 		
 		if ($terminaison == "gif") $terminaison_dest = "png";
@@ -142,7 +130,7 @@ function _image_valeurs_trans($img, $effet, $forcer_format = false, $fonction_cr
 	$term_fonction = $terminaison;
 	if ($term_fonction == "jpg") $term_fonction = "jpeg";
 
-	$nom_fichier = substr($fichier, 0, strlen($fichier) - (strlen($terminaison) + 1));
+	$nom_fichier = substr($fichier, 0, strlen($fichier) - 4);
 	$fichier_dest = $nom_fichier;
 
 	if (@file_exists($f = $fichier)){
@@ -237,7 +225,7 @@ function _image_valeurs_trans($img, $effet, $forcer_format = false, $fonction_cr
 	$ret["fichier"] = $fichier;
 	$ret["fonction_image"] = "_image_image".$terminaison_dest;
 	$ret["fichier_dest"] = $fichier_dest;
-	$ret["format_source"] = ($terminaison != 'jpeg' ? $terminaison : 'jpg');
+	$ret["format_source"] = $terminaison;
 	$ret["format_dest"] = $terminaison_dest;
 	$ret["date_src"] = $date_src;
 	$ret["creer"] = $creer;

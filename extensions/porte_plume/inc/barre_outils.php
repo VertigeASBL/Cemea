@@ -4,9 +4,6 @@
  * Licence GPL
  * Auteur Matthieu Marcillaud
  */
-
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
 include_spip('public/admin'); // pour stripos()
 
 /* pour compat 2.0 (inutile a partir de  2.1) */

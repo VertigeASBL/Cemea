@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -19,6 +19,7 @@ function action_editer_auteur_dist($arg=null) {
 		$securiser_action = charger_fonction('securiser_action', 'inc');
 		$arg = $securiser_action();
 	}
+
 
 	// si id_auteur n'est pas un nombre, c'est une creation
 	if (!$id_auteur = intval($arg)) {
@@ -169,10 +170,9 @@ function instituer_auteur($id_auteur, $c) {
 
 	
 	$champs = array();
-	$statut = $statut_ancien = sql_getfetsel('statut','spip_auteurs','id_auteur='.intval($id_auteur));
+	$statut =	$statut_ancien = sql_getfetsel('statut','spip_auteurs','id_auteur='.intval($id_auteur));
 	
-	if (isset($c['statut'])
-	AND (($statut_ancien == 'nouveau') OR autoriser('modifier', 'auteur', $id_auteur,null, array('statut' => '?'))))
+	if (isset($c['statut']))
 		$statut = $champs['statut'] = $c['statut'];
 
 	// Restreindre avant de declarer l'auteur
@@ -184,8 +184,7 @@ function instituer_auteur($id_auteur, $c) {
 			$c['restreintes'] = array($c['id_parent']);
 	}
 
-	if (isset($c['webmestre'])
-	  AND autoriser('modifier', 'auteur', $id_auteur,null, array('webmestre' => '?')))
+	if (isset($c['webmestre']) AND autoriser('modifier', 'auteur', $id_auteur,null, array('webmestre' => '?')))
 		$champs['webmestre'] = $c['webmestre']=='oui'?'oui':'non';
 	
 	// Envoyer aux plugins

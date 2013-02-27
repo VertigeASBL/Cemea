@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -89,7 +89,6 @@ function ajouter_un_document($source, $nom_envoye, $type_lien, $id_lien, $mode, 
 // Documents distants : pas trop de verifications bloquantes, mais un test
 // via une requete HEAD pour savoir si la ressource existe (non 404), si le
 // content-type est connu, et si possible recuperer la taille, voire plus.
-
 	if ($mode == 'distant') {
 		include_spip('inc/distant');
 		if ($a = recuperer_infos_distantes($source)) {
@@ -118,10 +117,21 @@ function ajouter_un_document($source, $nom_envoye, $type_lien, $id_lien, $mode, 
 		// - interdit a l'upload ?
 		// - quelle extension dans spip_types_documents ?
 		// - est-ce "inclus" comme une image ?
-		list($nom_envoye, $ext, $titre, $inclus) = corriger_extension_et_nom($nom_envoye, $titrer);
 
-		if ($inclus !== false) {
-			$type_inclus_image = ($inclus == 'image');
+		preg_match(",^(.*)\.([^.]+)$,", $nom_envoye, $match);
+		@list(,$titre,$ext) = $match;
+		// securite : pas de . en dehors de celui separant l'extension
+		// sinon il est possible d'injecter du php dans un toto.php.txt
+		$nom_envoye = str_replace('.','-',$titre).'.'.$ext;
+		if ($titrer) {
+			$titre = preg_replace(',[[:punct:][:space:]]+,u', ' ', $titre);
+		} else $titre = '';
+		$ext = corriger_extension(strtolower($ext));
+
+		$row = sql_fetsel("inclus", "spip_types_documents", "extension=" . sql_quote($ext) . " AND upload='oui'");
+
+		if ($row) {
+			$type_inclus_image = ($row['inclus'] == 'image');
 			$fichier = copier_document($ext, $nom_envoye, $source);
 		} else {
 
@@ -176,6 +186,8 @@ function ajouter_un_document($source, $nom_envoye, $type_lien, $id_lien, $mode, 
 			spip_log ("Echec copie du fichier $fichier");
 			return;
 		}
+
+
 		
 		// _INTERFACE_DOCUMENTS
 		// Si mode == 'choix', fixer le mode image/document
@@ -277,27 +289,7 @@ function ajouter_un_document($source, $nom_envoye, $type_lien, $id_lien, $mode, 
 	// note : la fonction peut "mettre a jour un document" si on lui
 	// passe "mode=document" et "id_document=.." (pas utilise)
 
-		// Envoyer aux plugins
-		$a = pipeline('pre_insertion',
-			array(
-				'args' => array(
-					'table' => 'spip_documents',
-				),
-				'data' => $a
-			)
-		);
-
 		$id = sql_insertq("spip_documents", $a);
-
-		pipeline('post_insertion',
-			array(
-				'args' => array(
-					'table' => 'spip_documents',
-					'id_objet' => $id_document
-				),
-				'data' => $a
-			)
-		);
 
 		spip_log ("ajout du document $source $nom_envoye  (M '$mode' T '$type_lien' L '$id_lien' D '$id')");
 
@@ -431,29 +423,6 @@ function traite_svg($file)
 	return array($width, $height);
 }
 
-// Regexp synthetisant un titre a partir d'un nom de fichier.
-// Exemple: squelette-de-Mozart-vers-5-ans.jpg => squelette de Mozart vers 5 ans
-define('_REGEXP_TITRER_DOCUMENT', ',[[:punct:][:space:]]+,u');
-
-function corriger_extension_et_nom($nom, $titrer=false)
-{
-	preg_match(",^(.*)\.([^.]+)$,", $nom, $match);
-	@list(,$titre,$ext) = $match;
-	// les navigateur devraient savoir que ceci est mime-type text
-	if (!$ext AND (strtolower($nom) === 'makefile'))
-		$ext = 'txt';
-	// securite : pas de . en dehors de celui separant l'extension
-	// sinon il est possible d'injecter du php dans un toto.php.txt
-	else $nom = str_replace('.','-',$titre).'.'.$ext;
-
-	if ($titrer) {
-	  $titre = is_string($titrer) ? $titrer : preg_replace("%".$titrer."%", ' ', $titre ? $titre : $nom);
-	} else $titre = '';
-	$ext = corriger_extension(strtolower($ext));
-	$row = sql_fetsel("inclus", "spip_types_documents", "extension=" . sql_quote($ext) . " AND upload='oui'");
-	return array($nom, $ext, $titre, $row ? $row['inclus'] : false);
-}
-
 //
 // Corrige l'extension du fichier dans quelques cas particuliers
 // (a passer dans ecrire/base/typedoc)
@@ -469,8 +438,6 @@ function corriger_extension($ext) {
 		return 'jpg';
 	case 'tiff':
 		return 'tif';
-	case 'aif':
-		return 'aiff';
 	case 'mpeg':
 		return 'mpg';
 	default:
@@ -485,19 +452,18 @@ function corriger_extension($ext) {
 function fixer_extension_document($doc) {
 	$extension = '';
 	$name = $doc['name'];
-	if (preg_match(',\.([^.]+)$,', $name, $r)
+	if (preg_match(',[.]([^.]+)$,', $name, $r)
 	AND $t = sql_fetsel("extension", "spip_types_documents",
 	"extension=" . sql_quote(corriger_extension($r[1])))) {
 		$extension = $t['extension'];
-		$name = preg_replace(',\.[^.]*$,', '', $doc['name']).'.'.$extension;
-	} else {
-		// les navigateur devraient savoir que ceci est mime-type text
-		if (strtolower($name) === 'makefile') $doc['type'] = 'txt';
-		if ($t = sql_getfetsel("extension", "spip_types_documents",
-				 "mime_type=" . sql_quote($doc['type']))) {
-		  $name = preg_replace(',\.[^.]*$,', '', $doc['name']).'.'.$t;
-		}
+		$name = preg_replace(',[.][^.]*$,', '', $doc['name']).'.'.$extension;
 	}
+	else if ($t = sql_fetsel("extension", "spip_types_documents",
+	"mime_type=" . sql_quote($doc['type']))) {
+		$extension = $t['extension'];
+		$name = preg_replace(',[.][^.]*$,', '', $doc['name']).'.'.$extension;
+	}
+
 	return array($extension,$name);
 }
 

@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -15,65 +15,55 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 define('_EXPORT_TRANCHES_LIMITE', 200);
 define('_EXTENSION_PARTIES', '.gz');
 
+// http://doc.spip.org/@exec_export_all_args
 function inc_export_dist($meta)
 {
 	if (!isset($GLOBALS['meta'][$meta])) {
 		include_spip('inc/minipres');
 		echo minipres();
-	} else {
-		while (true) {
-			$save = unserialize($GLOBALS['meta'][$meta]);
-			if ($dir = export_repertoire($meta, $save))
-				export_trace($save, $dir, $meta);
-			else break;
-		}
-		list($gz, $archive, $rub) = $save;
-		// retour a exec_export_all qui renverra sur action_export_all
-		return "end,$gz,$archive,$rub";
 	}
-}
+	else {
+		$start = false;
+		list($gz, $archive, $rub, $tables_for_dump, $etape_actuelle, $sous_etape) = 
+			unserialize($GLOBALS['meta'][$meta]);
 
-// calcule le repertoire de la sauvegarde
-// et le nettoie au premier appel.
-// Aux suivants, retourne le nom du repertoire ou rien si c'est fini.
-
-function export_repertoire($meta, $save)
-{
-	list($gz, $archive, $rub, $tables_for_dump, $etape_actuelle, $sous_etape) = $save;
-	$dir = base_dump_dir($meta);
-
-	// Reperer une situation anormale (echec reprise sur interruption)
-	if (($etape_actuelle == 1) AND !$sous_etape) {
+		// determine upload va aussi initialiser l'index "restreint"
+		$maindir = determine_upload();
+		if (!$GLOBALS['visiteur_session']['restreint'])
+			$maindir = _DIR_DUMP;
+		$dir = sous_repertoire($maindir, $meta);
 		$file = $dir . $archive;
-		$l = preg_files($file .  ".part_[0-9]+_[0-9]+");
-		if ($l) {
-			spip_log("menage d'une sauvegarde inachevee: " . join(',', $l));
-			foreach($l as $dummy) spip_unlink($dummy);
-		}
-	}
-	$all = count($tables_for_dump);
-	return ($etape_actuelle > $all OR !$all) ? false : $dir;
-}
+		$metatable = $meta . '_tables';
 
-function export_trace($save, $dir, $meta)
-{
-		list($gz, $archive, $rub, $tables_for_dump, $etape_actuelle, $sous_etape) = $save;
+		// Reperer une situation anormale (echec reprise sur interruption)
+		if (!$etape_actuelle AND !$sous_etape) {
+			$l = preg_files($file .  ".part_[0-9]+_[0-9]+");
+			if ($l) {
+				spip_log("menage d'une sauvegarde inachevee: " . join(',', $l));
+				foreach($l as $dummy) spip_unlink($dummy);
+			}
+			$start = true; //  utilise pour faire un premier hit moitie moins long
+			$tables_sauvegardees = array();
+		} else 	$tables_sauvegardees = isset($GLOBALS['meta'][$metatable])?unserialize($GLOBALS['meta'][$metatable]):array();
+
+		// concatenation des fichiers crees a l'appel precedent
+		ramasse_parties($dir, $archive);
+		$all = count($tables_for_dump);
+		if ($etape_actuelle > $all OR !$all){
+			return "end,$gz,$archive,$rub"; // c'est fini !
+		}
+
 		include_spip('inc/minipres');
-		// pour permettre l'affichage au fur et a mesure
-		@ini_set("zlib.output_compression","0");
+		@ini_set("zlib.output_compression","0"); // pour permettre l'affichage au fur et a mesure
+
+		echo ( install_debut_html(_T('info_sauvegarde') . " ($all)"));
 
 		if (!($timeout = ini_get('max_execution_time')*1000));
 		$timeout = 30000; // parions sur une valeur tellement courante ...
 	// le premier hit est moitie moins long car seulement une phase d'ecriture de morceaux
 	// sans ramassage
 	// sinon grosse ecriture au 1er hit, puis gros rammassage au deuxieme avec petite ecriture,... ca oscille
-		if (!$etape_actuelle AND !$sous_etape) {
-			$timeout = round($timeout/2);
-			$tables_sauvegardees = array();
-		} else {
-			$metatable = $meta . '_tables';
-			$tables_sauvegardees = isset($GLOBALS['meta'][$metatable])?unserialize($GLOBALS['meta'][$metatable]):array();
-		}
+		if ($start) $timeout = round($timeout/2);
 
 	// Les sauvegardes partielles prennent le temps d'indiquer les logos
 	// Instancier une fois pour toutes, car on va boucler un max.
@@ -89,8 +79,6 @@ function export_trace($save, $dir, $meta)
 
 	// script de rechargement auto sur timeout
 		$redirect = generer_url_ecrire("export_all");
-		$all = count($tables_for_dump);
-		echo ( install_debut_html(_T('info_sauvegarde') . " ($all)"));
 		echo http_script("window.setTimeout('location.href=\"".$redirect."\";',$timeout)");
 
 		echo "<div style='text-align: left'>\n";
@@ -117,7 +105,7 @@ function export_trace($save, $dir, $meta)
 			  $sous_etape = 0;
 			  // on utilise l'index comme ca c'est pas grave si on ecrit plusieurs fois la meme
 			  $tables_sauvegardees[$table] = "$table ($r)";
-			  ecrire_meta($meta . '_tables', serialize($tables_sauvegardees),'non');
+			  ecrire_meta($metatable, serialize($tables_sauvegardees),'non');
 			}
 			$etape++;
 			$v = serialize(array($gz, $archive, $rub, $tables_for_dump, $etape,$sous_etape));
@@ -128,7 +116,9 @@ function export_trace($save, $dir, $meta)
 		echo  ("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\"$redirect\";',0);</script>\n");
 		echo (install_fin_html());
 		flush();
+	}
 }
+
 
 // http://doc.spip.org/@complete_secteurs
 function complete_secteurs($les_rubriques)
@@ -161,6 +151,31 @@ function complete_fils($rubriques)
 
 
 	return $rubriques;
+}
+
+// Concatenation des tranches
+// Il faudrait ouvrir une seule fois le fichier, et d'abord sous un autre nom
+// et sans detruire les tranches: au final renommage+destruction massive pour
+// prevenir autant que possible un Time-out.
+
+// http://doc.spip.org/@ramasse_parties
+function ramasse_parties($dir, $archive)
+{
+	$files = preg_files($dir . $archive . ".part_[0-9]+_[0-9]+[.gz]?");
+
+	$ok = true;
+	$files_o = array();
+	$but = $dir . $archive;
+	foreach($files as $f) {
+	  $contenu = "";
+	  if (lire_fichier ($f, $contenu)) {
+	    if (!ecrire_fichier($but,$contenu,false,false))
+	      { $ok = false; break;}
+	  }
+	  spip_unlink($f);
+	  $files_o[]=$f;
+	}
+	return $ok ? $files_o : false;
 }
 
 //
@@ -214,7 +229,7 @@ function export_objets($table, $cpt, $total, $filetable, $les_rubriques, $les_me
 		$debut +=  _EXPORT_TRANCHES_LIMITE;
 		if ($debut >= $total) {break;}
 		/* pour tester la robustesse de la reprise sur interruption
-		   decommenter ce qui suit.
+		 decommenter ce qui suit.
 		if ($cpt && 1) {
 		  spip_log("force interrup $s");
 		  include_spip('inc/headers');

@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -356,12 +356,6 @@ function autoriser_groupemots_creer_dist($faire, $type, $id, $qui, $opt) {
 		AND !$qui['restreint'];
 }
 
-function autoriser_auteur_creer_dist($faire, $type, $id, $qui, $opt) {
-	return
-		$qui['statut'] == '0minirezo'
-		AND !$qui['restreint'];
-}
-
 // Autoriser a modifier un groupe de mots $id
 // y compris en ajoutant/modifiant les mots lui appartenant
 // http://doc.spip.org/@autoriser_groupemots_modifier_dist
@@ -579,8 +573,8 @@ function autoriser_auteur_modifier_dist($faire, $type, $id, $qui, $opt) {
 	// ou si les webmestres sont fixes par constante (securite)
 	elseif ($opt['webmestre'] AND (defined('_ID_WEBMESTRES') OR !autoriser('webmestre')))
 		return false;
-	// et modifier un webmestre si il ne l'est pas lui meme
-	elseif (intval($id) AND autoriser('webmestre','',0,$id) AND !autoriser('webmestre'))
+	// et toucher au statut d'un webmestre si il ne l'est pas lui meme
+	elseif ($opt['statut'] AND autoriser('webmestre','',0,$id) AND !autoriser('webmestre'))
 		return false;
 	else
 		return true;
@@ -685,15 +679,17 @@ function autoriser_modifierurl_dist($faire, $quoi, $id, $qui, $opt) {
 // http://doc.spip.org/@autoriser_rubrique_editermots_dist
 function autoriser_rubrique_editermots_dist($faire,$quoi,$id,$qui,$opts){
 	// on recupere les champs du groupe s'ils ne sont pas passes en opt
+	$droit = substr($GLOBALS['visiteur_session']['statut'],1);
 	if (!isset($opts['groupe_champs'])){
 		if (!$id_groupe = $opts['id_groupe'])
 			return false;
 		include_spip('base/abstract_sql');
 		$opts['groupe_champs'] = sql_fetsel("*", "spip_groupes_mots", "id_groupe=".intval($id_groupe));
 	}
+	$droit = $opts['groupe_champs'][$droit];
 
 	return
-		($opts['groupe_champs'][substr($qui['statut'],1)] == 'oui')
+		($droit == 'oui')
 		AND
 		// on verifie que l'objet demande est bien dans les tables liees
 		in_array(

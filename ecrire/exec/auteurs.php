@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -56,14 +56,9 @@ function exec_auteurs_args($statut, $tri, $debut, $recherche=NULL, $trouve='', $
 		  lettres_d_auteurs(requete_auteurs($tri, $statut, $recherche), $debut, MAX_AUTEURS_PAR_PAGE, $tri);
 
 
-
-		$arg = ($statut ? ("&statut=" .urlencode($statut)) : '')
-		  .  ($cherche ? ("&recherche=" . urlencode($cherche)) : '');
-
-		$recherche = auteurs_tranches(afficher_n_auteurs($auteurs), $debut, $lettre, $tri, $statut, MAX_AUTEURS_PAR_PAGE, $nombre_auteurs, $arg);
+		$recherche = auteurs_tranches(afficher_n_auteurs($auteurs), $debut, $lettre, $tri, $statut, MAX_AUTEURS_PAR_PAGE, $nombre_auteurs,$cherche);
 
 		if ($cherche){
-			$cherche = htmlspecialchars($cherche);
 			if (count($auteurs))
 				$recherche = "<h3>". _T('info_resultat_recherche')." &laquo;$cherche&raquo;</h3>" . $recherche;
 			else
@@ -84,7 +79,7 @@ function exec_auteurs_args($statut, $tri, $debut, $recherche=NULL, $trouve='', $
 			$visiteurs ? _T('info_visiteurs') :  _T('info_auteurs'),
 				     "auteurs","redacteurs");
 
-		echo bandeau_auteurs($visiteurs);
+		echo bandeau_auteurs($tri, $visiteurs);
 		
 		echo  $trouve, "<div class='nettoyeur'></div>";
 
@@ -95,9 +90,9 @@ function exec_auteurs_args($statut, $tri, $debut, $recherche=NULL, $trouve='', $
 }
 
 // http://doc.spip.org/@bandeau_auteurs
-function bandeau_auteurs($visiteurs)
+function bandeau_auteurs($tri, $visiteurs)
 {
-	global $connect_id_auteur;
+	global $connect_id_auteur,   $connect_statut,   $connect_toutes_rubriques;
 
 	$ret = debut_gauche("auteurs",true) . debut_boite_info(true);
 
@@ -106,16 +101,16 @@ function bandeau_auteurs($visiteurs)
 	else 
 		$ret .= "\n<p class='arial1'>"._T('info_gauche_auteurs'). '</p>';
 
-	if (autoriser('voir', 'auteur'))
+	if ($connect_statut == '0minirezo')
 		$ret .= "\n<p class='arial1'>". _T('info_gauche_auteurs_exterieurs') . '</p>';
 
 	$ret .= fin_boite_info(true);
 
 	$ret .= pipeline('affiche_gauche',array('args'=>array('exec'=>'auteurs'),'data'=>''));
 
-	if (autoriser('voir', 'auteur')) {
+	if ($connect_statut == '0minirezo') {
 
-		if (autoriser('creer', 'auteur'))
+		if ($connect_toutes_rubriques) 
 			$res = icone_horizontale(_T('icone_creer_nouvel_auteur'), generer_url_ecrire("auteur_infos", 'new=oui'), "auteur-24.gif", "creer.gif", false);
 		else $res = '';
 
@@ -178,9 +173,12 @@ function lettres_d_auteurs($query, $debut, $max_par_page, $tri)
 }
 
 // http://doc.spip.org/@auteurs_tranches
-function auteurs_tranches($auteurs, $debut, $lettre, $tri, $statut, $max_par_page, $nombre_auteurs, $arg='')
+function auteurs_tranches($auteurs, $debut, $lettre, $tri, $statut, $max_par_page, $nombre_auteurs, $cherche='')
 {
 	global $spip_lang_right;
+
+	$arg = ($statut ? ("&statut=" .urlencode($statut)) : '')
+	   .  ($cherche ? ("&recherche=" . urlencode($cherche)) : '');
 
 	$res ="\n<tr class='titrem'>"
 	. "\n<th style='width: 20px'>";
@@ -293,40 +291,37 @@ function auteurs_href($clic, $args='', $att='')
 // http://doc.spip.org/@requete_auteurs
 function requete_auteurs($tri, $statut, $recherche=NULL)
 {
-	global $connect_id_auteur;
+	global $connect_statut, $spip_lang, $connect_id_auteur;
 
+	//
+	// Construire la requete
+	//
+	
 	// si on n'est pas minirezo, ignorer les auteurs sans article
 	// sauf les admins, toujours visibles.
 
 	// limiter les statuts affiches
-	if (autoriser('voir', 'auteur')) {
+	if ($connect_statut == '0minirezo') {
 		if ($statut[0]=='!') {
 			  $statut = substr($statut,1); $not = "NOT";
 		} else $not = '';
 		$visit = !statut_min_redac($statut);
 		$statut = preg_split('/\W+/', $statut); 
-		$where = sql_in("aut.statut", $statut, $not);
+		$sql_visible = sql_in("aut.statut", $statut, $not);
 	} else {
-		$where = "(
+		$sql_visible = "(
 			aut.statut = '0minirezo'
 			OR aut.id_auteur=$connect_id_auteur
 			OR " . sql_in('art.statut', array('prop', 'publie'))
 		. ')';
 		$visit = false;
 	}
-	if ($recherche) $where .= " AND $recherche" ;
-	return requete_auteurs_tri($tri, $where, $visit);
-}
-
-function requete_auteurs_tri($tri, $where, $visit=false)
-{
-	global $spip_lang;
 
 	$sql_sel = '';
 	$join = $visit ?
 	 ""
 	 : 
-	 (strpos($where,'art.statut')?("LEFT JOIN spip_auteurs_articles AS lien ON aut.id_auteur=lien.id_auteur" . " LEFT JOIN spip_articles AS art ON (lien.id_article = art.id_article)"):"");
+	 (strpos($sql_visible,'art.statut')?("LEFT JOIN spip_auteurs_articles AS lien ON aut.id_auteur=lien.id_auteur" . " LEFT JOIN spip_articles AS art ON (lien.id_article = art.id_article)"):"");
 	
 	// tri
 	switch ($tri) {
@@ -336,7 +331,7 @@ function requete_auteurs_tri($tri, $where, $visit=false)
 		$join = $visit ?
 		 "LEFT JOIN spip_forum AS lien ON aut.id_auteur=lien.id_auteur"
 		 : ("LEFT JOIN spip_auteurs_articles AS lien ON aut.id_auteur=lien.id_auteur" 
-		. (strpos($where,'art.statut')?" LEFT JOIN spip_articles AS art ON (lien.id_article = art.id_article)":""));
+		. (strpos($sql_visible,'art.statut')?" LEFT JOIN spip_articles AS art ON (lien.id_article = art.id_article)":""));
 		break;
 	
 	case 'site':
@@ -365,7 +360,9 @@ function requete_auteurs_tri($tri, $where, $visit=false)
 				"UPPER(aut.nom) AS unom", 
 				$sql_sel),array('',null)),
 		     'FROM' => "spip_auteurs AS aut $join",
-		     'WHERE' => $where,
+		     'WHERE' => $sql_visible . ($recherche 
+				? " AND $recherche" 
+				: ''),
 		     'GROUP BY' => "aut.statut, aut.nom_site, aut.nom, aut.id_auteur", 
 		     'ORDER BY' => $sql_order);
 }

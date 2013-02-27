@@ -1,7 +1,5 @@
 <?php
 
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
 //
 // Reglage de l'output buffering : si possible, generer une sortie
 // compressee pour economiser de la bande passante

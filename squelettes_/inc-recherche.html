@@ -1,0 +1,94 @@
+<form id="focherche" action="[(#URL_ARTICLE{9})]" method="get" class="formulaire_spip">
+	<input type="text" name="recherche" value="#ENV{recherche}" class="text" accesskey="4" tabindex="1" style="width:300px; padding:1px 0 1px 4px;" />
+	<input type="submit" value="Chercher" tabindex="2" class="submit roundies" />
+</form>
+<br />
+
+<h3 class="htitre">Recherche sur&nbsp;: &#171;&nbsp;#RECHERCHE&nbsp;&#187;</h3>
+
+[(#REM) 
+
+6 sections
+
+1-2) Activities, based on word in titre, then texte
+3) Activities, via "recherche"
+4-5) Other articles, based on word in titre, then texte
+6) 
+
+Store Activités Sections in an Array
+
+]#SET{firststoryid,0} #SET{number_activ,0} #SET{found_sec,#ARRAY} #SET{found_art,#ARRAY}
+<BOUCLE_activites(RUBRIQUES){id_mot=5}>
+#SET{found_sec,#GET{found_sec}|push{#ID_RUBRIQUE}}
+</BOUCLE_activites>
+
+<h4 class="htitre">Activités</h4>
+<ul class="listeul">
+<BOUCLE_rechart0(ARTICLES){titre=#RECHERCHE}{par titre}{id_rubrique IN #GET{found_sec}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+	<BOUCLE_action0(RUBRIQUES){id_rubrique}{id_mot=5}>
+		<span class="lipar">([(#TITRE|supprimer_numero)], titre)</span>
+	</BOUCLE_action0>
+		</li>
+</BOUCLE_rechart0>
+<BOUCLE_rechart1(ARTICLES){titre==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique IN #GET{found_sec}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+	<BOUCLE_action1(RUBRIQUES){id_rubrique}{id_mot=5}>
+		<span class="lipar">([(#TITRE|supprimer_numero)], dans le titre)</span>
+	</BOUCLE_action1>
+		</li>
+</BOUCLE_rechart1>
+<BOUCLE_rechart2(ARTICLES){texte==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+	<BOUCLE_action2(RUBRIQUES){id_rubrique}{id_mot=5}>
+		<span class="lipar">([(#TITRE|supprimer_numero)], dans le texte)</span>
+	</BOUCLE_action2>
+		</li>
+</BOUCLE_rechart2>
+<BOUCLE_rechart3(ARTICLES){recherche}{par points}{inverse}{id_rubrique IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+	<BOUCLE_action3(RUBRIQUES){id_rubrique}{id_mot=5}>
+		<span class="lipar">([(#TITRE|supprimer_numero)])</span>
+	</BOUCLE_action3>
+		</li>
+</BOUCLE_rechart3>
+</ul>
+<br/>
+<h4 class="htitre">Articles</h4>
+<ul class="listeul">
+<BOUCLE_rechart04(ARTICLES){titre=#RECHERCHE}{par titre}{id_rubrique !IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+                        <span class="lipar">(titre)</span>
+		</li>
+</BOUCLE_rechart04>
+<BOUCLE_rechart4(ARTICLES){titre==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique !IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+                        <span class="lipar">(dans le titre)</span>
+		</li>
+</BOUCLE_rechart4>
+<BOUCLE_rechart5(ARTICLES){texte==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique !IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}} 
+                        <span class="lipar">(dans le texte)</span>
+		</li>
+</BOUCLE_rechart5>
+<BOUCLE_rechart6(ARTICLES){recherche}{par points}{inverse}{id_rubrique !IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+		<li class="listeli">
+			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
+                        #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
+		</li>
+</BOUCLE_rechart6>
+</ul>

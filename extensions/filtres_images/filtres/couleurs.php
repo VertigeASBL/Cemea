@@ -9,8 +9,6 @@
  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
 \***************************************************************************/
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 include_spip('inc/filtres_images_lib_mini');
 
 /**

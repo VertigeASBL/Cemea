@@ -1,7 +1,4 @@
 <?php
-
-if (!defined('_ECRIRE_INC_VERSION')) return;
-
 function instituer_site($id_syndic, $id_rubrique, $statut=-1){
 	$statut_rubrique = autoriser('publierdans', 'rubrique', $id_rubrique);
 	if ($statut_rubrique) {

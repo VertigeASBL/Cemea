@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -65,7 +65,6 @@ function formulaires_editer_mot_verifier_dist($id_mot='new', $id_groupe=0, $reto
 			$erreurs['titre'] =
 						_T('avis_doublon_mot_cle')
 						." <input type='hidden' name='confirm_titre_mot' value='1' />";
-			set_request('edit','oui');
 	}
 	return $erreurs;
 }

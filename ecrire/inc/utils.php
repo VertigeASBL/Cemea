@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -1057,8 +1057,7 @@ function generer_url_prive($script, $args="", $no_entities=false) {
 function generer_form_ecrire($script, $corps, $atts='', $submit='') {
 	global $spip_lang_right;
 
-	$script1 = explode('&', $script);
-	$script1 = array_shift($script1);
+	$script1 = array_shift(explode('&', $script));
 
 	return "<form action='"
 	. ($script ? generer_url_ecrire($script) : '')
@@ -1068,7 +1067,7 @@ function generer_form_ecrire($script, $corps, $atts='', $submit='') {
 	. "<input type='hidden' name='exec' value='$script1' />"
 	. $corps
 	. (!$submit ? '' :
-	     ("<div style='text-align: $spip_lang_right'><input type='submit' value=\"".attribut_html($submit)."\" /></div>"))
+	     ("<div style='text-align: $spip_lang_right'><input type='submit' value=\"".entites_html($submit)."\" /></div>"))
 	. "</div></form>\n";
 }
 
@@ -1779,12 +1778,9 @@ function recuperer_fond($fond, $contexte=array(), $options = array(), $connect='
 		if ($page === '') {
 			$c = isset($options['compil']) ? $options['compil'] :'';
 			$a = array('fichier'=>$fond.'.'._EXTENSION_SQUELETTES);
-			$erreur = _T('info_erreur_squelette2', $a); // squelette introuvable
-			erreur_squelette($erreur, $c);
-			// eviter des erreurs strictes ensuite sur $page['cle'] en PHP >= 5.4
-			$page = array('texte' => '', 'erreur' => $erreur);
+			erreur_squelette(_T('info_erreur_squelette2', $a), $c);
 		}
-
+					 
 		if (isset($options['ajax'])AND $options['ajax']){
 			include_spip('inc/filtres');
 			$page['texte'] = encoder_contexte_ajax(array_merge($contexte,array('fond'=>$f)),'',$page['texte']);

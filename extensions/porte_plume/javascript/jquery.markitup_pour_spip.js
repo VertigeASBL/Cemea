@@ -122,12 +122,10 @@
 				if (options.nameSpace) {
 					nameSpace = 'class="'+options.nameSpace+'"';
 				}
-				currentScrollPosition = $$.scrollTop();
 				$$.wrap('<div '+nameSpace+'></div>');
 				$$.wrap('<div '+id+' class="markItUp"></div>');
 				$$.wrap('<div class="markItUpContainer"></div>');
 				$$.addClass("markItUpEditor");
-				$$.scrollTop(currentScrollPosition);
 
 				// add the header before the textarea
 				header = $('<div class="markItUpHeader"></div>').insertBefore($$);

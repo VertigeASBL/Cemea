@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -21,11 +21,7 @@ function exec_admin_tech_dist()
 	if (!autoriser('sauvegarder')){
 		include_spip('inc/minipres');
 		echo minipres();
-	} else exec_admin_tech_args(options_avancees_dump());
-}
-
-function exec_admin_tech_args($tables)
-{
+	} else {
 	$commencer_page = charger_fonction('commencer_page', 'inc');
 	echo $commencer_page(_T('titre_admin_tech'), "configuration", "base");
 
@@ -61,6 +57,8 @@ function exec_admin_tech_args($tables)
 	// Sauvegarde de la base
 	//
 
+	echo debut_cadre_trait_couleur('',true,'',_T('texte_sauvegarde'),'sauvegarder');
+
 	// a passer en fonction
 	if (substr(_DIR_IMG, 0, strlen(_DIR_RACINE)) === _DIR_RACINE)
 	 $dir_img = substr(_DIR_IMG,strlen(_DIR_RACINE));
@@ -82,27 +80,17 @@ function exec_admin_tech_args($tables)
 		      )) .
 	"</p>";
 	
-	$file = nom_fichier_dump();
-
 	$chercher_rubrique = charger_fonction('chercher_rubrique', 'inc');
 
-	$form = $chercher_rubrique(0, $GLOBALS['connect_id_rubrique'] ? 'breve' : 'rubrique', $GLOBALS['connect_id_rubrique'], 0, 'admin_tech');
+	$form = $chercher_rubrique(0, 'rubrique', !$GLOBALS['connect_toutes_rubriques'], 0, 'admin_tech');
 
 	if ($form) {
-		if (preg_match('@^<select([^>]*)>(\s*<option[^>]*)>([^[<]+)(.*)$@s', $form, $r)) {
-			$form = "<select onchange='x=this.options[this.options.selectedIndex].firstChild.data.match(/\w+/); findObj_forcer(\"znom_sauvegarde\").value=x[0]; findObj_forcer(\"nom_sauvegarde\").value=x[0];'" . $r[1] . '>' . $r[2] . " selected='selected'>" . $r[3] . $r[4];
-			if ($GLOBALS['connect_id_rubrique'])
-				$file = trim($r[3]);
-		} elseif (preg_match('@^<input[^>]*>([^[<]+)@', $form, $r))
-			if ($GLOBALS['connect_id_rubrique'])
-				$file = trim($r[1]);
-
 		$res .= "\n<label for='id_parent'>" .
 			  _T('texte_admin_tech_04') .
-			  "</label><br /><br />\n" .
-			  $form . '<br /><br />';
+			  "</label><br /><br />" .
+			  $form . '<br />';
 	}
-
+	$file = nom_fichier_dump();
 	$nom = "\n<input name='nom_sauvegarde' id='nom_sauvegarde' size='40' value='$file' />";
 	$znom = "\n<input name='znom_sauvegarde' id='znom_sauvegarde' size='40' value='$file' />";
 	
@@ -119,23 +107,12 @@ function exec_admin_tech_args($tables)
 	  _T('bouton_radio_sauvegarde_non_compressee',  array('fichier'=>'')) .
 	  '</label><br /><b>' .
 	  $dir_dump .
-	  "</b>$nom<b>.xml</b></li></ul>\n" .
-	  "\n<input type='hidden' name='reinstall' value='non' />";
+	  "</b>$nom<b>.xml</b></li></ul>\n"
+	  . "\n<input type='hidden' name='reinstall' value='non' />";
 
-	if (!$GLOBALS['connect_toutes_rubriques'])
-	  foreach($tables as $k => $v)
-	    if (!strpos($v, 'checked')) unset($tables[$k]);
-
-	$bloc = "<h3>"._T('install_tables_base')."</h3>" .
-	  "\n<ol style='spip'><li>\n" .
-	  join("</li>\n<li>", $tables) .
-	  "</li></ol>\n";
-
-	$bloc = block_parfois_visible('export_tables', _T('info_options_avancees'), $bloc, '', false);
-
-	echo
-		debut_cadre_trait_couleur('',true,'',_T('texte_sauvegarde'),'sauvegarder'),
-		generer_form_ecrire('export_all', $res . $bloc, '', _T('texte_sauvegarde_base')),
+	$res .= options_avancees_dump();
+	echo 
+ 		generer_form_ecrire('export_all', $res, '', _T('texte_sauvegarde_base')),
  		fin_cadre_trait_couleur(true);
 
 	//
@@ -167,6 +144,7 @@ function exec_admin_tech_args($tables)
 	echo "<br />";
 
 	echo fin_gauche(), fin_page();
+	}
 }
 
 function admin_sauvegardes($dir_dump, $tri)
@@ -294,7 +272,15 @@ function nom_fichier_dump()
 
 function options_avancees_dump(){
 	list($tables,) = base_liste_table_for_dump(lister_tables_noexport());
-	return controle_tables_en_base('export', $tables);
+	$plie = _T('info_options_avancees');
+	$res = controle_tables_en_base('export', $tables);
+	$res = "<h3>"._T('install_tables_base')."</h3>"
+	 . "\n<ol style='spip'><li>\n" .
+			join("</li>\n<li>", $res) .
+			"</li></ol>\n";
+
+	$res = block_parfois_visible('export_tables', $plie, $res, '', false);
+ 	return $res;
 }
 
 

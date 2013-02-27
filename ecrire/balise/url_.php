@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -142,15 +142,19 @@ function balise_URL_PAGE_dist($p) {
 	$s = !$p->id_boucle ? '' :  $p->boucles[$p->id_boucle]->sql_serveur;
 
 	if ($s) {
-		// si une fonction de generation des url a ete definie pour ce connect l'utiliser
-		// elle devra aussi traiter le cas derogatoire type=page
-		if (function_exists($f = 'generer_generer_url_'.$s)){
+		if (!$GLOBALS['connexions'][strtolower($s)]['spip_connect_version']) {
+			$code = "404";
+		} else {
+			// si une fonction de generation des url a ete definie pour ce connect l'utiliser
+			// elle devra aussi traiter le cas derogatoire type=page
+			if (function_exists($f = 'generer_generer_url_'.$s)){
 				if ($args) $code .= ", $args";
 				$code = $f('page', $code, $s);
 				return $p;
+			}
+			$s = 'connect=' .  addslashes($s);
+			$args = $args ? "$args . '&$s'" : "'$s'";
 		}
-		$s = 'connect=' .  addslashes($s);
-		$args = $args ? "$args . '&$s'" : "'$s'";
 	}
 	if (!$code) {
 		$noentities = $p->etoile ? "'&'" : '';
@@ -195,6 +199,11 @@ function balise_URL_ECRIRE_dist($p) {
 // http://doc.spip.org/@balise_URL_ACTION_AUTEUR_dist
 function balise_URL_ACTION_AUTEUR_dist($p) {
 	$p->descr['session'] = true;
+
+	if ($p->boucles[$p->id_boucle]->sql_serveur) {
+		$p->code = 'generer_url_public("404")';
+		return $p;
+	}
 
 	$p->code = interprete_argument_balise(1,$p);
 	$args = interprete_argument_balise(2,$p);

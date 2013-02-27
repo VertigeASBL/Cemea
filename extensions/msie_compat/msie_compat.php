@@ -1,7 +1,5 @@
 <?php
 
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
 function msie_compat_insert_head($flux) {
 
 

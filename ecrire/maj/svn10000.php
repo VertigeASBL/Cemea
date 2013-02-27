@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -244,11 +244,5 @@ $GLOBALS['maj'][15827] = array(array('upgrade_types_documents'));
 
 // IP en 40 caracteres pour IP v6
 $GLOBALS['maj'][15828] = array(array('sql_alter',"TABLE spip_forum CHANGE `ip` `ip` VARCHAR(40) DEFAULT '' NOT NULL"));
-
-// Type de fichiers : epub r18946 renumerote
-$GLOBALS['maj'][15829] = array(array('upgrade_types_documents'));
-
-// Type de fichiers : voir r19856 (version hors tronc: numerotation derogatoire)
-$GLOBALS['maj'][15830] = array(array('upgrade_types_documents'));
 
 ?>

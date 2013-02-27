@@ -1,0 +1,20 @@
+#SET{ident,0}
+#SET{vmulti,""}
+[(#ENV{champ_extra}|=={ev_org}|oui) #SET{ident,2}]
+
+[(#ENV{valeur_extra}|oui)
+	[(#ENV{valeur_extra}|is_array|oui) #SET{valtab,#ENV{valeur_extra}}]
+	[(#ENV{valeur_extra}|is_array|non) #SET{valtab,#ENV{valeur_extra}|explode{","}}]]
+[(#GET{valtab}|non) #SET{valtab,#ARRAY}]
+
+<li class="editer_[(#ENV{champ_extra})][ (#ENV{obligatoire_extra})][ (#ENV{erreur_extra}|oui)erreur]">
+	<label for="#ENV{champ_extra}">#ENV{label_extra}</label>
+	[<span class='erreur_message'>(#ENV**{erreur_extra})</span>]
+	[<p class="explication">(#ENV{precisions_extra})</p>]
+	<select name='#ENV{champ_extra}[]'[ lang='(#LANG)'][ class='(#ENV{class_extra})'] id='#ENV{champ_extra}' #GET{vmulti}>
+		<option value="0"[(#EVAL{0}|in_array{#GET{valtab}}|oui) selected="selected"]>-</option>
+<BOUCLE_choix(ARTICLES){id_rubrique=#GET{ident}}{par titre}>
+		<option value="#ID_ARTICLE"[(#ID_ARTICLE|in_array{#GET{valtab}}|oui) selected="selected"]>[(#TITRE|supprimer_numero)]</option>
+</BOUCLE_choix>
+	</select>
+</li>

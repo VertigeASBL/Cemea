@@ -29,7 +29,7 @@ RewriteEngine On
 # Chez la plupart des hebergeurs il faut indiquer "RewriteBase /"
 # sinon modifiez cette ligne
 
-RewriteBase /Vertige/cemea/
+RewriteBase /Vertige/Cemea_test/
 
 
 # SPIP version 'php' - si vous avez d'anciennes adresses en '.php[3]',
@@ -50,7 +50,6 @@ RewriteBase /Vertige/cemea/
 RewriteCond %{HTTP_HOST} ^cemea.be$ [NC]
 RewriteRule ^(.*)$ http://www.cemea.be/$1 [R=301,L]
 
-SetEnv PHP_VER 5
 
 ################ GESTIONS DES URLS SPIP #######################
 

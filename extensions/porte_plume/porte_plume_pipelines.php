@@ -4,9 +4,6 @@
  * Licence GPL
  * Auteur Matthieu Marcillaud
  */
-
-if (!defined("_ECRIRE_INC_VERSION")) return;
-
 #define('PORTE_PLUME_PUBLIC', true);
 
 function porte_plume_autoriser($flux){return $flux;}

@@ -1,0 +1,14 @@
+<B_plan>
+<ul class="listeul">
+<BOUCLE_plan(RUBRIQUES){id_parent}{id_rubrique!=9}{par num titre}>
+	<li class="listeli">
+		<b><a href="[(#URL_RUBRIQUE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero)]</a></b>
+	<BOUCLE_art(ARTICLES){id_rubrique}{archive_act!=Y}{par num titre}>
+		<br />&#8226; <a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero)]</a>
+	</BOUCLE_art>
+	<BOUCLE_recurs(BOUCLE_plan)></BOUCLE_recurs>
+	</li>
+</BOUCLE_plan>
+</ul>
+</B_plan>
+

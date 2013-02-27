@@ -3,7 +3,7 @@
 /***************************************************************************\
  *  SPIP, Systeme de publication pour l'internet                           *
  *                                                                         *
- *  Copyright (c) 2001-2012                                                *
+ *  Copyright (c) 2001-2011                                                *
  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
  *                                                                         *
  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
@@ -445,7 +445,7 @@ function envoi_link($nom_site_spip, $minipres=false) {
 
 	// CSS de secours en cas de non fonct de la suivante
 	$res = '<link rel="stylesheet" type="text/css" href="'
-	  . url_absolue(find_in_path('prive/style_prive_defaut.css'))
+	  . url_absolue(find_in_path('style_prive_defaut.css'))
 	. '" id="cssprivee" />'  . "\n"
 
 	// CSS calendrier
@@ -454,20 +454,20 @@ function envoi_link($nom_site_spip, $minipres=false) {
 		. url_absolue(find_in_path('agenda.css')) .'" />' . "\n"
 		: '')
 
-	// CSS des raccourcis
+	// CSS imprimante (masque des trucs, a completer)
 	. '<link rel="stylesheet" type="text/css" href="'
-	  . url_absolue(find_in_path('prive/spip_style.css'))
+	  . url_absolue(find_in_path('spip_style.css'))
 	. '" media="all" />' . "\n"
 
 	// CSS imprimante (masque des trucs, a completer)
 	. '<link rel="stylesheet" type="text/css" href="'
-	  . url_absolue(find_in_path('prive/spip_style_print.css'))
+	  . url_absolue(find_in_path('spip_style_print.css'))
 	. '" media="print" />' . "\n"
 
 	// CSS "visible au chargement" differente selon js actif ou non
 
 	. '<link rel="stylesheet" type="text/css" href="'
-	  . url_absolue(find_in_path('prive/spip_style_'
+	  . url_absolue(find_in_path('spip_style_'
 				     . (_SPIP_AJAX ? 'invisible' : 'visible')
 				     . '.css'))
 	.'" />' . "\n"
@@ -482,7 +482,7 @@ function envoi_link($nom_site_spip, $minipres=false) {
 
 	// CSS optionelle minipres
 	. ($minipres?'<link rel="stylesheet" type="text/css" href="'
-	   . url_absolue(find_in_path('prive/minipres.css')).'" />' . "\n":"");
+	   . url_absolue(find_in_path('minipres.css')).'" />' . "\n":"");
 
 	$favicon = find_in_path('spip.ico');
 
@@ -1159,11 +1159,11 @@ function voir_en_ligne ($type, $id, $statut=false, $image='racine-24.gif', $af =
 }
 
 // http://doc.spip.org/@bouton_spip_rss
-function bouton_spip_rss($op, $args=array(), $lang='', $title='RSS') {
+function bouton_spip_rss($op, $args=array(), $lang='') {
 
 	global $spip_lang_right;
 	include_spip('inc/acces');
-	$clic = http_img_pack('feed.png', 'RSS', '', $title);
+	$clic = http_img_pack('feed.png', 'RSS', '', 'RSS');
 	$args = param_low_sec($op, $args, $lang, 'rss');
 	$url = generer_url_public('rss', $args);
 	return "<a style='float: $spip_lang_right;' href='$url'>$clic</a>";
