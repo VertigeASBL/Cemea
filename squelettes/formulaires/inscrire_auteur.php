@@ -315,8 +315,6 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 			$res['editable'] = false;
 			return $res;
 		}
-
-		set_request('statut', '6forum');
 		
                 //Check if login exists
                 if ($found_logins=sql_getfetsel('login', 'spip_auteurs', 'login LIKE "'.$auteurlogin.'%"','login','login DESC')) {
@@ -338,6 +336,7 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                 
 		$userpasse = substr(md5(time()), 0, 8);
 		set_request('pass', $userpasse);
+		set_request('statut', '6forum');
 		set_request('idper', date('Y'));
 		set_request('archive_per', 'N');
 		set_request('adherent', 'N');
@@ -415,6 +414,7 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 //
 	//--- creation ou mise a jour de l'auteur
 	$res = formulaires_editer_objet_traiter('auteur',$id_auteur,0,0,$retour,$config_fonc,$row,$hidden);
+
 	if (isset($res['id_auteur']) && $res['id_auteur'] && is_numeric($res['id_auteur']))
 		$id_auteur = (int) $res['id_auteur'];
 
@@ -607,6 +607,8 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                         $inscription_titre="";
                         $p .= generer_url_public('spip_pass','lang='.$GLOBALS['spip_lang'],true)."\n\n"; //--- spip.php?page=spip_pass
 			$p .= '    Avec les meilleures salutations des '.$GLOBALS['meta']['nom_site']."\n";
+
+			echo $p;
 
 //			echo($auteurmail);
                         if ($envoyer_mail($auteurmail, $GLOBALS['meta']['nom_site'].' : '.$mail_title.' '.$inscription_titre, $p, $GLOBALS['meta']['email_webmaster']))

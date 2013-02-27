@@ -20,7 +20,6 @@ function action_editer_auteur_dist($arg=null) {
 		$arg = $securiser_action();
 	}
 
-
 	// si id_auteur n'est pas un nombre, c'est une creation
 	if (!$id_auteur = intval($arg)) {
 
