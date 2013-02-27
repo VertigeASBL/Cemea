@@ -345,38 +345,8 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 		set_request('date_maj', $k);
 		set_request('personne_reference', 'inscr');
 		set_request('envoi_diffusion', 'Y');
-		
-		/* Didier: On teste l'age de la personne */
-		/* On a besoin de mes fonctions de gestion pour faire ça */
-		include_spip('fonctions_gestion_filtre');
-		$age = age(_request('date_naissance'));
-
-		/* Didier: S'il a plus de 16 ans on fait comme d'habiture */
-		if ($age > 16) {
-			set_request('date_debut_diffusion', $k);
-			set_request('date_fin_diffusion', date('Y-m-d', time()+126230400));
-		}
-		/* S'il a moins de 16 ans */
-		else {
-			/* Le début de la date_diffusion est à l'age de 16 ans */
-			
-			/* On calcule le nombre d'année qu'il manque pour avoir 16 ans */
-			$annee_a_ajouter = 16 - $age;
-			
-			/* On créer un Objet DateTime, c'est tellement plus pratique pour manipuler les dates. */
-			$date_debut = new DateTime(_request('date_naissance'));
-
-			/* On ajoute le nombre d'année grace à cette objet, la méthode add fait tout pour nous. */
-			$date_debut->add(new DateInterval('P'.$annee_a_ajouter.'Y'));
-
-			/* On ajoute a la base de donnée. */
-			set_request('date_debut_diffusion', $date_debut->format('Y-m-d'));
-			
-			/* On ajoute encore 3 ans pour avoir la date de fin de diffusion. */
-			$date_debut->add(new DateInterval('P3Y'));			
-			/* Go dans la base de donnée. */
-			set_request('date_fin_diffusion', $date_debut->format('Y-m-d'));
-		}
+		set_request('date_debut_diffusion', $k);
+		set_request('date_fin_diffusion', date('Y-m-d', time()+126230400));
 
 		$p = _request('diffusion'); //--- envoyer 1 exemplaire par diffusion cochee
 		if (is_array($p)) {
