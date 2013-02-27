@@ -351,8 +351,6 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 		include_spip('fonctions_gestion_filtre');
 		$age = age(_request('date_naissance'));
 
-		echo '<br />age = '.$age;
-
 		/* Didier: S'il a plus de 16 ans on fait comme d'habiture */
 		if ($age > 16) {
 			set_request('date_debut_diffusion', $k);
@@ -370,15 +368,11 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 
 			/* On ajoute a la base de donnée. */
 			set_request('date_debut_diffusion', $date_debut->format('Y-m-d'));
-			
-			echo '<br />date_debut_diffusion: '.$date_debut->format('Y-m-d');
 
 			/* On ajoute encore 3 ans pour avoir la date de fin de diffusion. */
 			$date_debut->add(new DateInterval('P3Y'));			
 			/* Go dans la base de donnée. */
 			set_request('date_fin_diffusion', $date_debut->format('Y-m-d'));
-
-			echo '<br />date_fin_diffusion: '.$date_debut->format('Y-m-d');
 		}
 
 		$p = _request('diffusion'); //--- envoyer 1 exemplaire par diffusion cochee
