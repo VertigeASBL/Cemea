@@ -275,8 +275,8 @@ function cextras_editer_contenu_objet($flux){
 			break;
 		case 'inscrire_auteur': //--- cote public : modifier un auteur, inscrire a une action
                         //Added extra action fields (only those for all actions)
-			$taff = array('typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion',
-                            'alimentation'
+			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion'
+                            
                             );
                         //,'description_institution'
                         $other_extras=cextras_get_extras_match("auteurs_article");
@@ -367,7 +367,7 @@ function cextras_editer_contenu_objet($flux){
                                 'responsable','responsable_lien');
                 }
                 //print_r($extras);
-                
+
 		foreach ($extras as $c) {
 			if (! in_array($c->champ, $taff)) //--- richir vertige
 				continue;
@@ -490,7 +490,6 @@ function cextras_editer_contenu_objet($flux){
                     
 //                    print_r($flux['args']);
                     
-                    
                     foreach($other_extras as $c) {
                         if (! in_array($c->champ, $taff)) //--- richir vertige
                             continue;
@@ -530,6 +529,22 @@ function cextras_editer_contenu_objet($flux){
 
                     }
                 }
+
+        /*
+		*	Didier: J'ai aucune idée de pourquoi ou comment sont générer les champs extras.
+		*	Par contre je sais que tout le html fini dans $inserer_saisie. Du coup on installer phpquery et on manipule le html !
+        */
+		/*On appel phpQuery*/
+		include_once('phpQuery.php');
+		/*Initialisation*/
+		$doc = phpQuery::newDocument($inserer_saisie);
+		/*On récupère le champ diffusion avec un séléecteur*/
+		$diffusion = pq('.editer_diffusion');
+		/*On retir le champs diffusion*/
+		pq('.editer_diffusion')->remove();
+
+		/*On modifie la saisie pour quelle s'affiche correctement, en placant diffusion à la fin.*/
+		$inserer_saisie = $doc->getDocument().'<li class="editer_diffusion">'.$diffusion->html().'</li>';
 
 		// inserer les differentes saisies entre <ul>
 		if ($inserer_saisie) {

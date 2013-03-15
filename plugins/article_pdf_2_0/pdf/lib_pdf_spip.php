@@ -80,7 +80,7 @@ function GenerateTitlePage()
 	
 	$this->SetFont('times','',12);
 	$this->SetXY($this->rMargin+65,$this->tMargin+10);
-	$this->MultiCell(0,5,"Extrait du " . $site);
+	$this->MultiCell(0,5,"Extrait des " . $site);
 	
 	$this->SetXY($this->rMargin+65,$this->tMargin+18);
 	$this->PutLink($conf_url_site,$conf_url_site);
