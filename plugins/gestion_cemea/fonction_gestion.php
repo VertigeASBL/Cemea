@@ -1,25 +1,24 @@
 <?php
-// // On modifie le header prive (Youhou !)
+/*On modifie le header prive (Youhou !)*/
 function gestion_header_prive($flux) {
  	include_spip("inc/filtres");
 
  	/* On a besoin d'une version de jQuery plus récente sur l'admin, on va donc remplacer jQuery de SPIP par le jQuery du plugin */
-
- 	$flux = str_replace('../prive/javascript/jquery.js', (find_in_path('js/jquery.js')), $flux);
+	$flux = str_replace('../prive/javascript/jquery.js', (find_in_path('js/jquery.js')), $flux);
 
  	$flux .= '<!-- Auto-Complete Sytème -->';
 
-	// On ajoute le script auto-complete
+	/*On ajoute le script auto-complete*/
 	$flux .= '<script type="text/javascript" src="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.js')).'"></script>';
 	$flux .= '<link rel="stylesheet" href="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.css')).'" type="text/css" media="all" />';
 
-    // L'auto submit du <select> des statuts
+	/*L'auto submit du <select> des statuts*/
     $flux .= '<script type="text/javascript" src="'.(find_in_path('js/jquery.formStatut.js')).'"></script>';
   	
-    //On ajoute le CSS général du plugin
+    /*On ajoute le CSS général du plugin*/
 	$flux .= '<link rel="stylesheet" href="'.(find_in_path('gestion_cemea.css')).'" type="text/css" media="all" />';
 
-	// On renvoie le flux
+	/*On renvoie le flux*/
 	return $flux;
 }
 
