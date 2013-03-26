@@ -50,7 +50,7 @@ function change_statut_inscrit($statut, $id_auteur, $id_article) {
 	echo _T('gestion:changement_statut');
 
     // Si le statut est une confirmation de l'inscription.
-	if ($statut == 'X') {
+	if ($statut == 'X' or $statut == 'I') {
         // On ajoute la date a laquel le payement à été validé
 		sql_update('spip_auteurs_articles', 
 			array('date_validation' => 'NOW()'), 
