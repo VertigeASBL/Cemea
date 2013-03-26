@@ -85,3 +85,7 @@
 .cloturer {
 	opacity: 0.6;
 }
+
+.formulaire_spip li {
+	overflow: visible;
+}
