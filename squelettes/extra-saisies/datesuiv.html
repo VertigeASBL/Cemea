@@ -1,7 +1,0 @@
-<li class="editer_[(#ENV{champ_extra})][ (#ENV{obligatoire_extra})][ (#ENV{erreur_extra}|oui)erreur]">
-	<label for='#ENV{champ_extra}'>#ENV{label_extra}</label>
-	[<span class='erreur_message'>(#ENV**{erreur_extra})</span>]
-	[<p class="explication">(#ENV{precisions_extra})</p>]
-	#SET{varloc,#ENV{valeur_extra}|=={0000-00-00}|ou{#ENV{valeur_extra}|=={''}}|?{#ENV{champ_extra}|=={date_fin_diffusion}|?{#VAL{Y-m-d}|date{#VAL{}|time|plus{126230400}},#DATE},#ENV{valeur_extra}}|affdate{'d/m/Y'}}
-	<input type='text' class='text date' name='#ENV{champ_extra}' id='#ENV{champ_extra}' value="#GET{varloc}" />
-</li>
