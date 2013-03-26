@@ -1,23 +1,23 @@
 <table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
-	<thead>
-		<th><:gestion:personne:></th>
-		<th><:gestion:date_naissance:></th>
+    <thead>
+        <th><:gestion:personne:></th>
+        <th><:gestion:date_naissance:></th>
         <th><:gestion:age:></th>      
-	</thead>
-	<tbody>
-	<?php
-		$sql = sql_select(	
-							'id_auteur, CONCAT_WS(\' \', nom, prenom) AS nomprenom, DATE_FORMAT(date_naissance, \'%d/%m/%Y\') as date_naissance', 
-							'spip_auteurs', 
-							'CONCAT_WS(\' \', nom, prenom) LIKE '.sql_quote('%'._request('recherche_inscrit').'%').'
-							OR CONCAT_WS(\' \', prenom, nom) LIKE '.sql_quote('%'._request('recherche_inscrit').'%'));
-		while ($res = sql_fetch($sql)) {
-			echo '<tr>
-					<td><a href="'.generer_url_ecrire('fiche_inscrit_exec', 'id_auteur='.$res['id_auteur']).'" title="'.$res['nomprenom'].'">'.$res['nomprenom'].'</a></td>
-					<td>'.$res['date_naissance'].'</td>
+    </thead>
+    <tbody>
+    <?php
+        $sql = sql_select(  
+                            'id_auteur, CONCAT_WS(\' \', nom, prenom) AS nomprenom, DATE_FORMAT(date_naissance, \'%d/%m/%Y\') as date_naissance', 
+                            'spip_auteurs', 
+                            'CONCAT_WS(\' \', nom, prenom) LIKE '.sql_quote('%'._request('recherche_inscrit').'%').'
+                            OR CONCAT_WS(\' \', prenom, nom) LIKE '.sql_quote('%'._request('recherche_inscrit').'%'));
+        while ($res = sql_fetch($sql)) {
+            echo '<tr>
+                    <td><a href="'.generer_url_ecrire('fiche_inscrit_exec', 'id_auteur='.$res['id_auteur']).'" title="'.$res['nomprenom'].'">'.$res['nomprenom'].'</a></td>
+                    <td>'.$res['date_naissance'].'</td>
                     <td>'.age($res['date_naissance']).'</td>
-				</tr>';
-		}
-	?>
-	</tbody>
+                </tr>';
+        }
+    ?>
+    </tbody>
 </table>
