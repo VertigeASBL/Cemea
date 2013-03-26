@@ -1,4 +1,5 @@
 <?php
+
 // Si un nouveau statut est envoyé, on update la base de donnée.
 if (isset($_POST['statutsuivi'])) {
 	change_statut_inscrit($_POST['statutsuivi'], $_POST['id_auteur'], $_POST['id_article'], $_POST['email']);
