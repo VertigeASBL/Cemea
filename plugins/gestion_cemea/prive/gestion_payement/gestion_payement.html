@@ -18,7 +18,7 @@
 		</thead>
 		<tbody>
 
-		<BOUCLE_echeance(auteurs_articles articles auteurs mots_rubriques) {tableau_exception = oui} {inscrit=Y} {id_mot=5} {id_auteur ?= #ENV{id_auteur}} {id_article ?= #ENV{id_article}} {par date_suivi}{inverse} {pagination 20}>
+		<BOUCLE_echeance(auteurs_articles articles auteurs mots_rubriques) {tableau_exception = oui} {inscrit=Y} {id_mot IN 5,3602} {id_auteur ?= #ENV{id_auteur}} {id_article ?= #ENV{id_article}} {par date_suivi}{inverse} {pagination 20}>
 			[(#REM) On séléctionne le type de prix de la personne ]
 			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
 			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
