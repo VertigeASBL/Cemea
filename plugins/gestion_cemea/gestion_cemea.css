@@ -1,91 +1,91 @@
 .suivi_statut_ul {
-	list-style-position: outside;
-	margin: 0;
-	padding: 0;
-	-webkit-margin-before: 0;
-	-webkit-margin-after: 0;
-	-webkit-margin-start: 0px;
-	-webkit-margin-end: 0px;
-	-webkit-padding-start: 0px;
+    list-style-position: outside;
+    margin: 0;
+    padding: 0;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
 }
 .suivi_statut_ul li {
-	list-style-type: none;
+    list-style-type: none;
 }
 
 #message_ok {
-	width: 200px;
-	margin: 0 auto;
-	border: 1px #00FF00 solid;
+    width: 200px;
+    margin: 0 auto;
+    border: 1px #00FF00 solid;
 }
 
 .error_inscrit {
-	color: #FF0000;
-	font-weight: bold;
+    color: #FF0000;
+    font-weight: bold;
 }
 .good_inscrit {
-	color: #009900;
-	font-weight: bold;
+    color: #009900;
+    font-weight: bold;
 }
 
 .float {
-	width: 471px;
-	float: left;
+    width: 471px;
+    float: left;
 }
 
 .margin-float {
-	margin-left: 14px;
+    margin-left: 14px;
 }
 
 .float .tri, .float .pagination {
-	text-align: left;
+    text-align: left;
 }
 
 .float select {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 .formulaire_spip h2.titre {
-	margin-left: 5px;
+    margin-left: 5px;
 }
 
 .size_select {
-	width: 107px;
+    width: 107px;
 }
 
 .arial2 td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .formulaire_payement_rapide {
-	display: none;
-	position: absolute;
-	width: 100px;
-	z-index: 2;
-	left: -100px;
+    display: none;
+    position: absolute;
+    width: 100px;
+    z-index: 2;
+    left: -100px;
 }
 .formulaire_payement_rapide li, .formulaire_payement_rapide li.gauche {
-	padding: 0;
-	padding-left: 5px;
+    padding: 0;
+    padding-left: 5px;
 }
 
 .editer_payement_rapide input {
-	width: 80px;
+    width: 80px;
 }
 
 .close_form {
-	margin: 5px;
-	cursor: pointer;
-	float: right;
+    margin: 5px;
+    cursor: pointer;
+    float: right;
 }
 
 .error_annee {
-	background: #faadad;
+    background: #faadad;
 }
 
 .cloturer {
-	opacity: 0.6;
+    opacity: 0.6;
 }
 
 .formulaire_spip li {
-	overflow: visible;
+    overflow: visible;
 }

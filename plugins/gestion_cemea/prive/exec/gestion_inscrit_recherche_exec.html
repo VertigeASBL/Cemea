@@ -13,19 +13,17 @@ echo icone_inline(_T('gestion:nouveau_inscrit'), generer_url_ecrire("inscrire_pe
 ?>
 
 <script type="text/javascript">
-	// AutoComplete lunch !
 	$(document).ready(function () {
-		$("#recherche").autoComplete({
-			dataSupply: [
-							<BOUCLE_dataNom(AUTEURS){tout}>
-								{value: '#NOM #PRENOM', display: '#NOM #PRENOM'},
-							</BOUCLE_dataNom>
-							<BOUCLE_dataPrenom(AUTEURS){tout}> 
-								{value: '#PRENOM #NOM', display: '#NOM #PRENOM'},
-							</BOUCLE_dataPrenom>
-						]
-		});
-	});
+        $("#recherche").autocomplete({
+            source: [
+                            <BOUCLE_dataNom(AUTEURS){tout}>
+                                {
+                                    value: '#NOM #PRENOM'
+                                },
+                            </BOUCLE_dataNom>
+                        ]
+        });
+    });
 </script>
 
 <form action="#" method="get">
