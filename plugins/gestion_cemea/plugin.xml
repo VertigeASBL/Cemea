@@ -38,7 +38,7 @@
     
     <bouton id="gestion_inscrit" parent="gestion">
         <icone>images/auteur-24.gif</icone>
-        <titre>Gestion des inscrits</titre>
+        <titre>Gestion des participants</titre>
         <url>gestion_inscrit_exec</url>
     </bouton>
     
