@@ -1,0 +1,40 @@
+<div class='formulaire_spip formulaire_editer'>
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[(#ENV{editable})
+	<form method='post' action='#URL_ECRIRE{suivi}'>
+		<input type='hidden' name='id_auteur' value='#ENV{id_auteur}' />
+		<input type='hidden' name='id_article' value='#ENV{id_article}' />
+
+		<table cellspacing="0" cellpadding="4" border="0" summary="" style="margin:8px;width:96%;">
+		[(#ENV{id_article}|non) <tr><td colspan="2"><p class="reponse_formulaire reponse_formulaire_erreur">Cette action est inconnue.</p></td></tr>]
+		[(#ENV{id_article}|oui)
+			<tr><td width="28%" style="font-weight:bold">Action :</td><td>[(#ENV*{titre}|supprimer_numero)]</td></tr>
+			<tr><td> </td><td>[(#ENV*{idact})]</td></tr>]
+
+		[(#ENV{id_auteur}|non) <tr><td colspan="2"><p class="reponse_formulaire reponse_formulaire_erreur">Cette personne est inconnue.</p></td></tr>]
+		[(#ENV{id_auteur}|oui)
+			<tr><td style="font-weight:bold">Personne :</td><td>[(#ENV*{nom})]</td></tr>
+			<tr><td> </td><td>[(#ENV*{prenom})]</td></tr>
+			<tr><td> </td><td>[(#ENV*{idper})]</td></tr>]
+
+		[(#ENV{id_article}|et{#ENV{id_auteur}}|et{#ENV{inscrit}|non}|oui)
+			<tr><td colspan="2"><p class="reponse_formulaire reponse_formulaire_erreur">Il n'y a pas d'inscription de cette personne à cette action.</p></td></tr>]
+		[(#ENV{id_article}|et{#ENV{id_auteur}|non}|oui)
+			<tr><td>Inscrire auteur ID</td>
+			<td>[<span style="color:#cc0000;">(#ENV**{erreurs}|table_valeur{nouv_auteur})</span><br />]
+				<input type="text" class="text" name="nouv_auteur" value="0" style="width:90px;" /></td></tr>]
+		</table>
+		[(#ENV{id_article}|oui)<!--extra-->
+		<p class="boutons">
+			[(#ENV{inscrit}|oui) <a href="[(#URL_ECRIRE{suivi,noinscr=y[&id_auteur=(#ID_AUTEUR)][&id_article=(#ENV{id_article})]})]" style="float:left;" onclick="return confirm('Désinscrire ?');">Désinscrire</a>]
+			<input name='okconfirm' type='submit' class='submit' value='<:bouton_enregistrer:>' />
+		</p>]
+	</form>]
+</div>
+<br />
+<span style="float:right;">
+	<b><a href='[(#URL_ECRIRE{auteur_infos,id_auteur=#ENV{id_auteur}})]'>Aller à la personne</a></b>
+</span>
+<b><a href='[(#URL_ECRIRE{articles,id_article=#ENV{id_article}})]'>Aller à l'action</a></b>
+<div class='nettoyeur'></div>

@@ -1,0 +1,59 @@
+#CACHE{0}
+[(#REM) ----- formulaire : adhérer auteur ----- ]
+<div class="formulaire_spip formulaire_editer formulaire_adherer_auteur formulaire_adherer_auteur-#ENV{id_auteur,nouveau}" id="fo_adherer_auteur">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	<form method='post' action='#ENV{action}#fo_adherer_auteur' enctype='multipart/form-data' [(#ENV{editable}|non)style="display:none;"]><div>
+		[(#REM) declarer les hidden qui declencheront le service du formulaire parametre : url d'action ]
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<input type='hidden' name='id_auteur' value='#ENV{id_auteur}' />
+		<input type='hidden' name='lier_id_article' value='#ENV{lier_id_article}' />
+		[<input type='hidden' name='redirect' value='(#ENV**{redirect})' />]
+	<ul>
+	    <!--li class="editer_nom obligatoire[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+				<label for="nom">Votre nom*</label>[
+				<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type='text' class='text' name='nom' id='nom' value="[(#ENV**{nom})]" />
+	    </li>
+	    [(#REM) Modification de l'email ou message disant que seuls les admins peuvent le modifier ]
+	    <li class="editer_email obligatoire[ (#ENV**{erreurs}|table_valeur{email}|oui)erreur]">
+				<label for="email"><:entree_adresse_email:>*</label>[
+				<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{email})</span>
+				]<input type='text' class='text[ (#GET{disable}|oui)disabled]' name='email' id='email' value="[(#ENV**{email})]" #GET{disable}/>
+	    </li-->
+	</ul>
+	  [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+	  <!--extra-->
+
+	[(#ENV{id_auteur}|non)
+	<input type="hidden" name="cextra_idper" value="1" />
+	<input type="hidden" name="cextra_archive_per" value="1" />
+	<input type="hidden" name="cextra_typepart" value="1" />
+	<input type="hidden" name="cextra_adherent" value="1" />
+	<input type="hidden" name="cextra_date_creation" value="1" />
+	<input type="hidden" name="cextra_date_maj" value="1" />
+	<input type="hidden" name="cextra_personne_reference" value="1" />
+	<input type="hidden" name="cextra_envoi_diffusion" value="1" />
+	<input type="hidden" name="cextra_date_debut_diffusion" value="1" />
+	<input type="hidden" name="cextra_date_fin_diffusion" value="1" />
+	<input type="hidden" name="cextra_ndiffusion" value="1" />]
+
+	<p>[<span class='reponse_formulaire_erreur'>(#ENV**{erreurs}|table_valeur{jadhere})</span><br />]<input name="jadhere" id="jadhere" value="y" type="checkbox" class="checkbox" checked="checked" /> <label for="jadhere" style="display:inline;">J'adhère aux valeurs éducatives portées par les CEMEA.</label></p>
+	  <p class='boutons'><input type='submit' class='submit roundies' value='<:bouton_enregistrer:>' /></p>
+	  <span style="font-size:90%; color:333333;">* Les champs marqués d'un astérisque sont des champs obligatoires</span>
+	</div></form>
+</div>
+<script type="text/javascript">
+<!--
+jQuery(document).ready(function(){
+	vobj = $("LI.editer_prenom > LABEL"); vobj.text(vobj.text()+"*");
+        vobj = $("LI.editer_nom > LABEL"); vobj.text(vobj.text()+"*");
+        vobj = $("LI.editer_email > LABEL"); vobj.text(vobj.text()+"*");
+	vobj = $("LI.editer_date_naissance > LABEL"); vobj.text(vobj.text()+"*");
+	vobj = $("LI.editer_adresse > LABEL"); vobj.text(vobj.text()+"*");
+	vobj = $("LI.editer_codepostal > LABEL"); vobj.text(vobj.text()+"*");
+	vobj = $("LI.editer_localite > LABEL"); vobj.text(vobj.text()+"*");
+});
+//-->
+</script>

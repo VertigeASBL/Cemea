@@ -1,0 +1,62 @@
+<plugin>
+    <nom>Gestion Cemea</nom>
+    <icon>img/gestion-32.png</icon>
+    <auteur>Debondt Didier</auteur>
+    <licence>GNU/GLP</licence>
+    <version>0.1</version>
+    <description>
+    	Système de gestion des Activités pour Cemea | Vertige (Didier)
+    </description>
+    <etat>dev</etat>
+    <prefix>gestion</prefix>
+    
+    <fonctions>fonctions_gestion_filtre.php</fonctions>
+    
+	<bouton id="gestion">
+	    <icone>img/gestion-48.png</icone>
+	    <titre>Gestion</titre>
+	    <url>tableau</url>
+	</bouton>
+    
+    <bouton id="tableau_de_bord" parent="gestion">
+        <icone>img/tab.png</icone>
+        <titre>Tableau de bord</titre>
+        <url>tableau</url>
+    </bouton>
+    
+    <bouton id="gestion_payement" parent="gestion">
+        <icone>img/payement-24.png</icone>
+        <titre>Gestion des payements</titre>
+        <url>gestion_payement_exec</url>
+    </bouton>
+    
+    <bouton id="gestion_inscriptions" parent="gestion">
+        <icone>img/redacteurs-24.png</icone>
+        <titre>Gestion des inscriptions</titre>
+        <url>gestion_inscription_exec</url>
+    </bouton>
+    
+    <bouton id="gestion_inscrit" parent="gestion">
+        <icone>images/auteur-24.gif</icone>
+        <titre>Gestion des participants</titre>
+        <url>gestion_inscrit_exec</url>
+    </bouton>
+    
+    <bouton id="gestion_action" parent="gestion">
+        <icone>img/gestion-24.png</icone>
+        <titre>Gestion des actions</titre>
+        <url>gestion_activite_exec</url>
+    </bouton>
+    
+    <pipeline>
+        <nom>header_prive</nom>
+        <inclure>fonction_gestion.php</inclure>
+    </pipeline>
+    
+    <pipeline>
+        <nom>affiche_gauche</nom>
+        <inclure>fonction_gestion.php</inclure>
+    </pipeline>
+    
+    <necessite id="lib:h5c1accba-fpdf17" src="http://www.fpdf.org/fr/download/fpdf17.zip" />   
+</plugin>

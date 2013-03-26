@@ -1,0 +1,45 @@
+<?php 
+if (!defined("_ECRIRE_INC_VERSION")) return;
+
+include_spip('inc/presentation');
+
+include_spip('gestion_autorisation');
+
+include_spip('fonctions_gestion_cemea');
+include_spip('prive/gestion_update_db');
+
+gros_titre(_T('gestion:gestion_inscrit'));
+?>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#recherche").autocomplete({
+			source: [
+							<BOUCLE_dataNom(AUTEURS){tout}>
+								{
+									value: '#NOM #PRENOM'
+								},
+							</BOUCLE_dataNom>
+						]
+		});
+	});
+</script>
+
+<form action="#" method="get" style="float: left;">
+	<fieldset>
+		<input type="text" placeholder="<:gestion:rechercher:>" name="recherche_inscrit" id="recherche" />
+		<input type="hidden" name="exec" value="gestion_inscrit_recherche_exec">
+		<input type="submit" value=">>" />
+	</fieldset>
+</form>
+
+<?php 
+// Possibilité d'ajouter une nouvelle activité.
+echo icone_inline(_T('gestion:nouveau_inscrit'), generer_url_ecrire("inscrire_personne_exec","new=oui"), "auteur-24.gif","creer.gif", 'right');
+?>
+<div class="nettoyeur"></div>
+<?php echo debut_cadre_relief() ?>
+
+<INCLURE{fond=prive/gestion_inscrit/gestion_inscrit}{ajax}>
+
+<?php echo fin_cadre_relief(); ?>

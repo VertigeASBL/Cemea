@@ -1,0 +1,44 @@
+[(#REM)----- Rubrique sommaire -----]
+<BOUCLE_principale(RUBRIQUES){id_rubrique=1}>
+	#SET_BALISE{idprofil,y,ENV}
+	[(#INCLURE{fond=inc-toprubrique}{id_rubrique}{env})]
+	<!-- sommaire #ID_RUBRIQUE -->
+
+<div id="cgauche">
+	<h1 class="htitre surlignable" style="border:none; margin-bottom:0;">[(#TEXTE|PtoBR)]</h1>
+
+	[(#REM)----- 3 colonnes - articles -----]
+	<BOUCLE_articles(ARTICLES){id_rubrique}{par num titre}{0,3}>
+	<div class="somcol_#COMPTEUR_BOUCLE">
+		<h2 class="htitre surlignable">[(#TITRE|supprimer_numero)]</h2>
+		[(#LOGO_ARTICLE|image_reduire{180,0}|image_recadre{180,135,'top left'}|inserer_attribut{'style','margin:0 0 10px 0;'})]
+		[<div class="texte surlignable" style="text-align:left;">
+			(#TEXTE|liens_ouvrants|image_reduire{180,0})
+		</div>]
+	</div>
+	</BOUCLE_articles>
+	<br class="clearall" />
+
+	[(#REM)----- dessous -----]
+	<BOUCLE_dessous(ARTICLES){id_rubrique}{par num titre}{3,99}>
+		[<div class="texte surlignable">
+			<hr />
+			(#TEXTE|liens_ouvrants|image_reduire{620,0})
+		</div>
+		<br class="clearall" />]
+	</BOUCLE_dessous>
+
+	<BOUCLE_maj(ARTICLES){!par maj}{0,1}>
+		[<br class="clearall" /><br /><br /><span style="float:right; color:#666666; font-style:italic;">Dernière modification : (#MAJ|affdate)</span><br class="clearall" />]
+	</BOUCLE_maj>
+</div><!-- cgauche -->
+
+<div id="cdroite">
+	[(#INCLURE{fond=inc-droite}{id_rubrique})]
+	<!-- INCLURE{fond=inc-calendriermini}{env}{ajax} -->
+	<br class="clearall" />
+</div><!-- cdroite -->
+<br class="clearall" />
+
+	<INCLURE{fond=inc-bottom}{ishome='y'}>
+</BOUCLE_principale>

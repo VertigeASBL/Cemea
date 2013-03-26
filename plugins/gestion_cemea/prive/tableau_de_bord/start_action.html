@@ -1,0 +1,27 @@
+[(#SET{echeance, [(#DATE|echeance_activite{true})]})]
+[(#SET{today, #DATE})]
+<B_action_start>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+	<thead>
+		<th><:gestion:reference:></th>
+		<th><:gestion:nom_activite:></th>
+		<th><:gestion:date_debut:></th>
+		<th><:gestion:mass_mail:></th>
+	</thead>
+	<tbody>
+		<BOUCLE_action_start(ARTICLES){date_debut > #GET{today}} {date_debut < #GET{echeance}} {pagination 5} {origine_traduction}>
+		<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][ (#GET{class3y})] [(#CLOTURER|oui) cloturer]">
+			<td>#IDACT</td>
+			<td>[<a href="[(#URL_ECRIRE{articles,id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
+			<td>[(#DATE_DEBUT|affdate)]</td>
+			<td>
+				#FORMULAIRE_MAIL_MASSIF{#ID_ARTICLE}
+			</td>
+		</tr>
+		</BOUCLE_action_start>
+	</tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_action_start>
+<//B_action_start>

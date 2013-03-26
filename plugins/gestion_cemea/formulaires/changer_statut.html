@@ -1,0 +1,15 @@
+<form action="#ENV{action}" method="post" class="autosubmit">
+	#ACTION_FORMULAIRE{#ENV{action}}
+	<ul class="suivi_statut_ul">
+		#SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
+		<li class="editer_#FORM obligatoire[ (#GET{erreurs}|oui)erreur]">
+			[<span class='erreur_message'>(#GET{erreurs})</span>]
+			<select name="statut_payement">
+				<option value="1" [(#STATUT_PAYEMENT|=={1}|oui) selected="selected"]>En attente</option>
+				<option value="2" [(#STATUT_PAYEMENT|=={2}|oui) selected="selected"]>Acompte payé</option>
+				<option value="3" [(#STATUT_PAYEMENT|=={3}|oui) selected="selected"]>Payement terminé</option>
+				<option value="4" [(#STATUT_PAYEMENT|=={4}|oui) selected="selected"]>A rembourser</option>
+			</select>
+		</li>
+	</ul>
+</form>

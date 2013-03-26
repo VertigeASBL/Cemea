@@ -1,0 +1,12 @@
+<?php 
+if (!defined("_ECRIRE_INC_VERSION")) return;
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+
+gros_titre(_T('gestion:ajouter_inscrire'));
+
+echo icone_inline(_T('gestion:retour'), generer_url_ecrire('gestion_inscrit_exec'), 'auteur-24.gif', 'rien.gif', 'left');
+
+?>
+
+#FORMULAIRE_EDITER_AUTEUR_HACK{'new', ./?exec=fiche_inscrit_exec}

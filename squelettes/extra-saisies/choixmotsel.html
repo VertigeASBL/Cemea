@@ -1,0 +1,26 @@
+#SET{ident,0}
+[(#ENV{champ_extra}|=={localite}|oui) #SET{ident,5}]
+[(#ENV{champ_extra}|=={statut_ep}|ou{#ENV{champ_extra}|=={statut_sj}}|oui) #SET{ident,1}]
+[(#ENV{champ_extra}|=={statut_form_cemea}|ou{#ENV{champ_extra}|=={statut_anim_cemea}}|oui) #SET{ident,3}]
+[(#ENV{champ_extra}|=={centre_reference}|ou{#ENV{champ_extra}|=={centre_org}}|oui) #SET{ident,4}]
+[(#ENV{champ_extra}|=={dossier}|oui) #SET{ident,6}]
+[(#ENV{champ_extra}|=={lieu}|oui) #SET{ident,7}]
+[(#ENV{champ_extra}|=={commanditaire}|oui) #SET{ident,8}]
+[(#ENV{champ_extra}|=={asbl}|oui) #SET{ident,9}]
+[(#ENV{champ_extra}|=={secteur}|oui) #SET{ident,11}]
+
+<li class="editer_[(#ENV{champ_extra})][ (#ENV{obligatoire_extra})][ (#ENV{erreur_extra}|oui)erreur]">
+	<label for="#ENV{champ_extra}">#ENV{label_extra}</label>
+	[<span class='erreur_message'>(#ENV**{erreur_extra})</span>]
+	[<p class="explication">(#ENV{precisions_extra})</p>]
+#SET{oksel,0}<B_choix>
+	<select name='#ENV{champ_extra}' id='#ENV{champ_extra}'>
+		<option value=""[(#ENV*{valeur_extra}|=={''}|oui) selected="selected"]>-</option>
+<BOUCLE_choix(MOTS){id_groupe=#GET{ident}}{par num titre,titre}>
+		#SET{varloc,#TITRE|supprimer_numero|attribut_html} <option value="#GET{varloc}"[(#ENV*{valeur_extra}|=={#GET{varloc}}|oui)#SET{oksel,1} selected="selected"]>#GET{varloc}[(#ENV{cotepublic}|non)[ : (#DESCRIPTIF|nlversbr)]]</option>
+</BOUCLE_choix>
+	</select>
+</B_choix>
+[(#GET{oksel}|=={0}|oui)[(#ENV{champ_extra}|=={localite}|ou{#ENV{champ_extra}|=={lieu}}|ou{#ENV{champ_extra}|=={commanditaire}}|oui)
+	<input type='text' class='text' name='otr_#ENV{champ_extra}' value="#ENV{valeur_extra}" />]]
+</li>

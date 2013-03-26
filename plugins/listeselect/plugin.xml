@@ -1,0 +1,13 @@
+<plugin>
+   <nom>Selection de destinataires</nom>
+   <version>1.0</version>
+   <prefix>listeselect</prefix>
+   <pipeline>
+      <nom>ajouter_boutons</nom>
+      <action>ajouterBoutons</action>
+      <inclure>inc-listeselect.php</inclure>
+   </pipeline>
+	<necessite id="SPIP" version="[2.0;]" />
+	<necessite id="cextras" version="[1.4.5;]" />
+	<necessite id="spiplistes" version="[1.98;]" />
+</plugin>

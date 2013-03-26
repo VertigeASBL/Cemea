@@ -1,0 +1,92 @@
+#SET{today, #DATE}
+<B_echeance>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+	<thead>
+		<th><:gestion:reference:></th>
+		<th><:gestion:nom_activite:></th>
+		<th><:gestion:date_debut:></th>
+		<th><:gestion:personne:></th>
+		<th><:gestion:age:></th>
+		<th><:gestion:limit:></th>
+		<th><:gestion:statut_payement:></th>
+		<th><:gestion:statut:></th>
+		<th><:gestion:solde:></th>
+		<th><:gestion:jour:></th>
+	</thead>
+	<tbody>
+
+		<BOUCLE_echeance(auteurs_articles articles auteurs mots_rubriques) {tableau_exception = oui} {inscrit=Y} {id_mot IN 5,3602} {statut_payement < 3} {par date_suivi} {inverse} {pagination 5}>
+		[(#REM) On séléctionne le type de prix de la personne ]
+		[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
+		[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
+		[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT}]
+		[(#PRIX_SPECIAL|oui) #SET{prix_a_paye, #PRIX_SPECIAL} ]
+
+		[(#REM) Calcule du solde ]
+		#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
+
+		[(#REM) Nombre de jour restant avant exiration de l'inscription ]
+		#SET{jour_restant, #VAL{15}|plus{#DATE_SUIVI|calculer_jour{#GET{today}}}}
+
+		[(#REM) Brevet animateur: Dans le cas ou cette case est cochée, on vérifie les précédentes inscription ]
+		
+		[(#REM) Initialisation ]
+		[(#SET{brevet, ''})]
+		[(#SET{oldInsc, ''})]
+		[(#SET{class3y, ''})]
+		
+		[(#REM) On fait un brevet animateur ? ]
+		[(#BREVET_ANIMATEUR|oui) #SET{brevet, oui} ]
+		
+		[(#REM) Boucle qui récupère la date de l'inscription la plus ancienne. ]
+		<BOUCLE_test_date_anim(auteurs_articles articles){id_auteur}{par date_debut}{0,1}>
+		[(#GET{brevet}|oui) [(#SET{oldInsc, #DATE_DEBUT})] ]
+		</BOUCLE_test_date_anim>
+
+		[(#REM) Test si la date est plus ancienne que 3 ans ]
+		[(#GET{oldInsc}|calculer_jour|>={1095}|oui) #SET{class3y, error_annee}]
+		
+		<tr class="[(#COMPTEUR_BOUCLE|alterner{tr_liste, ''})][ (#GET{class3y})] [(#CLOTURER|oui) cloturer]">
+			<td>#IDACT</td>
+			<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
+			<td>[(#DATE_DEBUT|affdate)]</td>
+			<td><a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="#NOM #PRENOM">#NOM #PRENOM</a></td>
+			<td>[(#DATE_NAISSANCE|age)]</td>
+			<td><INCLURE{fond=prive/gestion_activite/max_inscrit}{id_article}></td>
+			<td>
+				#FORMULAIRE_CHANGER_STATUT{#ID_AUTEUR, #ID_ARTICLE, #STATUT_PAYEMENT}
+			</td>
+			<td>
+				<form method="post" action="#SELF" class="autosubmit">
+					<ul class="suivi_statut_ul">
+						<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+					</ul>
+					<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+					<input type="hidden" name="email" value="#EMAIL" />
+				</form>
+
+				#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
+				[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
+				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+				]
+
+			</td>
+			<td>
+				[(#GET{solde}|>{0}|oui) <span class="error_inscrit">[(#GET{solde}|spip_replace{'.', ','})]</span>]
+				[(#GET{solde}|<={0}|oui) <span class="good_inscrit">[(#GET{solde}|spip_replace{'.', ','})]</span>]
+			</td>
+			<td>
+				[(#GET{jour_restant}|<{0}|oui) <span class="error_inscrit">#GET{jour_restant}</span>]
+				[(#GET{jour_restant}|>={0}|oui) <span class="good_inscrit">#GET{jour_restant}</span>]
+			</td>
+			<td>#FORMULAIRE_PAYEMENT_RAPIDE{#ID_AUTEUR, #ID_ARTICLE}</td>
+		</tr>
+		</BOUCLE_echeance>
+		
+	</tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_echeance>

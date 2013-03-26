@@ -1,0 +1,16 @@
+[(#REM) Affiche le nombre d'inscrit/le nombre Max ]
+<BOUCLE_GetMax(ARTICLES){id_article}>
+	<BOUCLE_inscrit(auteurs_articles){id_article}{inscrit=Y}{statutsuivi IN I,X}>
+	</BOUCLE_inscrit>
+		
+		[(#REM) On calcule quelques variable pour modifier l'affichage ]
+		[(#MAX_PART|=={''}|ou{#MAX_PART|=={0}}|?{
+								#SET{max_part, ''} #SET{classSpan, ''}, 
+								#SET{max_part, /#MAX_PART} #SET{classSpan, 'error_inscrit'}
+							}
+		)]
+		
+		[(#TOTAL_BOUCLE|>{#MAX_PART}|oui) <span [class="(#GET{classSpan})"]>#TOTAL_BOUCLE</span>#GET{max_part} ]
+		[(#TOTAL_BOUCLE|>{#MAX_PART}|non) #TOTAL_BOUCLE#GET{max_part} ]
+	</B_inscrit>
+</BOUCLE_GetMax>
