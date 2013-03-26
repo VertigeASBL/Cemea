@@ -56,8 +56,9 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 	// Récupération du lieux ou ce déroule l'activité
 	$adresse = sql_getfetsel('texte', 'spip_articles', 'titre=\''.$activite['lieu_deroulement'].'\'');
 
-	// On ajoute le téléphone de l'organisation
-	// $texte = str_replace('#TELEPHONE_ORGANISATION', , $texte);
+    // On récupère les pieds de pages
+    $pied_sj = propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(235)));
+    $pied_ep = propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(209)));
 	
 	$balise_pdf = array(
 		'#DATE_ANNULATION',
@@ -74,7 +75,9 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 		'#HEURE_FORMATION',
 		'#DATE_FIN',
 		'#ADRESSE',
-		'#PAGE'
+		'#PAGE',
+        '#PIED_EP',
+        '#PIED_SJ'
 		);
 
 	$conversion = array(
@@ -92,7 +95,9 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 		$activite['heure_formation'],
 		$activite['dates_ra'],
 		$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite'],
-		'<div style="page-break-after: always;"></div>'
+		'<div style="page-break-after: always;"></div>',
+        $pied_ep,
+        $pied_sj
 		);
 
 	// On remplace les balises

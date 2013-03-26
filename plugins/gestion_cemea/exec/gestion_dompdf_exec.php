@@ -139,6 +139,7 @@ function exec_gestion_dompdf_exec() {
 				);
 		}
 
+        echo $html;
 
 		if ($modele != 'etiquette') {
 			// On charge le HTML
@@ -152,11 +153,11 @@ function exec_gestion_dompdf_exec() {
 			// Quoi qu'il arrive en sauvegarde le PDF dans le dossier IMG/gestion
 			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
 
-			/* On fusion les PDF ensemble*/
+			// On fusion les PDF ensemble
 			$merge = new PDFMerger;
-			/* Page 1, le PDF qu'on viens de créer avec domPDF */
+			 // Page 1, le PDF qu'on viens de créer avec domPDF 
 			$merge->addPDF(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf');
-			/*On ajoute les PDF lié */
+			// On ajoute les PDF lié 
 			foreach ($pdf_static as $key => $value) {
 				$merge->addPDF($value);
 			}
