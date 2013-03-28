@@ -28,7 +28,6 @@ function formulaires_inscrire_activite_traiter_dist() {
 	$id_auteur = _request('id_auteur');
 	$id_article = _request('inscrire_action');
 
-
 	/*On ajoute l'entrée dans la base de donnée.*/
 	sql_insertq('spip_auteurs_articles', 
 		array('id_auteur'=>$id_auteur, 'id_article'=>$id_article, 'inscrit'=>'Y', 
@@ -42,7 +41,8 @@ function formulaires_inscrire_activite_traiter_dist() {
 	/*message*/
 	return array(
 		'editable' => true,
-		'message_ok' => 'Cette personne à été inscrite'
+		'message_ok' => 'Cette personne à été inscrite',
+        'redirect' => generer_url_ecrire('suivi', '&id_auteur='.$id_auteur.'&id_article='.$id_article)
 		);
 }
 ?>

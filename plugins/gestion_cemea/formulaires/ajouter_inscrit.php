@@ -41,7 +41,7 @@ function formulaires_ajouter_inscrit_traiter_dist() {
 	/*message*/
 	return array(
 		'message_ok' => 'Cette personne à été inscrite.',
-		'redirect' => _request('redirect')
+		'redirect' => generer_url_ecrire('suivi', '&id_auteur='.$id_auteur.'&id_article='.$id_article)
 		);
 }
 ?>
