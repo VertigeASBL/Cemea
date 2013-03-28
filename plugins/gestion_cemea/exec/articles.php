@@ -128,7 +128,7 @@ function articles_affiche($id_article, $row, $cherche_auteur, $ids, $cherche_mot
 	  ($flag_editable ? bouton_modifier_articles($id_article, $id_rubrique, $modif, _T('avis_article_modifie', $modif), "article-24.gif", "edit.gif",$spip_lang_right) : "");
 
 	$haut =
-		"<div class='bandeau_actions'>$actions</div>".icone_inline(_T('gestion:retour_action'), generer_url_ecrire('gestion_activite_exec'), find_in_path('img/gestion-24.png'), 'rien.gif', 'right').
+		"<div class='bandeau_actions'>$actions</div>".icone_inline(_T('gestion:retour_action'), 'javascript: history.go(-1);', find_in_path('img/gestion-24.png'), 'rien.gif', 'right').
 		(_INTERFACE_ONGLETS?"":"<span $dir_lang class='arial1 spip_medium'><b>" . typo($surtitre) . "</b></span>\n")
 		. gros_titre($titre, '' , false)
 		. (_INTERFACE_ONGLETS?"":"<span $dir_lang class='arial1 spip_medium'><b>" . typo($soustitre) . "</b></span>\n").'<div class="clear"></div>';
