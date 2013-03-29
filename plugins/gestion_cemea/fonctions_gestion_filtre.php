@@ -159,4 +159,22 @@ function Ndiffusion2Array($liste) {
 	return $chn;
 }
 
+/*
+*   Fonction qui transforme une chaine "payement" ou extrait de compte en ul>li
+*/
+function explode_payement($str, $sigle = '') {
+    // On explode la chaine pour avoir un tableau
+    $element = explode(';', $str);
+    // Début de la chaine ul
+    $output = '<ol>';
+    // On ajoute les éléments
+    foreach ($element as $key => $value) {
+        // On évite de créer des li vide
+        if (!empty($value)) $output .= '<li>'.$value.$sigle.'</li>';
+    }
+    // On ferme le ul
+    $output .= '</ol>';
+
+    return $output;
+}
 ?>

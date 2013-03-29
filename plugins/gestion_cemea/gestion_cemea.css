@@ -89,3 +89,10 @@
 .formulaire_spip li {
     overflow: visible;
 }
+.valigntop td {
+    vertical-align:top;
+}
+
+td ol {
+    margin: 0;
+}

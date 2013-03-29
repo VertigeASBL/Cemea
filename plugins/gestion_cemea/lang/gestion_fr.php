@@ -39,7 +39,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'editer_inscrit' => 'Editer un inscrit',
 	'email' => 'Email',
 	'envoyer_pdf_confirmer' => 'Le PDF à été envoyé.',
-
+    'extrait_compte' => 'extrait de compte',
 	// F
 	'fax' => 'Fax',
 
@@ -59,6 +59,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// L
 	'limit' => 'Limite',
 	'liste_participant' => 'Liste des participants',
+    'liste_payement' => 'Liste des payements',
 
 	// N
 	'nom' => 'Nom',

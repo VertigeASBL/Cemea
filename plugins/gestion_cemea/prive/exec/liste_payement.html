@@ -1,0 +1,23 @@
+<BOUCLE_afficher_titre(ARTICLES){id_article}>
+[<h2>(#TITRE|supprimer_numero)</h2>]
+</BOUCLE_afficher_titre>
+
+<B_listing_payement>
+<table>
+    <tr>
+        <th></th>
+        <th><:gestion:nom:></th>
+        <th><:gestion:liste_payement:></th>
+        <th><:gestion:extrait_compte:></th>
+    </tr>
+    <BOUCLE_listing_payement(auteurs_articles articles auteurs){id_article}>
+    <tr class="valigntop">
+        <td>[(#CODECOURTOISIE|code_courtoisie)]</td>
+        <td>#NOM #PRENOM</td>
+        <td>[(#HISTORIQUE_PAYEMENT|explode_payement{€})]</td>
+        <td>[(#EXTRAIT_DE_COMPTE|explode_payement)]</td>
+    </tr>
+    </BOUCLE_listing_payement>
+</table>
+</B_listing_payement>
+<//B_listing_payement>

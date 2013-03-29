@@ -21,7 +21,11 @@
                 <INCLURE{fond=prive/gestion_activite/max_inscrit, id_article, env}>
             </td>
             <td>
-                <a href="[(#URL_ECRIRE{participants_exec, id_article=#ID_ARTICLE&pagination=30})]" title="<:gestion:liste_participant:>"><:gestion:liste_participant:></a>
+                <ul>
+                    <li><a href="[(#URL_ECRIRE{participants_exec, id_article=#ID_ARTICLE&pagination=30})]" title="<:gestion:liste_participant:>"><:gestion:liste_participant:></a></li>
+                    <li><a href="[(#URL_ECRIRE{liste_payement, id_article=#ID_ARTICLE&pagination=30})]" title="<:gestion:liste_payement:>"><:gestion:liste_payement:></a></li>
+                </ul>
+                
                 #FORMULAIRE_CREER_CERTIFICAT{#ID_ARTICLE, #ASBL}
             </td>
             
