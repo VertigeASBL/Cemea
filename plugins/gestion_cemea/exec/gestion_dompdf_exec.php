@@ -114,6 +114,17 @@ function exec_gestion_dompdf_exec() {
 			$html .= recuperer_fond('prive/exec/participants_exec', array('pdf' => 1, 'id_article' => $id_article, 'pagination' => 9999999), array('ajax' => false));
 			$html .= '</body></html>';
 		}
+        // Dans le cas d'un listing de payement
+        elseif ($modele === 'listing_payement') {
+            $html = '
+            <html>
+            <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            </head>
+            <body>';
+            $html .= recuperer_fond('prive/exec/liste_payement', array('pdf' => 1, 'id_article' => $id_article, 'pagination' => 9999999), array('ajax' => false));
+            $html .= '</body></html>';   
+        }
 		// Si c'est un certificat
 		elseif (!empty($id_certif)) {
 			$dompdf->set_paper('A4', 'landscape');
@@ -138,8 +149,6 @@ function exec_gestion_dompdf_exec() {
 				array('ajax' => false)
 				);
 		}
-
-        echo $html;
 
 		if ($modele != 'etiquette') {
 			// On charge le HTML

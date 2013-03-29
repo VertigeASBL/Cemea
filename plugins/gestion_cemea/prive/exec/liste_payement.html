@@ -1,5 +1,22 @@
+<?php 
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+?>
+
+<?php
+// On récupère la variable PDF pour déterminer si on est dans un PDF ou non
+$pdf = '#ENV{pdf}';
+// Si on est pas dans un PDF, on affiche le bouton pour télécharger le PDF
+if ($pdf != 1) {
+    echo icone_inline(_T('gestion:telecharger_pdf'), generer_url_ecrire('gestion_dompdf_exec','id_article=#ID_ARTICLE&modele=listing_payement'), 'doc-24.gif', '', 'right');
+
+    echo icone_inline(_T('gestion:retour'), generer_url_ecrire('gestion_activite_exec'), find_in_path('img/gestion-24.png'), '', 'left');
+}
+?>
+<div class="nettoyeur"></div>
+
 <BOUCLE_afficher_titre(ARTICLES){id_article}>
-[<h2>(#TITRE|supprimer_numero)</h2>]
+    <?php gros_titre('<:gestion:liste_payement:> [<h2>(#TITRE|supprimer_numero)</h2>]'); ?>
 </BOUCLE_afficher_titre>
 
 <B_listing_payement>
