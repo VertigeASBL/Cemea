@@ -119,20 +119,31 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 		}	
 	}
 
-	// On remplace la titre de courtoisie.
-	if ($auteur['codecourtoisie'] == 'Masculin') $code = 'M.';
-	elseif ($auteur['codecourtoisie'] == 'Féminin') $code = 'Mme';
-	else $code = '';
-
-	$texte = str_replace('#CODECOURTOISIE', $code, $texte);
+	$texte = str_replace('#CODECOURTOISIE', code_courtoisie($auteur['codecourtoisie']), $texte);
 
 	return $texte;
 }
 
+
+/*
+*   Fonction qui renvoie le code courtoisie en fonction du sexe de la personne.
+*/
+function code_courtoisie($sexe) {
+    if ($sexe == 'Masculin') return 'M.';
+    elseif ($sexe == 'Féminin') return 'Mme';
+    else return '';
+}
+
+/*
+*   str_replace version SPIP
+*/
 function spip_replace($subject, $search, $replace) {
 	return str_replace($search, $replace, $subject);
 }
 
+/*
+*   html_entity_decode
+*/
 function decode_entities($str) {
 	return html_entity_decode($str);
 }
