@@ -140,7 +140,9 @@ function formulaires_inscrire_auteur_verifier_dist($id_auteur='new', $retour='',
         
         $p = _request('id_meta_actions');
 //        echo($lier_id_article."/".$lier_id_rubrique);
-        if ((! $p) && (!isset($lier_id_article)))
+//        print_r($p);
+//        exit;
+        if ((! $p) && ($lier_id_article.""==""))
                 $erreurs['id_meta_actions'] = _T('info_obligatoire');
         
         //Debugging = Auto error
@@ -191,6 +193,7 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 	$retour = parametre_url($retour, 'email_confirm','');
 
 	$id_article = (int) $lier_id_article;
+        $id_article_array = FALSE;
         $id_rubrique = (int) $lier_id_rubrique;
 	$id_auteur = (int) $id_auteur;
 	$jeminscris = _request('jeminscris');
@@ -203,21 +206,27 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
         // && $id_auteur //Removed condition to avoid problems with new authors
         if($jeminscris && $id_rubrique) {
 //            print_r($id_rubrique);
-            $id_article=_request('id_meta_actions');
-//            print_r($id_article);
+            $id_article_array=_request('id_meta_actions');
+            $id_article=(isset ($id_article_array[0]))?$id_article_array[0]:0;
+//            echo($id_article."/");
+//            print_r($id_article_array);
+//            echo("/".$id_rubrique);
         }
+        $bSubscription = $jeminscris && ($id_article || $id_article_array);
         
 //        exit;
 
 	//--- Préparer le message
 	$message_ok = 'L\'enregistrement de vos données est réussi.';
-	if ($jeminscris && $id_article)
+	if ($bSubscription)
 		$message_ok .= "<br />Votre demande d'inscription à cette action nous est bien parvenue.";
 
 	//--- action ok ?
-	if ($jeminscris && $id_article) {
-            if(is_array($id_article)) {
-                foreach ($id_article as $key => $value) {
+	if ($bSubscription) {
+//            print_r($id_article);
+//            exit;
+            if($id_article_array) {
+                foreach ($id_article_array as $key => $value) {
                     
                     $p = sql_fetsel('max_part,titre,date_debut,dates_ra', 'spip_articles', 'id_article='.$value.' AND idact IS NOT NULL AND date_debut>=CURDATE() AND archive_act<>\'Y\' AND (id_trad=0 OR id_trad='.$value.')');
                     $actiontitre_local = isset($p['titre']) ? supprimer_numero($p['titre']) : '?';
@@ -243,14 +252,14 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                 }
                 
                 //recreate array, and return if empty
-                $id_article=shrink_array($id_article);
-                if(!(is_array($id_article)) && ($id_article==0)) {
+                $id_article_array=shrink_array($id_article_array);
+                if(sizeof($id_article_array)==0) {
                     $res['message_erreur'] = 'Désolé, ces actions ne peuvent pas recevoir d\'inscription';
                     $res['editable'] = false;
                 }
                 
 //                print_r($message_ok);
-//                print_r($id_article);
+//                print_r($id_article_array);
 //                exit;
                 
                 
@@ -418,9 +427,9 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 	$envoyer_mail = charger_fonction('envoyer_mail','inc');
 //        
         //--- inscrire : relation auteurs_articles
-	if ($jeminscris && $id_article && $id_auteur) {
-            if(is_array($id_article)) {
-                foreach ($id_article as $key => $value) {
+	if ($bSubscription && $id_auteur) {
+            if($id_article_array) {
+                foreach ($id_article_array as $key => $value) {
                     $p = sql_getfetsel('S.id_auteur', "spip_auteurs AS A,spip_auteurs_articles AS S", "S.id_auteur=$id_auteur AND S.id_article=$value AND A.id_auteur=$id_auteur");
                     
                     if ($p)
@@ -449,7 +458,7 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 
                 }
                 
-                $list_articles=implode("/", $id_article);
+                $list_articles=implode("/", $id_article_array);
 		
                 
             } else {
@@ -599,7 +608,7 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 			else
 				$p .= 'Vous pouvez récupérer votre mot de passe oublié ou changer votre mot de passe ici : ';
 			
-                        $list_articles=(is_array($id_article))?implode("/", $id_article):$id_article; 
+                        $list_articles=($id_article_array)?implode("/", $id_article_array):$id_article;
                         //$inscription_titre=($list_articles.""=="0")?"":$list_articles.'-'.$id_auteur;
                         $inscription_titre="";
                         $p .= generer_url_public('spip_pass','lang='.$GLOBALS['spip_lang'],true)."\n\n"; //--- spip.php?page=spip_pass
@@ -632,8 +641,8 @@ function shrink_array($array) {
     foreach ($array as $key => $value) {
         if(!is_null($value)) $new_array[]=$value;
     }
-    if(count($new_array)==1) $new_array=(int) $new_array[0];
-    else if(count($new_array)==0) $new_array=0;
+//    if(count($new_array)==1) $new_array=(int) $new_array[0];
+//    else if(count($new_array)==0) $new_array=0;
     
     return($new_array);
     
