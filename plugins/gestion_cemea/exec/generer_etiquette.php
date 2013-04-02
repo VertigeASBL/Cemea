@@ -134,7 +134,7 @@ function exec_generer_etiquette() {
 			if ($Ndiffusion['PRG'] > 1) $diff = '<p style="text-align: right; margin-right: 30px;">PRG: '.trim($Ndiffusion['PRG']).'</p>';
 			else $diff = '';
 
-			/*On ajoute l'étiquette*/
+			// On ajoute l'étiquette
 			$html[$c] .= '
 				<td>
 					'.$diff.'

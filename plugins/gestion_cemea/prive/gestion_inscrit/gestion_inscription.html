@@ -34,7 +34,7 @@
 					#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
 					[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
 						#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
-						[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+						[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
 					]
 					
 				</td>

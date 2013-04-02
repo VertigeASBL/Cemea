@@ -66,7 +66,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
 				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
-				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
 			</td>
 		]
 	</tr>
@@ -123,7 +123,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
 				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
-				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
 			</td>
 		]
 	</tr>
@@ -179,7 +179,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
 				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
-				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
 			</td>	
 		]
 	</tr>
@@ -235,7 +235,7 @@ if ($pdf != 1) {
 				</form>
 				
 				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
-				[(#EMAIL|oui) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
+				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR}]
 			</td>	
 		]
 	</tr>

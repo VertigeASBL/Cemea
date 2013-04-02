@@ -1,111 +1,119 @@
 <div class="formulaire_spip formulaire_editer formulaire_select_auteur formulaire_select_auteur-#ENV{id_auteur,nouveau}">
-	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur}) <:info_recommencer:></p>]
+    [<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+    [<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur}) <:info_recommencer:></p>]
 
-	<form id="idformsel" method='post' action='#ENV{action}'><div>
-		[(#REM) declarer les hidden qui declencheront le service du formulaire 
-		parametre : url d'action ]
-		#ACTION_FORMULAIRE{#ENV{action}}
+    <form id="idformsel" method='post' action='#ENV{action}'><div>
+        [(#REM) declarer les hidden qui declencheront le service du formulaire 
+        parametre : url d'action ]
+        #ACTION_FORMULAIRE{#ENV{action}}
 
-	  <input type='hidden' name='id_auteur' value='#ENV{id_auteur}' />
-	  [<input type='hidden' name='lier_id_article' value='(#ENV{lier_id_article})' />]
-	  [<input type='hidden' name='redirect' value='(#ENV**{redirect})' />]
+      <input type='hidden' name='id_auteur' value='#ENV{id_auteur}' />
+      [<input type='hidden' name='lier_id_article' value='(#ENV{lier_id_article})' />]
+      [<input type='hidden' name='redirect' value='(#ENV**{redirect})' />]
 
-	<ul>
-	    <li class="editer_email[ (#ENV**{erreurs}|table_valeur{email}|oui)erreur]">
-				<label for="email">Adresse email</label>[
-				<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{email})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='email[]' id='email_y' value="y"[(#ENV**{email}et{#VAL{y}|in_array{#ENV**{email}}}|oui) checked='checked'] /><label for='email_y'>oui</label> &nbsp;
-				<input type='checkbox' name='email[]' id='email_n' value="n"[(#ENV**{email}et{#VAL{n}|in_array{#ENV**{email}}}|oui) checked='checked'] /><label for='email_n'>non</label>
-			</div>
-	    </li>
-		<!-- li class="editer_pgp[ (#ENV**{erreurs}|table_valeur{pgp}|oui)erreur]">
-			<label for="pgp">Langue</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{pgp})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='pgp[]' id='pgp_fr' value="fr"[(#ENV**{pgp}et{#VAL{fr}|in_array{#ENV**{pgp}}}|oui) checked='checked'] /><label for='pgp_fr'>FR</label> &nbsp;
-				<input type='checkbox' name='pgp[]' id='pgp_nl' value="nl"[(#ENV**{pgp}et{#VAL{nl}|in_array{#ENV**{pgp}}}|oui) checked='checked'] /><label for='pgp_nl'>NL</label>
-			</div>
-		</li -->
-		<li class="editer_statut[ (#ENV**{erreurs}|table_valeur{statut}|oui)erreur]">
-			<label for="statut">Participants</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{statut})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='statut[]' id='statut_y' value="y"[(#ENV**{statut}et{#VAL{y}|in_array{#ENV**{statut}}}|oui) checked='checked'] /><label for='statut_y'>seulement</label> &nbsp;
-				<input type='checkbox' name='statut[]' id='statut_n' value="n"[(#ENV**{statut}et{#VAL{n}|in_array{#ENV**{statut}}}|oui) checked='checked'] /><label for='statut_n'>tous</label>
-			</div>
-		</li>
-		<li class="editer_typepart">
-			<label for="typepart">Type #ENV**{typepart}</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{typepart})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='typepart[]' id='typepart_s' value="S"[(#ENV**{typepart}et{#VAL{S}|in_array{#ENV**{typepart}}}|oui) checked='checked'] /><label for='typepart_s'>personne</label> &nbsp;
-				<input type='checkbox' name='typepart[]' id='typepart_i' value="I"[(#ENV**{typepart}et{#VAL{I}|in_array{#ENV**{typepart}}}|oui) checked='checked'] /><label for='typepart_i'>institution</label> &nbsp;
-			</div>
-		</li>
-		<li class="editer_archive_per">
-			<label for="archive_per">Archivé</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{archive_per})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='archive_per[]' id='archive_per_n' value="N"[(#ENV**{archive_per}et{#VAL{N}|in_array{#ENV**{archive_per}}}|oui) checked='checked'] /><label for='archive_per_n'>non</label> &nbsp;
-				<input type='checkbox' name='archive_per[]' id='archive_per_y' value="Y"[(#ENV**{archive_per}et{#VAL{Y}|in_array{#ENV**{archive_per}}}|oui) checked='checked'] /><label for='archive_per_y'>oui</label> &nbsp;
-			</div>
-		</li>
-		<li class="editer_adherent">
-			<label for="adherent">Adhérent</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{adherent})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='adherent[]' id='adherent_n' value="N"[(#ENV**{adherent}et{#VAL{N}|in_array{#ENV**{adherent}}}|oui) checked='checked'] /><label for='adherent_n'>non</label> &nbsp;
-				<input type='checkbox' name='adherent[]' id='adherent_y' value="Y"[(#ENV**{adherent}et{#VAL{Y}|in_array{#ENV**{adherent}}}|oui) checked='checked'] /><label for='adherent_y'>oui</label> &nbsp;
-			</div>
-		</li>
-		<li class="editer_membre">
-			<label for="membre">Membre</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{membre})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='membre[]' id='membre' value="Y"[(#ENV**{membre}et{#VAL{Y}|in_array{#ENV**{membre}}}|oui) checked='checked'] /><label for='membre'>oui</label> &nbsp;
-			</div>
-		</li>
-		<li class="editer_envoi_diffusion">
-			<label for="envoi_diffusion">Envoi diffusion</label>[
-			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{envoi_diffusion})</span>
-			]<div class='choix'>
-				<input type='checkbox' name='envoi_diffusion[]' id='envoi_diffusion_y' value="Y"[(#ENV**{envoi_diffusion}et{#VAL{Y}|in_array{#ENV**{envoi_diffusion}}}|oui) checked='checked'] /><label for='envoi_diffusion_y'>seulement</label> &nbsp;
-				<input type='checkbox' name='envoi_diffusion[]' id='envoi_diffusion_n' value="N"[(#ENV**{envoi_diffusion}et{#VAL{N}|in_array{#ENV**{envoi_diffusion}}}|oui) checked='checked'] /><label for='envoi_diffusion_n'>tous</label> &nbsp;
-			</div>
-		</li>
-		
-		<INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_ep, label_extra=Statut EP, valeur_extra=#ENV{statut_ep}}{env}>
-		<INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_sj, label_extra=Statut SJ, valeur_extra=#ENV{statut_sj}}{env}>
-		
-		<INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_form_cemea, label_extra=Statut form cemea, valeur_extra=#ENV{statut_form_cemea}}{env}>
-		<INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_anim_cemea, label_extra=Statut anim cemea, valeur_extra=#ENV{statut_anim_cemea}}{env}>
-		
-	</ul>
+    <ul>
+        <li class="editer_email[ (#ENV**{erreurs}|table_valeur{email}|oui)erreur]">
+                <label for="email">Adresse email</label>[
+                <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{email})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='email[]' id='email_y' value="y"[(#ENV**{email}et{#VAL{y}|in_array{#ENV**{email}}}|oui) checked='checked'] /><label for='email_y'>oui</label> &nbsp;
+                <input type='checkbox' name='email[]' id='email_n' value="n"[(#ENV**{email}et{#VAL{n}|in_array{#ENV**{email}}}|oui) checked='checked'] /><label for='email_n'>non</label>
+            </div>
+        </li>
+        <!-- li class="editer_pgp[ (#ENV**{erreurs}|table_valeur{pgp}|oui)erreur]">
+            <label for="pgp">Langue</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{pgp})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='pgp[]' id='pgp_fr' value="fr"[(#ENV**{pgp}et{#VAL{fr}|in_array{#ENV**{pgp}}}|oui) checked='checked'] /><label for='pgp_fr'>FR</label> &nbsp;
+                <input type='checkbox' name='pgp[]' id='pgp_nl' value="nl"[(#ENV**{pgp}et{#VAL{nl}|in_array{#ENV**{pgp}}}|oui) checked='checked'] /><label for='pgp_nl'>NL</label>
+            </div>
+        </li -->
+        <li class="editer_statut[ (#ENV**{erreurs}|table_valeur{statut}|oui)erreur]">
+            <label for="statut">Participants</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{statut})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='statut[]' id='statut_y' value="y"[(#ENV**{statut}et{#VAL{y}|in_array{#ENV**{statut}}}|oui) checked='checked'] /><label for='statut_y'>seulement</label> &nbsp;
+                <input type='checkbox' name='statut[]' id='statut_n' value="n"[(#ENV**{statut}et{#VAL{n}|in_array{#ENV**{statut}}}|oui) checked='checked'] /><label for='statut_n'>tous</label>
+            </div>
+        </li>
+        <li class="editer_typepart">
+            <label for="typepart">Type #ENV**{typepart}</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{typepart})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='typepart[]' id='typepart_s' value="S"[(#ENV**{typepart}et{#VAL{S}|in_array{#ENV**{typepart}}}|oui) checked='checked'] /><label for='typepart_s'>personne</label> &nbsp;
+                <input type='checkbox' name='typepart[]' id='typepart_i' value="I"[(#ENV**{typepart}et{#VAL{I}|in_array{#ENV**{typepart}}}|oui) checked='checked'] /><label for='typepart_i'>institution</label> &nbsp;
+            </div>
+        </li>
+        <li class="editer_archive_per">
+            <label for="archive_per">Archivé</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{archive_per})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='archive_per[]' id='archive_per_n' value="N"[(#ENV**{archive_per}et{#VAL{N}|in_array{#ENV**{archive_per}}}|oui) checked='checked'] /><label for='archive_per_n'>non</label> &nbsp;
+                <input type='checkbox' name='archive_per[]' id='archive_per_y' value="Y"[(#ENV**{archive_per}et{#VAL{Y}|in_array{#ENV**{archive_per}}}|oui) checked='checked'] /><label for='archive_per_y'>oui</label> &nbsp;
+            </div>
+        </li>
+        <li class="editer_adherent">
+            <label for="adherent">Adhérent</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{adherent})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='adherent[]' id='adherent_n' value="N"[(#ENV**{adherent}et{#VAL{N}|in_array{#ENV**{adherent}}}|oui) checked='checked'] /><label for='adherent_n'>non</label> &nbsp;
+                <input type='checkbox' name='adherent[]' id='adherent_y' value="Y"[(#ENV**{adherent}et{#VAL{Y}|in_array{#ENV**{adherent}}}|oui) checked='checked'] /><label for='adherent_y'>oui</label> &nbsp;
+            </div>
+        </li>
+        <li class="editer_membre">
+            <label for="membre">Membre</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{membre})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='membre[]' id='membre' value="Y"[(#ENV**{membre}et{#VAL{Y}|in_array{#ENV**{membre}}}|oui) checked='checked'] /><label for='membre'>oui</label> &nbsp;
+            </div>
+        </li>
+        <li class="editer_envoi_diffusion">
+            <label for="envoi_diffusion">Envoi diffusion</label>[
+            <span class='erreur_message'>(#ENV**{erreurs}|table_valeur{envoi_diffusion})</span>
+            ]<div class='choix'>
+                <input type='checkbox' name='envoi_diffusion[]' id='envoi_diffusion_y' value="Y"[(#ENV**{envoi_diffusion}et{#VAL{Y}|in_array{#ENV**{envoi_diffusion}}}|oui) checked='checked'] /><label for='envoi_diffusion_y'>seulement</label> &nbsp;
+                <input type='checkbox' name='envoi_diffusion[]' id='envoi_diffusion_n' value="N"[(#ENV**{envoi_diffusion}et{#VAL{N}|in_array{#ENV**{envoi_diffusion}}}|oui) checked='checked'] /><label for='envoi_diffusion_n'>tous</label> &nbsp;
+            </div>
+        </li>
+        <li>
+           <label for="send_email">Personne souhaitant être tenue au courant par mail</label>
+             <div class='choix'>
+                <input type="checkbox" name="send_email[]" id="send_email_y" value="oui"[(#ENV**{send_email}et{#VAL{oui}|in_array{#ENV**{send_email}}}|oui) checked="checked"] /><label for="send_email_y">Oui</label> &nbsp;
+                <input type="checkbox" name="send_email[]" id="send_email_n" value=""[(#ENV**{send_email}et{#VAL{''}|in_array{#ENV**{send_email}}}|oui) checked="checked"] /><label for="send_email_n">Non</label> &nbsp;
+            </div> 
+        </li>
+  
+              
+        <INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_ep, label_extra=Statut EP, valeur_extra=#ENV{statut_ep}}{env}>
+        <INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_sj, label_extra=Statut SJ, valeur_extra=#ENV{statut_sj}}{env}>
+        
+        <INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_form_cemea, label_extra=Statut form cemea, valeur_extra=#ENV{statut_form_cemea}}{env}>
+        <INCLURE{fond=extra-saisies/choixmotsel, champ_extra=statut_anim_cemea, label_extra=Statut anim cemea, valeur_extra=#ENV{statut_anim_cemea}}{env}>
+        
+    </ul>
 
-	<ul>
-	  	<li>
-	  		<label for="action_eti">Action:</label>
-	  		<select name="action_eti" id="action_eti">
-	  			<B_action>
-	  			<option value="none">-</option>
-	  			<BOUCLE_action(ARTICLES mots_rubriques) {id_mot IN 5,3602} {par date} {id_article ?} {inverse} {tout} {origine_traduction}>
-	  				<option value="#ID_ARTICLE" [(#ENV**{action_eti}|=={#ID_ARTICLE}|oui) selected="selected" ]>[(#TITRE|supprimer_numero)]</option>
-	  			</BOUCLE_action>
-	  			</B_action>
-	  		</select>
-	  	</li>
-	  </ul>
-	  [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
-	  <!--extra-->
+    <ul>
+        <li>
+            <label for="action_eti">Action:</label>
+            <select name="action_eti" id="action_eti">
+                <B_action>
+                <option value="none">-</option>
+                <BOUCLE_action(ARTICLES mots_rubriques) {id_mot IN 5,3602} {par date} {id_article ?} {inverse} {tout} {origine_traduction}>
+                    <option value="#ID_ARTICLE" [(#ENV**{action_eti}|=={#ID_ARTICLE}|oui) selected="selected" ]>[(#TITRE|supprimer_numero)]</option>
+                </BOUCLE_action>
+                </B_action>
+            </select>
+        </li>
+      </ul>
+      [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+      <!--extra-->
 
-	  <p class='boutons'>
-	  	<input type='submit' name="operliste" class='submit' value="Générer la liste de diffusion temporaire" />
-	  	<input type='submit' name="operpdf" class='submit' value="Générer les étiquettes" />
-	  	<br /><br />
-		s&eacute;parateur "," <input name="exportdlim" type="radio" value="v"[(#ENV**{exportdlim}|=={v}|oui)checked="checked"] /> ou ";" <input name="exportdlim" type="radio" value="p"[(#ENV**{exportdlim}|=={p}|oui)checked="checked"] /> &nbsp;
-	  	<input type='submit' name="opercsv" class='submit' value="Exporter les coordonnées en CSV" />
-	  </p>
-	</div></form>
+      <p class='boutons'>
+        <input type='submit' name="operliste" class='submit' value="Générer la liste de diffusion temporaire" />
+        <input type='submit' name="operpdf" class='submit' value="Générer les étiquettes" />
+        <br /><br />
+        s&eacute;parateur "," <input name="exportdlim" type="radio" value="v"[(#ENV**{exportdlim}|=={v}|oui)checked="checked"] /> ou ";" <input name="exportdlim" type="radio" value="p"[(#ENV**{exportdlim}|=={p}|oui)checked="checked"] /> &nbsp;
+        <input type='submit' name="opercsv" class='submit' value="Exporter les coordonnées en CSV" />
+      </p>
+    </div></form>
 </div>
