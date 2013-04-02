@@ -24,7 +24,7 @@ function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream
 		$mail = Swift_Message::newInstance($sujet);
 		$mail->SetFrom(array($GLOBALS['meta']['email_webmaster'] => 'Cemea'));
 		$mail->setTo($destinataire);
-		$mail->setBody($body); 
+		$mail->setBody($body, 'text/html'); 
 
         // On si on veux envoyer un fichier 
 		if (!empty($fichier) and !$stream) $mail->attach(Swift_Attachment::fromPath($fichier));
