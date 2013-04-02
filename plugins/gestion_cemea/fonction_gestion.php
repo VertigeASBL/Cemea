@@ -1,24 +1,41 @@
 <?php
 /*On modifie le header prive (Youhou !)*/
 function gestion_header_prive($flux) {
-    include_spip("inc/filtres");
 
-    /* On a besoin d'une version de jQuery plus récente sur l'admin, on va donc remplacer jQuery de SPIP par le jQuery du plugin */
-    $flux = str_replace('../prive/javascript/jquery.js', (find_in_path('js/jquery.js')), $flux);
+    /*
+    * Ce tableau contient les page qui on un calendrier. 
+    * Il ne faut pas mettre à jour jQuery dessus, sinon le calendrier ne fonctionne plus
+    */
+    $calendrier_page = array(
+        'suivi', 
+        'editer_inscrit_exec', 
+        'editer_activite_exec', 
+        'auteur_infos', 
+        'inscrire_personne_exec'
+        );
 
-    $flux .= '<!-- Auto-Complete Sytème -->';
+    // Si on est pas dans un page avec des calendriers 
+    if (!in_array($_GET['exec'], $calendrier_page)) {
+        /* 
+        *   On a besoin d'une version de jQuery plus récente sur l'admin. 
+        *   on va donc remplacer jQuery de SPIP par le jQuery du plugin 
+        */
+        $flux = str_replace('../prive/javascript/jquery.js', (find_in_path('js/jquery.js')), $flux);
 
-    /*On ajoute le script auto-complete*/
-    $flux .= '<script type="text/javascript" src="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.js')).'"></script>';
-    $flux .= '<link rel="stylesheet" href="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.css')).'" type="text/css" media="all" />';
+        $flux .= '<!-- Auto-Complete Sytème -->';
 
-    /*L'auto submit du <select> des statuts*/
+        // On ajoute le script auto-complete
+        $flux .= '<script type="text/javascript" src="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.js')).'"></script>';
+        $flux .= '<link rel="stylesheet" href="'.(find_in_path('js/auto-complete/jquery-ui-1.9.2.custom.min.css')).'" type="text/css" media="all" />';
+    }
+
+    // L'auto submit du <select> des statuts
     $flux .= '<script type="text/javascript" src="'.(find_in_path('js/jquery.formStatut.js')).'"></script>';
     
-    /*On ajoute le CSS général du plugin*/
+    // On ajoute le CSS général du plugin
     $flux .= '<link rel="stylesheet" href="'.(find_in_path('gestion_cemea.css')).'" type="text/css" media="all" />';
 
-    /*On renvoie le flux*/
+    // On renvoie le flux
     return $flux;
 }
 
@@ -27,22 +44,22 @@ function gestion_affiche_gauche(&$flux){
     include_spip('inc/presentation');
     
     /*
-        Boite du menu "Gestion des activités".
+    *   Boite du menu "Gestion des activités".
     */
     if ($flux['args']['exec'] == 'gestion_activite_exec') {
 
         // Création de la boite et ajout du titre
         $flux['data'] .= debut_cadre_relief('',true,'', _T('gestion:option'));
-        
+
         // On ajoute les liens
         $flux['data'] .= '';
-        
+
         // Fermeture du cadre.
         $flux['data'] .= fin_cadre_relief(true);
     }
 
     /*
-        Boite du menu "Gestion des inscriptions".
+    *   Boite du menu "Gestion des inscriptions".
     */
     if ($flux['args']['exec'] == 'gestion_inscription_exec') {
 
@@ -53,7 +70,7 @@ function gestion_affiche_gauche(&$flux){
 
         // Récupération du statutsuivi actuel
         $statutsuivi = _request('statutsuivi');
-        
+
         // Ou doit ton mettre la class ON ?
         if ($statutsuivi == 'T') $t = 'class="on"';
         elseif ($statutsuivi == 'X') $x = 'class="on"';
@@ -78,4 +95,4 @@ function gestion_affiche_gauche(&$flux){
     // en renvoie le flux modifié.
     return $flux;
 }
-?>  
+?>
