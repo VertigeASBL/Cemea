@@ -22,9 +22,17 @@ Store Activités Sections in an Array
 #SET{found_sec,#GET{found_sec}|push{#ID_RUBRIQUE}}
 </BOUCLE_activites>
 
+[(#REM) 
+    Didier:
+    On a besoin de la date d'aujourd'hui pour filtrer dans le temps.
+]
+
+[(#SET{today, #DATE})]
+
+
 <h4 class="htitre">Activités</h4>
 <ul class="listeul">
-<BOUCLE_rechart0(ARTICLES){titre=#RECHERCHE}{par titre}{id_rubrique IN #GET{found_sec}}>
+<BOUCLE_rechart0(ARTICLES){titre=#RECHERCHE}{par titre}{id_rubrique IN #GET{found_sec}} {date_debut > #GET{today}}>
 		<li class="listeli">
 			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
                         #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
@@ -33,7 +41,7 @@ Store Activités Sections in an Array
 	</BOUCLE_action0>
 		</li>
 </BOUCLE_rechart0>
-<BOUCLE_rechart1(ARTICLES){titre==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique IN #GET{found_sec}}>
+<BOUCLE_rechart1(ARTICLES){titre==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique IN #GET{found_sec}} {date_debut > #GET{today}}>
 		<li class="listeli">
 			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
                         #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
@@ -42,7 +50,7 @@ Store Activités Sections in an Array
 	</BOUCLE_action1>
 		</li>
 </BOUCLE_rechart1>
-<BOUCLE_rechart2(ARTICLES){texte==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+<BOUCLE_rechart2(ARTICLES){texte==^(.+[[:blank:][:punct:]]#RECHERCHE[[:blank:][:punct:]].+|#RECHERCHE[[:blank:][:punct:]].+|.+[[:blank:][:punct:]]#RECHERCHE)$}{par titre}{id_rubrique IN #GET{found_sec}}{id_article !IN #GET{found_art}} {date_debut > #GET{today}}>
 		<li class="listeli">
 			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
                         #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
@@ -51,7 +59,7 @@ Store Activités Sections in an Array
 	</BOUCLE_action2>
 		</li>
 </BOUCLE_rechart2>
-<BOUCLE_rechart3(ARTICLES){recherche}{par points}{inverse}{id_rubrique IN #GET{found_sec}}{id_article !IN #GET{found_art}}>
+<BOUCLE_rechart3(ARTICLES){recherche}{par points}{inverse}{id_rubrique IN #GET{found_sec}}{id_article !IN #GET{found_art}} {date_debut > #GET{today}}>
 		<li class="listeli">
 			<a href="[(#URL_ARTICLE|parametre_url{retour,1})]">[(#TITRE|supprimer_numero|textebrut)]</a>
                         #SET{found_art,#GET{found_art}|push{#ID_ARTICLE}}
