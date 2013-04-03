@@ -47,8 +47,8 @@ RewriteBase /Vertige/Cemea/
 # Inscrivez ci-dessous vos reglages supplementaires
 
 # Redirect to www.
-RewriteCond %{HTTP_HOST} ^cemea.be$ [NC]
-RewriteRule ^(.*)$ http://www.cemea.be/$1 [R=301,L]
+# RewriteCond %{HTTP_HOST} ^cemea.be$ [NC]
+# RewriteRule ^(.*)$ http://www.cemea.be/$1 [R=301,L]
 
 
 ################ GESTIONS DES URLS SPIP #######################
