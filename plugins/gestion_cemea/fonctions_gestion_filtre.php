@@ -57,8 +57,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 	$adresse = sql_getfetsel('texte', 'spip_articles', 'titre=\''.$activite['lieu_deroulement'].'\'');
 
     // On récupère les pieds de pages
-    $pied_sj = propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(235)));
-    $pied_ep = propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(209)));
+    $pied_sj = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(235))).'</div>';
+    $pied_ep = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(209))).'</div>';
 	
 	$balise_pdf = array(
 		'#DATE_ANNULATION',
