@@ -5,7 +5,7 @@ function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream
 	include_once('lib_swift/swift_required.php');
 
     // ON ENVOIE RIEN EN VRAI SINON CA VA PAS LE FAIRE BORDEL !
-	$destinataire = array('didier@vertige.org' => 'Debondt Didier');
+	$destinataire = array('jpl@cemea.be' => 'Jean-Paul Liens');
 
     // Quelques tests, juste pour être sur
 	if (!is_array($destinataire)) echo 'Erreur, le destinnataire dois être un tableau PHP array(adresse => Nom)';
