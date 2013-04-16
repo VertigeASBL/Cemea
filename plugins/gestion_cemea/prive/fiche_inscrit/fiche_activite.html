@@ -14,7 +14,7 @@
 		<th><:gestion:statut:></th>
 		<th><:gestion:date_validation:></th>
 	</thead>
-	<BOUCLE_activite(ARTICLES auteurs auteurs_articles mots_rubriques) {id_auteur}{id_mot IN 5,3602} {par date_suivi} {inverse} {origine_traduction}>
+	<BOUCLE_activite(ARTICLES auteurs auteurs_articles mots_rubriques) {id_auteur}{id_mot IN 5,3627} {par date_suivi} {inverse} {origine_traduction}>
 	<tr class="[(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})][(#CLOTURER|oui) cloturer]">
 		<td>#IDACT</td>
 		<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>

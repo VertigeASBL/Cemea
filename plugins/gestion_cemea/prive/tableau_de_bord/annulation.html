@@ -11,7 +11,7 @@
 		</thead>
 		<tbody>
 
-		<BOUCLE_annule(auteurs_articles articles auteurs mots_rubriques){inscrit=Y} {id_mot IN 5,3602} {statutsuivi = A} {par date_validation_payement} {inverse} {pagination 5}>
+		<BOUCLE_annule(auteurs_articles articles auteurs mots_rubriques){inscrit=Y} {id_mot IN 5,3627} {statutsuivi = A} {par date_validation_payement} {inverse} {pagination 5}>
 			[(#REM) On séléctionne le type de prix de la personne ]
 			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
 			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]

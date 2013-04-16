@@ -2,7 +2,7 @@
 	$(document).ready(function () {
 		$("#activite").autocomplete({
 			source: [
-							<BOUCLE_action(ARTICLES mots_rubriques){id_mot IN 5,3602}{origine_traduction}>
+							<BOUCLE_action(ARTICLES mots_rubriques){id_mot IN 5,3627}{origine_traduction}>
 								{
 									value: "[(#IDACT)]",
 									label: "[(#IDACT)] [(#TITRE|utf8_decode|supprimer_numero|addslashes|html_entity_decode|utf8_encode|replace{\&\#8217\;, "'" })] [(#DATE_DEBUT|affdate)]"

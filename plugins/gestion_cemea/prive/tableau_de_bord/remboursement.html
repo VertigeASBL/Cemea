@@ -12,7 +12,7 @@
 		</thead>
 		<tbody>
 
-		<BOUCLE_remboursement(auteurs_articles articles auteurs mots_rubriques){inscrit=Y} {id_mot IN 5,3602} {statut_payement = 4}{pagination 5}>
+		<BOUCLE_remboursement(auteurs_articles articles auteurs mots_rubriques){inscrit=Y} {id_mot IN 5,3627} {statut_payement = 4}{pagination 5}>
 			[(#REM) On séléctionne le type de prix de la personne ]
 			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
 			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]

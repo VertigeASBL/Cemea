@@ -11,7 +11,7 @@
     </thead>
     <tbody>
         
-        <BOUCLE_action(ARTICLES mots_rubriques) {id_mot IN 5,3602} {par date} {id_article ?} {inverse} {pagination 20} {tout} {origine_traduction}>
+        <BOUCLE_action(ARTICLES mots_rubriques) {id_mot IN 5,3627} {par date} {id_article ?} {inverse} {pagination 20} {tout} {origine_traduction}>
         <tr class="[(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})][(#CLOTURER|oui) cloturer]">
             <td>#IDACT</td>
             <td><a href="[(#URL_ECRIRE{articles, id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">[(#TITRE|supprimer_numero)]</a></td>

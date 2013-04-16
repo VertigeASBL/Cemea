@@ -10,7 +10,7 @@
 
 		$("#activite").autocomplete({
 			source: [
-							<BOUCLE_action(ARTICLES mots_rubriques){id_mot IN 5,3602}>
+							<BOUCLE_action(ARTICLES mots_rubriques){id_mot IN 5,3627}>
 								{
 									value: '[(#IDACT)]',
 									label: "[(#IDACT)] [(#TITRE|supprimer_numero|addslashes|html_entity_decode)] [(#DATE_DEBUT|affdate)]",
