@@ -2,7 +2,7 @@
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
 	[(#ENV{editable})
-	<form method='post' action='#URL_ECRIRE{suivi}'>
+	<form method='post' action='#SELF'>
 		<input type='hidden' name='id_auteur' value='#ENV{id_auteur}' />
 		<input type='hidden' name='id_article' value='#ENV{id_article}' />
 

@@ -38,21 +38,6 @@ function formulaires_inscrire_activite_traiter_dist() {
 	include_spip('fonctions_gestion_cemea');
 	mettre_a_jour_diffusion($id_auteur);
 
-    // On envoie un message au audministrateur pour signaler la nouvelle inscription
-    // On a besoin de swiftMailer
-    include_spip('fonctions_gestion_cemea');
-
-    $destinataire = array(
-        'Cemea' => $GLOBALS['meta']['email_webmaster'],
-        'Inscription Cemea' => 'inscriptions@cemea.be'
-        );
-
-    $sujet = $GLOBALS['meta']['nom_site'].' : nouvelle inscription';
-
-    $body = 'Une nouvelle inscription à été faite par un audministrateur, pour la visionner: <a href="'.generer_url_ecrire('suivi', 'id_auteur='.$id_auteur.'&id_article='.$id_article).'">'.generer_url_ecrire('suivi', 'id_auteur='.$id_auteur.'&id_article='.$id_article).'</a>';
-
-    swift_envoyer_mail($destinataire, $sujet, $body);
-    
 	/*message*/
 	return array(
 		'editable' => true,

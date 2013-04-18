@@ -38,7 +38,8 @@ function exec_suivi() {
 	else
 		$id_article = 0;
 
-	$req = sql_select('idper,nom,prenom,statut,inscrit,statutsuivi,date_suivi,heure_suivi,sante_comportement,alimentation,remarques_inscription,ecole,brevet_animateur,places_voitures, historique_payement, extrait_de_compte, statut_payement, tableau_exception, recus_fiche_medical, prix_special', "spip_auteurs AS A LEFT JOIN spip_auteurs_articles AS S ON S.id_auteur=$id_auteur AND S.id_article=$id_article AND S.inscrit<>''", "A.id_auteur=$id_auteur");
+	$req = sql_select('*', 
+                            "spip_auteurs AS A LEFT JOIN spip_auteurs_articles AS S ON S.id_auteur=$id_auteur AND S.id_article=$id_article AND S.inscrit<>''", "A.id_auteur=$id_auteur");
 	if ($data = sql_fetch($req)) {
 		$idper = $data['idper'];
 		$nom = $data['nom'];
@@ -133,6 +134,56 @@ function exec_suivi() {
                                             ), "id_auteur=$id_auteur AND id_article=$id_article");
 				$contexte['message_ok'] = 'Ok, l\'inscription est mise à jour';
 				$inscrit = 'Y';
+
+                /*
+                *   Si c'est une nouvelle inscription faite par un admin, on envoie un mail
+                */
+                if (_request('new') == 'oui') {
+                    $p = 'Bonjour,'."\n\n".'Voici une nouvelle inscription :'."\n\n";
+                    $p .= 'Sexe : '.$data['codecourtoisie']."\n";
+                    $p .= 'Prénom : '.$prenom."\n";
+                    $p .= 'Nom : '.$nom."\n";
+                    $p .= 'e-mail : '.$data['email']."\n";
+                    $p .= 'Date naissance : '.$data['date_naissance']."\n";
+                    $p .= 'Lieu naissance : '.$data['lieunaissance']."\n";
+                    
+                    $p .= 'Adresse : '.$data['adresse']."\n";
+                    $p .= 'No : '.$data['adresse_no']."\n";
+                    $p .= 'Code postal : '.$data['codepostal']."\n";
+                    $p .= 'Localité : '.$data['localite']."\n";
+                    $p .= 'Téléphone : '.$data['tel1']."\n";
+                    $p .= 'GSM : '.$data['gsm1']."\n";
+                    $p .= 'Fax : '.$data['fax1']."\n";
+                    
+                    $p .= "\n*******\n\n";
+                    
+                    $p .= 'Études en cours et établissement : '.$data['etude_etablissement']."\n";
+                    $p .= 'Profession : '.$data['profession']."\n";
+                    $p .= 'Demandeur d’emploi : '.$data['demandeur_emploi']."\n";
+                    $p .= 'Membre d’une association : '.$data['membre_assoc']."\n";
+                    $p .= 'Pratique : '.$data['pratique']."\n";
+                    $p .= 'Formations : '.$data['formation']."\n";
+                    $p .= 'Facture : '.$data['facture']."\n";
+                    $p .= 'Adresse de facturation : '.$data['adresse_facturation']."\n";
+                    $p .= 'Régime alimentaire : '.$alimentation."\n";
+                    $p .= 'Places dans votre voiture : '.$places_voitures."\n";
+                    $p .= 'Brevet d’animateur : '.$brevet_animateur."\n";
+                    $p .= 'Remarques : '.$remarques_inscription."\n";
+                    
+                    $p .= "\n*******\n\n";
+                    
+                    $p .= 'id_auteur : '.$id_auteur."\n";
+                    $p .= 'Statut : '.$statutsuivi."\n";
+                    $p .= 'Action : '.$actiontitre."\n";
+                    $p .= 'Dates : '.$datesaction."\n";
+                    $p .= 'id_article : '.$list_articles."\n";
+                    $p .= "\n".'-----'."\n";
+
+                    $envoyer_mail = charger_fonction('envoyer_mail','inc');
+                    $p = $envoyer_mail($GLOBALS['meta']['email_webmaster'].$addon_recipients, $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$list_articles.'-'.$id_auteur, $p, $GLOBALS['meta']['email_webmaster']);
+                }
+
+
 				include_spip('inc/headers');
 				redirige_par_entete(parametre_url('?exec=articles', 'id_article', $id_article, '&'));
 				exit();
