@@ -14,6 +14,11 @@ function echeance_activite($date, $plus = false) {
 
 // Calcule l'age en fonction de la date de naissance
 function age($date) {
+    /*
+    *   Cette adaptation est obligatoire si on utilise un format de date "Français", 
+    *   strtotime ne supporte que le format d-m-Y et pas d/m/Y.
+    */
+    $date = str_replace('/', '-', $date);
 	return (int) ((time() - strtotime($date)) / 3600 / 24 / 365);
 }
 
