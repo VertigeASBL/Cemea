@@ -19,10 +19,9 @@
 
 	[(#REM)--- mot 5 and 3627 : rubrique actions et meta-actions ---]
 	<BOUCLE_action(MOTS){id_rubrique}{mots_rubriques.id_mot IN 5,3627}>
-		[<div class="blocdroite">(#DATE_DEBUT|affdate{'d/m/Y'})</div><b>début :</b><br class="clearall" /><br />]
-		[<div class="blocdroite">(#DATES_RA)</div><b>dates :</b><br class="clearall" /><br />]
+        [<div class="blocdroite">(#DATES_RA)</div><b>dates :</b><br class="clearall" /><br />]
 		[<div class="blocdroite">(#LIEU|PtoBR)</div><b>lieu :</b><br class="clearall" /><br />]
-		[<div class="blocdroite stylequote">(#_principale:DESCRIPTIF|PtoBR)</div><b>tarif :</b><br class="clearall" /><br />]
+		[<div class="blocdroite stylequote">(#_principale:DESCRIPTIF|PtoBR)</div><b>Prix:</b><br class="clearall" /><br />]
 		[(#ARCHIVE_ACT|!={Y}|et{#DATE_DEBUT|>={#ENV{date}|affdate{'Y-m-d'}}}|oui)
                     [(#ID_MOT|=={3627}|oui)
                         <a href="[(#URL_ARTICLE{3}|parametre_url{idrubrique,#ID_RUBRIQUE}|parametre_url{retour,1})]">S'inscrire à une action de cette série</a>
