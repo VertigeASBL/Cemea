@@ -252,7 +252,7 @@ function cextras_editer_contenu_objet($flux){
 			echo '<div style="padding:4px 15px; color:#cc0000; border:1px solid #cc0000;">Redirection vers l\'article ID ',$k,'.</div>',"\n";
 		else if (sql_getfetsel('id_mot', 'spip_mots_rubriques', 'id_mot IN (5,3627) AND id_rubrique='.sql_quote($flux['args']['contexte']['id_parent'])))
 			//--- Actions ---
-			$taff = array('idact','archive_act','dossier','semestre','max_part','assurance','date_debut','dates_ra','titre_ra','lieu','commanditaire','nb_formateurs_ra','nb_part_ra','par_unite_ra','type_unite_ra','nb_unite_ra','insertion','cocof_rec','subord','dates_scir','titre_scir','nb_part_scir','par_unite_scir','type_unite_scir','nb_unite_scir','date_c','date_maj','type_act','residentiel','centre_org','asbl','fonctionnel','secteur','cursus_formation','diffusion', 'prix', 'prix_etudiant', 'prix_organisme', 'lieu_deroulement', 'telephone_orga', 'text_presentation', 'heure_formation', 'cloturer');
+			$taff = array('idact','archive_act','dossier','semestre','max_part','assurance','date_debut','dates_ra','titre_ra','lieu','commanditaire','nb_formateurs_ra','nb_part_ra','par_unite_ra','type_unite_ra','nb_unite_ra','insertion','cocof_rec','subord','dates_scir','titre_scir','nb_part_scir','par_unite_scir','type_unite_scir','nb_unite_scir','date_c','date_maj','type_act','residentiel','centre_org','asbl','fonctionnel','secteur','cursus_formation','diffusion', 'prix', 'prix_etudiant', 'prix_organisme', 'lieu_deroulement', 'telephone_orga', 'text_presentation', 'heure_formation', 'cloturer', 'heure_debut', 'heure_fin', 'chemin_lieu');
 		else if (in_array($flux['args']['contexte']['id_parent'], array(51, 52))) {
 			$taff = array('asbl');
 		}
