@@ -109,6 +109,20 @@ function exec_gestion_dompdf_exec() {
 			<html>
 			<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 50px;
+                padding-left: 150px;
+                padding-right: 150px;
+            }
+            .pied_page {
+                position: absolute;
+                bottom: 30;
+            }
+            </style>
 			</head>
 			<body>';
 			$html .= recuperer_fond('prive/exec/participants_exec', array('pdf' => 1, 'id_article' => $id_article, 'pagination' => 9999999), array('ajax' => false));
@@ -120,6 +134,20 @@ function exec_gestion_dompdf_exec() {
             <html>
             <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 50px;
+                padding-left: 150px;
+                padding-right: 150px;
+            }
+            .pied_page {
+                position: absolute;
+                bottom: 30;
+            }
+            </style>
             </head>
             <body>';
             $html .= recuperer_fond('prive/exec/liste_payement', array('pdf' => 1, 'id_article' => $id_article, 'pagination' => 9999999), array('ajax' => false));
