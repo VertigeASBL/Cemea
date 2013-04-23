@@ -103,7 +103,7 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 		affdate(echeance($inscription['date_suivi'], true)),
 		affdate($activite['date_debut']),
 		$activite['idact'],
-		propre($ireadresse),
+		propre($adresse),
 		supprimer_numero($activite['titre']),
 		$auteur['nom'],
 		$auteur['prenom'],
