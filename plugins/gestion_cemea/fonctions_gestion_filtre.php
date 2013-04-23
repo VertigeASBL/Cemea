@@ -54,7 +54,7 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 	// Récupération des informations de l'activité
 	$activite = sql_fetsel('*', 'spip_articles', 'id_article='.$id_activite);
 	// Récupération des informations de l'inscription
-	$inscription = sql_fetsel('*', 'spip_auteurs_articles', 'id_auteur='.$id_personne);
+	$inscription = sql_fetsel('*', 'spip_auteurs_articles', 'id_auteur='.$id_personne.' AND id_article='.$id_activite);
 	// Récupération des informations de l'auteur
 	$auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur='.$id_personne);
 
@@ -65,6 +65,16 @@ function balise_pdf($texte, $id_activite, $id_personne) {
     $pied_sj = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(235))).'</div>';
     $pied_ep = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(209))).'</div>';
 	
+    // calcule du prix que devrai payer la personne.
+    if ($auteur['typepart'] == 'S') $prix = $activite['prix'];
+    elseif ($auteur['typepart'] == 'I') $prix = $activite['prix_organisme'];
+    elseif ($auteur['demandeur_emploi'] == 'oui') $prix = $activite['prix_etudiant'];
+    elseif (!empty($inscription['prix_special'])) $prix = $inscription['prix_special'];
+    else $prix = $activite['prix'];
+
+    // Calcule du solde de la personne.
+    $solde = $prix - calculer_payement($inscription['historique_payement']);
+
 	$balise_pdf = array(
 		'#DATE_ANNULATION',
 		'#DATE_DEBUT',
@@ -82,14 +92,18 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 		'#ADRESSE',
 		'#PAGE',
         '#PIED_EP',
-        '#PIED_SJ'
+        '#PIED_SJ',
+        '#HEURE_DEBUT',
+        '#HEURE_FIN',
+        '#CHEMIN_LIEU',
+        '#SOLDE'
 		);
 
 	$conversion = array(
 		affdate(echeance($inscription['date_suivi'], true)),
 		affdate($activite['date_debut']),
 		$activite['idact'],
-		propre($adresse),
+		propre($ireadresse),
 		supprimer_numero($activite['titre']),
 		$auteur['nom'],
 		$auteur['prenom'],
@@ -102,7 +116,11 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 		$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite'],
 		'<div style="page-break-after: always;"></div>',
         $pied_ep,
-        $pied_sj
+        $pied_sj,
+        $activite['heure_debut'],
+        $activite['heure_fin'],
+        $activite['chemin_lieu'],
+        $solde
 		);
 
 	// On remplace les balises
