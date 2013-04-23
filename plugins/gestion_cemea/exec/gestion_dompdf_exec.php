@@ -1,5 +1,5 @@
 <?php
-set_time_limit(0);
+// set_time_limit(0);
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
@@ -16,8 +16,8 @@ function exec_gestion_dompdf_exec() {
 
 	/* fonction destinnée à évité de ce retrouvé avec n'importe quoi comme nom de fichier après la purification. */
 	function filtre_filename($str) {
-		$search = array('é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ï', 'î', 'ù', 'ç', ' ');
-		$replace = array('e', 'e', 'e', 'e', 'a', 'a', 'a', 'i', 'i', 'u', 'c', '_');
+		$search = array('é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ï', 'î', 'ù', 'ç', ' ', '‘');
+		$replace = array('e', 'e', 'e', 'e', 'a', 'a', 'a', 'i', 'i', 'u', 'c', '_', '');
 
 		return str_replace($search, $replace, $str);
 	}
@@ -58,7 +58,7 @@ function exec_gestion_dompdf_exec() {
 	$action = sql_fetsel('titre, idact as reference', 'spip_articles', 'id_article='.sql_quote($id_article));
 
 	// On créer le nom du fichier pour vérifier son éventuel existance.
-	$filename = $personne['nom'].'_'.$personne['prenom'].'_'.$action['reference'].'_'.supprimer_numero($action['titre']);
+	$filename = $personne['nom'].'_'.$personne['prenom'].'_'.$action['reference'];
 	if ($modele == 'liste_participant') {
 		$filename = $modele.'_'.$action['reference'];
 	}
@@ -150,7 +150,7 @@ function exec_gestion_dompdf_exec() {
 				);
 		}
 
-		if ($modele != 'etiquette') {
+        if ($modele != 'etiquette') {
 			// On charge le HTML
 			$dompdf->load_html($html);
 			// Render !
