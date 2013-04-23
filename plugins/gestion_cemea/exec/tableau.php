@@ -18,7 +18,7 @@ function exec_tableau() {
 
 	if (session_get('statut') != '0minirezo') {
 		include_spip('inc/minipres');
-		echo minipres('Vous n\'avez pas les autorisations');
+		echo minipres('Vous n\'avez pas les autorisations.');
 	}
 	else {
 		// On affiche un titre.
