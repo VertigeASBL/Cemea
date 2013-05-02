@@ -27,7 +27,7 @@
 		#SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
 
 		[(#REM) Nombre de jour restant avant exiration de l'inscription ]
-		#SET{jour_restant, #VAL{15}|plus{#DATE_SUIVI|calculer_jour{#GET{today}}}}
+		[(#SET{jour_restant, #VAL{15}|moins{#DATE_SUIVI|calculer_jour}})]
 
 		[(#REM) Brevet animateur: Dans le cas ou cette case est cochée, on vérifie les précédentes inscription ]
 		
