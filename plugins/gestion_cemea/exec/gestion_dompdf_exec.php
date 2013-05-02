@@ -102,10 +102,13 @@ function exec_gestion_dompdf_exec() {
 	}
 	// Si le fichier n'existe pas ou qu'on a demander de le recréer.
 	elseif(!file_exists(sous_repertoire(_DIR_IMG, "gestion").$filename.'.pdf') or _request('confirmer')) {
-		
 		// On créer la liste des participant a une action
 		if ($modele === 'liste_participant') {
-			$html = '
+			
+            // On met cette liste en paysage.
+            $dompdf->set_paper('A4', 'landscape');
+            
+            $html = '
 			<html>
 			<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -130,6 +133,10 @@ function exec_gestion_dompdf_exec() {
 		}
         // Dans le cas d'un listing de payement
         elseif ($modele === 'listing_payement') {
+
+            // On met cette liste en paysage.
+            $dompdf->set_paper('A4', 'landscape');
+
             $html = '
             <html>
             <head>
@@ -182,6 +189,7 @@ function exec_gestion_dompdf_exec() {
 			// On charge le HTML
 			$dompdf->load_html($html);
 			// Render !
+            $dompdf->set_paper('A4', 'landscape');
 			$dompdf->render();
 
 			// Récupération du pdf sous forme de flux
@@ -190,19 +198,25 @@ function exec_gestion_dompdf_exec() {
 			// Quoi qu'il arrive en sauvegarde le PDF dans le dossier IMG/gestion
 			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
 
-			// On fusion les PDF ensemble
-			$merge = new PDFMerger;
-			 // Page 1, le PDF qu'on viens de créer avec domPDF 
-			$merge->addPDF(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf');
-			// On ajoute les PDF lié 
-			foreach ($pdf_static as $key => $value) {
-				$merge->addPDF($value);
-			}
-			/*Fuuuuusion !*/
-			$file = $merge->merge('string');
-			
-			/*On sauvegarde le nouveau fichier*/
-			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
+            // On regarde s'il y a des documents PDF à ajouter.
+            if (count($pdf_static) > 0) {
+    			// On fusion les PDF ensemble
+    			$merge = new PDFMerger;
+    			 // Page 1, le PDF qu'on viens de créer avec domPDF 
+    			$merge->addPDF(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf');
+    			// On ajoute les PDF lié 
+    			foreach ($pdf_static as $key => $value) {
+    				$merge->addPDF($value);
+    			}
+    			/*Fuuuuusion !*/
+    			$file = $merge->merge('string');
+    			
+    			/*On sauvegarde le nouveau fichier*/
+    			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
+            }
+            // Sinon on renvoie le pdf via DOMPDF
+            else $dompdf->stream($filename.'.pdf', array('compress' => 1, 'Attachment' => 0));
+
 
 			/*Si il n'y a pas de mail on télécharge le PDF.*/
 			if ($envoyer_par_mail == 0) $merge->merge('browser');
