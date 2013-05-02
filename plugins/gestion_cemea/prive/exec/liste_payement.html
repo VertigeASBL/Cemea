@@ -26,13 +26,25 @@ if ($pdf != 1) {
         <th><:gestion:nom:></th>
         <th><:gestion:liste_payement:></th>
         <th><:gestion:extrait_compte:></th>
+        <th><:gestion:solde:></th>
     </tr>
     <BOUCLE_listing_payement(auteurs_articles articles auteurs){id_article}>
+    
+    [(#REM) On séléctionne le type de prix de la personne ]
+    [(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
+    [(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
+    [(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT}]
+    [(#PRIX_SPECIAL|oui) #SET{prix_a_paye, #PRIX_SPECIAL} ]
+
+    [(#REM) Calcule du solde ]
+    #SET{solde, (#GET{prix_a_paye}|moins{#HISTORIQUE_PAYEMENT|calculer_payement})}
+    
     <tr class="valigntop">
         <td>[(#CODECOURTOISIE|code_courtoisie)]</td>
         <td>#NOM #PRENOM</td>
         <td>[(#HISTORIQUE_PAYEMENT|explode_payement{€})]</td>
         <td>[(#EXTRAIT_DE_COMPTE|explode_payement)]</td>
+        <td>[(#GET{solde})]</td>
     </tr>
     </BOUCLE_listing_payement>
 </table>
