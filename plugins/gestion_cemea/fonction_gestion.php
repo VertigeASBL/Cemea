@@ -87,6 +87,8 @@ function gestion_affiche_gauche(&$flux){
         $flux['data'] .= '<li><a href="'.generer_url_ecrire('gestion_inscription_exec', 'statutsuivi=A').'" '.$a.'>Inscriptions annulé.</a></li>';
         $flux['data'] .= '<li><a href="'.generer_url_ecrire('gestion_inscription_exec', 'statutsuivi=C').'" '.$c.'>Inscriptions Cemea.</a></li>';
 
+        $flux['data'] .= '<li><a href="'.generer_url_ecrire('gestion_inscription_exec', 'statutsuivi=L').'" '.$c.'>Inscriptions en liste d\'attente.</a></li>';
+
         // Fermeture du UL
         $flux['data'] .= '</ul>';
         // Fermeture du cadre.
