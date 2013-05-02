@@ -20,20 +20,20 @@
 <body>
     [(#REM) On place le logo de Cemea ]
     <div  style="width: 100%;">
-        <span style="display: block; clear: both; width: 138px; margin: 1em auto;">
-            [(#CHEMIN{logoCemea.jpg}|balise_img{logo, })]
-        </span>
+        [<span style="display: block; clear: both; width: 138px; margin: 1em auto;">
+            (#CHEMIN{logoCemea.jpg}|balise_img{logo, })
+        </span>]
         [(#REM) On va rechercher le modèle et on calcule les balises spéciale ]
 
         <B_accusse>
-        <BOUCLE_accusse(ARTICLES){id_article=#ENV{id_pdf}}>
-        [(#TEXTE|balise_pdf{
-        #ENV{id_activite}, 
-        #ENV{id_personne}
-    })]
-    </BOUCLE_accusse>
-    </B_accusse>
-    <//B_accusse>
-</div>
+            <BOUCLE_accusse(ARTICLES){id_article=#ENV{id_pdf}}>
+                [(#TEXTE|balise_pdf{
+                                        #ENV{id_activite}, 
+                                        #ENV{id_personne}
+                                    })]
+            </BOUCLE_accusse>
+        </B_accusse>
+        <//B_accusse>
+    </div>
 </body>
 </html>
