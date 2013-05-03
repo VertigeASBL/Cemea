@@ -10,6 +10,7 @@
 			<th><:gestion:limit:></th>
 			<th><:gestion:statut:></th>
 			<th><:gestion:date_validation:></th>
+            <th><:gestion:date_suivi:></th>
 		</thead>
 		<tbody>
 
@@ -39,6 +40,7 @@
 					
 				</td>
 				<td>[(#STATUTSUIVI|=={I}|oui)[(#DATE_VALIDATION|affdate)]]</td>
+                <td>[(#DATE_SUIVI|affdate)]</td>            
 			</tr>
 		</BOUCLE_inscrit>
 

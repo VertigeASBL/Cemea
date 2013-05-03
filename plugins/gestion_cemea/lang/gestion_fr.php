@@ -27,6 +27,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'date_validation' => 'Date de validation',
 	'date_naissance' => 'Date de naissance',
 	'date_debut' => 'Date de début',
+    'date_suivi' => 'Date de suivi',
 	'dernier_payement' => 'Dernier payement validé',
 	'deja_inscrit' => 'Cette personne est déjà inscrite à cette activité.',
 	'dernier_annule' => 'Dernière annulation',
