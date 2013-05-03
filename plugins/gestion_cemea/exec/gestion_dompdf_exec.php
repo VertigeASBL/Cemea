@@ -189,7 +189,6 @@ function exec_gestion_dompdf_exec() {
 			// On charge le HTML
 			$dompdf->load_html($html);
 			// Render !
-            $dompdf->set_paper('A4', 'landscape');
 			$dompdf->render();
 
 			// Récupération du pdf sous forme de flux
