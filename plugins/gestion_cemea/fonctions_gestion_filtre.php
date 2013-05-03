@@ -62,8 +62,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
 	$adresse = sql_getfetsel('texte', 'spip_articles', 'titre=\''.$activite['lieu_deroulement'].'\'');
 
     // On récupère les pieds de pages
-    $pied_sj = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(235))).'</div>';
-    $pied_ep = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(209))).'</div>';
+    $pied_sj = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(246))).'</div>';
+    $pied_ep = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(229))).'</div>';
 	
     // calcule du prix que devrai payer la personne.
     if ($auteur['typepart'] == 'S') $prix = $activite['prix'];
