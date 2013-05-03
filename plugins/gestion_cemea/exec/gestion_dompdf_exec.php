@@ -203,22 +203,37 @@ function exec_gestion_dompdf_exec() {
     			$merge = new PDFMerger;
     			 // Page 1, le PDF qu'on viens de créer avec domPDF 
     			$merge->addPDF(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf');
-    			// On ajoute les PDF lié 
-    			foreach ($pdf_static as $key => $value) {
+    			// On ajoute les PDF lié
+                foreach ($pdf_static as $key => $value) {
     				$merge->addPDF($value);
     			}
+
     			/*Fuuuuusion !*/
     			$file = $merge->merge('string');
     			
     			/*On sauvegarde le nouveau fichier*/
     			file_put_contents(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf', $file);
             }
-            // Sinon on renvoie le pdf via DOMPDF
-            else $dompdf->stream($filename.'.pdf', array('compress' => 1, 'Attachment' => 0));
 
 
 			/*Si il n'y a pas de mail on télécharge le PDF.*/
-			if ($envoyer_par_mail == 0) $merge->merge('browser');
+			if ($envoyer_par_mail == 0) {
+                // Si c'est un PDF créer avec mergePDF on renvoie un header + le fichier string
+                if (count($pdf_static) > 0) {
+                    header('Content-type: application/pdf');
+                    header('Content-Disposition: inline; filename=doc.pdf');
+                    header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
+                    header('Cache-Control: no-store, no-cache, must-revalidate');
+                    header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+                    header('Pragma: anytextexeptno-cache', true);
+                    header('Cache-control: private');
+                    header('Expires: 0');
+
+                    echo $file;
+                }
+                // Sinon on utilise DOMPDF
+                else $dompdf->stream($filename.'.pdf', array('compress' => 1, 'Attachment' => 0));
+            }
 			/*Sinon, on envoie le PDF à la personne via swift*/
 			else {
 				// On construit le tableau pour envoyer le mail.
