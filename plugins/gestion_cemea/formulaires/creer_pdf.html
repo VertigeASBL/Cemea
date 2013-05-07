@@ -9,15 +9,13 @@
 				[<span class='erreur_message'>(#GET{erreurs})</span>]
 			    <select name="creer_pdf" class="size_select">
 			    	<option value="">Créer PDF</option>
-			    	
 			    	<BOUCLE_listePDF(ARTICLES){id_rubrique=56}{asbl=#ASBL}{par titre}>
 			    		<option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>
 			    	</BOUCLE_listePDF>
-			    	<BOUCLE_All_certificat(ARTICLES){id_rubrique=56}>
-			    		<option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>	
-			    	</BOUCLE_All_certificat>
-			    	<//B_listPDF>
-			    	
+                        <BOUCLE_All_certificat(ARTICLES){id_rubrique=56}>
+			    		   <option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>
+			    	    </BOUCLE_All_certificat>
+			    	<//B_listePDF>
 			    </select>
 			    
 			</li>
