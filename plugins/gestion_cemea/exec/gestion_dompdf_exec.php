@@ -118,8 +118,8 @@ function exec_gestion_dompdf_exec() {
                 height: 100%;
                 margin: 0;
                 padding: 50px;
-                padding-left: 150px;
-                padding-right: 150px;
+                padding-left: 125px;
+                padding-right: 125px;
             }
             .pied_page {
                 position: absolute;
@@ -147,8 +147,8 @@ function exec_gestion_dompdf_exec() {
                 height: 100%;
                 margin: 0;
                 padding: 50px;
-                padding-left: 150px;
-                padding-right: 150px;
+                padding-left: 125px;
+                padding-right: 125px;
             }
             .pied_page {
                 position: absolute;
