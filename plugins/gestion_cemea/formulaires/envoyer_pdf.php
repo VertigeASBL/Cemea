@@ -1,12 +1,12 @@
 <?php
-function formulaires_envoyer_pdf_charger_dist() {
+function formulaires_envoyer_pdf_charger_dist($id_article, $id_auteur, $asbl) {
         $contexte = array(
-                '' => '',
+                'asbl' => $asbl,
         );
         return $contexte;
 }
 
-function formulaires_envoyer_pdf_verifier_dist() {
+function formulaires_envoyer_pdf_verifier_dist($id_article, $id_auteur, $asbl) {
         $erreurs = array();
         if (!_request('envoyer_pdf')) {
                 $erreurs['message_erreur'] = 'Vous devez choisir un document PDF.';
@@ -15,7 +15,7 @@ function formulaires_envoyer_pdf_verifier_dist() {
         return $erreurs;
 }
 
-function formulaires_envoyer_pdf_traiter_dist($id_article, $id_auteur) {
+function formulaires_envoyer_pdf_traiter_dist($id_article, $id_auteur, $asbl) {
  		
  		$data = _request('envoyer_pdf');
 		
