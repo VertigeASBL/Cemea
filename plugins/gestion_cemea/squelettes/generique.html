@@ -27,7 +27,7 @@
 
         <B_accusse>
             <BOUCLE_accusse(ARTICLES){id_article=#ENV{id_pdf}}>
-                [(#TEXTE|balise_pdf{
+                [(#TEXTE|pdf_syntaxe{
                                         #ENV{id_activite}, 
                                         #ENV{id_personne}
                                     })]

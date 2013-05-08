@@ -45,7 +45,7 @@ function calculer_jour ($date1) {
 }
 
 // Cette fonction "Calcules" les balises placé dans le champs texte pour les PDF
-function balise_pdf($texte, $id_activite, $id_personne) {
+function pdf_syntaxe($texte, $id_activite, $id_personne) {
 	// On inclut les fonctions pour faire joli
 	include_spip('public/interfaces');
 	// Et les filtres
