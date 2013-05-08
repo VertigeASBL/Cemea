@@ -3,27 +3,40 @@
 [(#REM) tableau des statuts, pour convertir ]
 #SET{statut, #ARRAY{T,A traiter,A,Annulé,C,Cemea,E,Encadrant,D,Désisté,I,Inscrit,L,Liste d'attente,R,Refusé,X,Réservé}}
 
+
+<BOUCLE_pdf_name(AUTEURS){id_auteur}>
+    [(#PDF|oui) <h1>Fiche des activité de #NOM #PRENOM</h1> ]
+</BOUCLE_pdf_name>
+
 <B_activite>
 <table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
 	<thead>
-		<th><:gestion:reference:></th>
-		<th><:gestion:nom_activite:></th>
-		<th><:gestion:date_debut:></th>
-		<th><:gestion:limit:></th>
-		<th><:gestion:statut_payement:></th>
-		<th><:gestion:statut:></th>
-		<th><:gestion:date_validation:></th>
-        <th><:gestion:date_suivi:></th>      
+        <tr>   
+    		<th><:gestion:reference:></th>
+    		<th><:gestion:nom_activite:></th>
+    		<th><:gestion:date_debut:></th>
+    		[(#PDF|non)
+            <th><:gestion:limit:></th>
+    		<th><:gestion:statut_payement:></th>
+    		<th><:gestion:statut:></th>]
+    		<th><:gestion:date_validation:></th>
+            <th><:gestion:date_suivi:></th>
+        </tr>
 	</thead>
 	<BOUCLE_activite(ARTICLES auteurs auteurs_articles mots_rubriques) {id_auteur}{id_mot IN 5,3627} {par date_suivi} {inverse} {origine_traduction}>
-	<tr class="[(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})][(#CLOTURER|oui) cloturer]">
+    <tbody>	
+    <tr class="[(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})][(#CLOTURER|oui) cloturer]">
 		<td>#IDACT</td>
-		<td>[<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">(#TITRE|supprimer_numero)</a>]</td>
+		<td>
+            [(#PDF|non)<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">[(#TITRE|supprimer_numero)]</a>]
+            [(#PDF|oui) [(#TITRE|supprimer_numero)] ]
+        </td>
 		<td>[(#DATE_DEBUT|affdate)]</td>
-		<td>
+		[(#PDF|non)
+        <td>
 			<INCLURE{fond=prive/gestion_activite/max_inscrit}{id_article}{env}>
-		</td>
-		<td>
+		</td>      
+        <td>
 			<form method="post" action="#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE}" class="autosubmit">
 				<ul class="suivi_statut_ul">
 					<select name="statut_payement">
@@ -49,14 +62,15 @@
 			
 			#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
 			[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
-			#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+			#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
 			[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 			]
 			
-		</td>
+		</td>]
 		<td>[(#STATUTSUIVI|=={I}|oui)[(#DATE_VALIDATION)]]</td>
         <td>[(#DATE_SUIVI|affdate)]</td>
 	</tr>
+    </tbody>   
 	</BOUCLE_activite>
 </table>
 </B_activite>
