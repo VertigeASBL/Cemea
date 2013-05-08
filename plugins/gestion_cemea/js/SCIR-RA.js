@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
     
     // Tableau des champs sans le suffixe
     var champs = [
-                    "#date_",
+                    "#dates_",
                     "#titre_",
                     "#nb_formateurs_",
                     "#nb_part_",
