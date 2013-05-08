@@ -123,4 +123,7 @@ echo icone_inline(_T('gestion:modifier_inscrit'), generer_url_ecrire("editer_ins
 
 <h2><:gestion:activite:></h2>
 <INCLURE{fond=prive/fiche_inscrit/fiche_activite}{env}{ajax}>
+<div class="nettoyeur"></div>
+<?php echo icone_inline(_T('gestion:telecharger_pdf'), generer_url_ecrire('gestion_dompdf_exec','id_auteur=#ID_AUTEUR&modele=liste_participant_action'), 'doc-24.gif', '', 'right'); ?>
+
 </BOUCLE_inscrit>
