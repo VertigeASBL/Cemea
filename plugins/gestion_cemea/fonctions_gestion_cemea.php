@@ -61,39 +61,16 @@ function change_statut_inscrit($statut, $id_auteur, $id_article) {
 		$titre_activite = sql_getfetsel('titre', 'spip_articles', 'id_article='.$id_article);
 
         // On récupère les informations du message dans la base de donnée des articles
-		$data_mail = sql_fetsel('chapo, texte', 'spip_articles', 'id_article=205');
-
-		include_spip('inc/flitres');
-        // On place le titre de la confirmation
-		$data_mail['texte'] = str_replace('#ACTIVITE', supprimer_numero($titre_activite), $data_mail['texte']);
+		$body = sql_getfetsel('texte', 'spip_articles', 'id_article=271');
 
         // On envoie un mail à la personne pour la prévenir du changement via swiftmail plutôt que envoyer_mail
-		swift_envoyer_mail($destinataire, $data_mail['chapo'], $data_mail['texte']);
+		swift_envoyer_mail($destinataire, 'CEMEA', $body);
 
         // On envoie un mail de confirmation de l'inscription.
 		echo '<br />'._T('gestion:confirmation_mail').$email['email'];
 	}
     // On ferme la boite.
 	echo fin_boite_info();
-}
-
-// Fonction qui change le statut d'un payement
-function change_statut_payement($statut, $id_auteur, $id_article) {
- //    // Mise à jour de la base de donnée
-	// sql_update('spip_auteurs_articles', 
-	// 	array(
-	// 		'statut_payement' => sql_quote($statut), 
-	// 		'date_validation_payement' => 'NOW()'), 
-	// 	'id_auteur='.sql_quote($id_auteur).' AND id_article='.sql_quote($id_article));
-	
-	// if ($statut == 3 or $statut == 4) change_statut_inscrit('I', $id_auteur, $id_article);
-
- //    // On affiche une boite pour confirmer le changement à l'utilisateur.
-	// echo debut_boite_info();
- //    // On affiche le message de confirmation.
-	// echo _T('gestion:statut_payement_alert');
- //    // On ferme la boite.
-	// echo fin_boite_info();
 }
 
 function delete_inscrit($id_auteur) {

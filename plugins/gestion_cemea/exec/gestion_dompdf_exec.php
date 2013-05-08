@@ -266,9 +266,15 @@ function exec_gestion_dompdf_exec() {
 			else {
 				// On construit le tableau pour envoyer le mail.
 				$send = array($personne['email'] => $personne['nom'].' '.$personne['prenom']);
-				$sujet = 'A déterminer';
-				$body = 'Corps du texte.';
-				// On envoie le tout à la personne
+				
+                // On va chercher l'article PDF par mail
+                $pdf_par_mail = sql_getfetsel('texte', 'spip_articles', 'titre=\'PDF par mail\'');
+
+                // On créer les éléments du mail.
+                $sujet = 'CEMEA';
+				$body = $pdf_par_mail;
+
+                // On envoie le tout à la personne
 				swift_envoyer_mail($send, $sujet, $body, $file, true);
 			}
 		}
