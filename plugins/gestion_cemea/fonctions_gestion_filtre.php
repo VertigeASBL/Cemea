@@ -95,7 +95,6 @@ function balise_pdf($texte, $id_activite, $id_personne) {
         '#PIED_SJ',
         '#HEURE_DEBUT',
         '#HEURE_FIN',
-        '#CHEMIN_LIEU',
         '#SOLDE',
         '#HEURE_ACCUEIL'
 		);
@@ -120,7 +119,6 @@ function balise_pdf($texte, $id_activite, $id_personne) {
         $pied_sj,
         $activite['heure_debut'],
         $activite['heure_fin'],
-        $activite['chemin_lieu'],
         $solde,
         $activite['heure_accueil']
 		);
