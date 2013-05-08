@@ -1,3 +1,13 @@
+/*
+*    Fichier javascript qui gère les champs RA et SCIR dans les formulaire des actions.
+*    Lorsque l'on remplit les champs RA il complète automatiquement les champs SCIR si ces derniers sont vide.
+*
+*    Didier - Vertige ASBL
+*    http://www.vertige.org/
+*    http://p.henix.be/
+*/
+
+
 jQuery(document).ready(function($) {
     
     // Tableau des champs sans le suffixe
