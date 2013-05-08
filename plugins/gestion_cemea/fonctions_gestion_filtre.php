@@ -96,7 +96,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
         '#HEURE_DEBUT',
         '#HEURE_FIN',
         '#CHEMIN_LIEU',
-        '#SOLDE'
+        '#SOLDE',
+        '#HEURE_ACCUEIL'
 		);
 
 	$conversion = array(
@@ -120,7 +121,8 @@ function balise_pdf($texte, $id_activite, $id_personne) {
         $activite['heure_debut'],
         $activite['heure_fin'],
         $activite['chemin_lieu'],
-        $solde
+        $solde,
+        $activite['heure_accueil']
 		);
 
 	// On remplace les balises
