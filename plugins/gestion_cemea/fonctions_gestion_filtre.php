@@ -59,7 +59,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 	$auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur='.$id_personne);
 
 	// Récupération du lieux ou ce déroule l'activité
-	$adresse = sql_getfetsel('texte', 'spip_articles', 'titre=\''.$activite['lieu_deroulement'].'\'');
+	$adresse = sql_getfetsel('texte', 'spip_articles', 'titre='.sql_quote($activite['lieu_deroulement']));
 
     // On récupère les pieds de pages
     $pied_sj = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(246))).'</div>';
