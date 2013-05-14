@@ -182,7 +182,7 @@ function exec_suivi() {
 
                     $envoyer_mail = charger_fonction('envoyer_mail','inc');
                     $p = $envoyer_mail(
-                                        $GLOBALS['meta']['email_webmaster'].$addon_recipients,
+                                        $GLOBALS['meta']['email_webmaster'].'inscriptions@cemea.be',
                                         $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$list_articles.'-'.$id_auteur, 
                                         $p, 
                                         $GLOBALS['meta']['email_webmaster']);
