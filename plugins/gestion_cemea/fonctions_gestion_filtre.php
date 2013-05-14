@@ -59,7 +59,9 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 	$auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur='.$id_personne);
 
 	// Récupération du lieux ou ce déroule l'activité
-	$adresse = sql_getfetsel('texte', 'spip_articles', 'titre='.sql_quote($activite['lieu_deroulement']));
+    $lieu_titre = sql_getfetsel('titre', 'spip_articles', 'titre='.sql_quote($activite['lieu']));
+	$lieu_adresse = sql_getfetsel('chapo', 'spip_articles', 'titre='.sql_quote($activite['lieu']));
+    $lieu_chemin = sql_getfetsel('texte', 'spip_articles', 'titre='.sql_quote($activite['lieu']));
 
     // On récupère les pieds de pages
     $pied_sj = '<div class="pied_page">'.propre(sql_getfetsel('texte', 'spip_articles', 'id_article='.sql_quote(246))).'</div>';
@@ -79,7 +81,6 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 		'#DATE_ANNULATION',
 		'#DATE_DEBUT',
 		'#REFERENCE',
-		'#LIEU_DEROULEMENT',
 		'#NOM_FORMATION',
 		'#NOM',
 		'#PRENOM',
@@ -96,14 +97,16 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         '#HEURE_DEBUT',
         '#HEURE_FIN',
         '#SOLDE',
-        '#HEURE_ACCUEIL'
+        '#HEURE_ACCUEIL',
+        '#LIEU_TITRE',
+        '#LIEU_ADRESSE',
+        '#LIEU_CHEMIN'
 		);
 
 	$conversion = array(
 		affdate(echeance($inscription['date_suivi'], true)),
 		affdate($activite['date_debut']),
 		$activite['idact'],
-		propre($adresse),
 		supprimer_numero($activite['titre']),
 		$auteur['nom'],
 		$auteur['prenom'],
@@ -120,7 +123,10 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         $activite['heure_debut'],
         $activite['heure_fin'],
         $solde,
-        $activite['heure_accueil']
+        $activite['heure_accueil'],
+        $lieu_titre,
+        propre($lieu_adresse),
+        propre($lieu_chemin)
 		);
 
 	// On remplace les balises
