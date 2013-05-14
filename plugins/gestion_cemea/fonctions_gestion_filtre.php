@@ -110,7 +110,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 		affdate($auteur['date_naissance']),
 		$auteur['lieunaissance'],
 		$activite['telephone_orga'],
-		$activite['text_presentation'],
+		propre($activite['text_presentation']),
 		$activite['heure_formation'],
 		$activite['dates_ra'],
 		$auteur['adresse'].'<br />'.$auteur['codepostal'].' '.$auteur['localite'],
