@@ -77,7 +77,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
     // Calcule du solde de la personne.
     $solde = $prix - calculer_payement($inscription['historique_payement']);
 
-	$balise_pdf = array(
+    $balise_pdf = array(
 		'#DATE_ANNULATION',
 		'#DATE_DEBUT',
 		'#REFERENCE',
@@ -89,7 +89,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 		'#TELEPHONE_ORGANISATION',
 		'#TEXTE_PRESENTATION',
 		'#HEURE_FORMATION',
-		'#DATE_FIN',
+		'#DATE_RA',
 		'#ADRESSE',
 		'#PAGE',
         '#PIED_EP',
@@ -100,7 +100,8 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         '#HEURE_ACCUEIL',
         '#LIEU_TITRE',
         '#LIEU_ADRESSE',
-        '#LIEU_CHEMIN'
+        '#LIEU_CHEMIN',
+        '#DATE_FIN'
 		);
 
 	$conversion = array(
@@ -126,7 +127,8 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         $activite['heure_accueil'],
         $lieu_titre,
         propre($lieu_adresse),
-        propre($lieu_chemin)
+        propre($lieu_chemin),
+        $activite['date_fin']
 		);
 
 	// On remplace les balises
