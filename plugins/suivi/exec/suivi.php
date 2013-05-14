@@ -179,8 +179,14 @@ function exec_suivi() {
                     $p .= 'id_article : '.$list_articles."\n";
                     $p .= "\n".'-----'."\n";
 
+
                     $envoyer_mail = charger_fonction('envoyer_mail','inc');
-                    $p = $envoyer_mail($GLOBALS['meta']['email_webmaster'].$addon_recipients, $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$list_articles.'-'.$id_auteur, $p, $GLOBALS['meta']['email_webmaster']);
+                    $p = $envoyer_mail(
+                                        $GLOBALS['meta']['email_webmaster'].$addon_recipients,
+                                        $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$list_articles.'-'.$id_auteur, 
+                                        $p, 
+                                        $GLOBALS['meta']['email_webmaster']);
+                    
                 }
 
 
