@@ -42,7 +42,7 @@ function formulaires_inscrire_activite_traiter_dist() {
 	return array(
 		'editable' => true,
 		'message_ok' => 'Cette personne à été inscrite',
-        'redirect' => generer_url_ecrire('suivi', '&id_auteur='.$id_auteur.'&id_article='.$id_article)
+        'redirect' => generer_url_ecrire('suivi', '&id_auteur='.$id_auteur.'&id_article='.$id_article.'&new=oui')
 		);
 }
 ?>
