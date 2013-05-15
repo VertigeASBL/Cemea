@@ -11,7 +11,8 @@ function gestion_header_prive($flux) {
         'editer_inscrit_exec', 
         'editer_activite_exec', 
         'auteur_infos', 
-        'inscrire_personne_exec'
+        'inscrire_personne_exec',
+        'articles_edit'
         );
 
     // Si on est pas dans un page avec des calendriers 
