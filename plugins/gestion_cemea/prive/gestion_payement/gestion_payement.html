@@ -23,7 +23,7 @@
 			[(#TYPEPART|=={S}|oui) #SET{prix_a_paye, #PRIX} ]
 			[(#TYPEPART|=={I}|oui) #SET{prix_a_paye, #PRIX_ORGANISME} ]
 			[(#DEMANDEUR_EMPLOI|=={oui}|oui) #SET{prix_a_paye, #PRIX_ETUDIANT} ]
-			[(#PRIX_SPECIAL|oui) #SET{prix_a_paye, #PRIX_SPECIAL} ]
+            [(#PRIX_SPECIAL|oui|ou{#PRIX_SPECIAL|=={0}}) #SET{prix_a_paye, #PRIX_SPECIAL} ]
 			
 			[(#REM) Calcule du solde ]
 			#SET{solde, (#HISTORIQUE_PAYEMENT|calculer_payement|moins{#GET{prix_a_paye}})}
@@ -50,7 +50,7 @@
 						<input type="hidden" name="id_article" value="#ID_ARTICLE" />
 						<input type="hidden" name="email" value="#EMAIL" />
 					</form>
-						#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+						#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
 						[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 				</td>
 				<td>
