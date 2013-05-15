@@ -128,7 +128,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         $lieu_titre,
         propre($lieu_adresse),
         propre($lieu_chemin),
-        $activite['date_fin']
+        affdate($activite['date_fin'])
 		);
 
 	// On remplace les balises
