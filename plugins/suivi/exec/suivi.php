@@ -132,6 +132,9 @@ function exec_suivi() {
                                                	'recus_fiche_medical' => $recus_fiche_medical,
                                                	'prix_special' => $prix_special
                                             ), "id_auteur=$id_auteur AND id_article=$id_article");
+                
+                // On fait l'update de la date_validation via sql_update plutôt que sql_updateq.
+                sql_update('spip_auteurs_articles', array('date_validation' => 'NOW()'), 'id_auteur='.sql_quote($id_auteur).' AND id_article='.sql_quote($id_article));
 				$contexte['message_ok'] = 'Ok, l\'inscription est mise à jour';
 				$inscrit = 'Y';
 
