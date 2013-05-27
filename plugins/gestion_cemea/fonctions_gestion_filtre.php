@@ -108,7 +108,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 		affdate(echeance($inscription['date_suivi'], true)),
 		affdate($activite['date_debut']),
 		$activite['idact'],
-		supprimer_numero($activite['titre']),
+		supprimer_numero($activite['titre_ra']),
 		$auteur['nom'],
 		$auteur['prenom'],
 		affdate($auteur['date_naissance']),
