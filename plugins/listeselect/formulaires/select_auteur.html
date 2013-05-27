@@ -98,8 +98,8 @@
             <select name="action_eti" id="action_eti">
                 <B_action>
                 <option value="none">-</option>
-                <BOUCLE_action(ARTICLES mots_rubriques) {id_mot IN 5,3602} {par date} {id_article ?} {inverse} {tout} {origine_traduction}>
-                    <option value="#ID_ARTICLE" [(#ENV**{action_eti}|=={#ID_ARTICLE}|oui) selected="selected" ]>[(#TITRE|supprimer_numero)]</option>
+                <BOUCLE_action(ARTICLES mots_rubriques) {id_mot IN 5,3627} {idact != ''} {par date} {id_article ?} {inverse} {tout} {origine_traduction}>
+                    <option value="#ID_ARTICLE" [(#ENV**{action_eti}|=={#ID_ARTICLE}|oui) selected="selected" ]>[(#TITRE|supprimer_numero)] [(#DATE|affdate)]</option>
                 </BOUCLE_action>
                 </B_action>
             </select>
