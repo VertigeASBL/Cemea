@@ -53,21 +53,22 @@ function change_statut_inscrit($statut, $id_auteur, $id_article) {
 			'id_auteur='.sql_quote($id_auteur).' AND id_article='.sql_quote($id_article));
 
         // On récupère le mail de l'auteur en question.
-		$email = sql_fetsel('email, nom, prenom', 'spip_auteurs', 'id_auteur='.sql_quote($id_auteur));
+		// $email = sql_fetsel('email, nom, prenom', 'spip_auteurs', 'id_auteur='.sql_quote($id_auteur));
 
-		$destinataire = array($email['email'] => $email['nom'].' '.$email['prenom']);
+		// $destinataire = array($email['email'] => $email['nom'].' '.$email['prenom']);
 
         // On récupère le titre de l'activité
-		$titre_activite = sql_getfetsel('titre', 'spip_articles', 'id_article='.$id_article);
+		// $titre_activite = sql_getfetsel('titre', 'spip_articles', 'id_article='.$id_article);
 
         // On récupère les informations du message dans la base de donnée des articles
-		$body = sql_getfetsel('texte', 'spip_articles', 'id_article=271');
+		// $body = sql_getfetsel('texte', 'spip_articles', 'id_article=271');
 
         // On envoie un mail à la personne pour la prévenir du changement via swiftmail plutôt que envoyer_mail
-		swift_envoyer_mail($destinataire, 'CEMEA', $body);
+        // Désactiver sur demande du client.
+		// swift_envoyer_mail($destinataire, 'CEMEA', $body);
 
         // On envoie un mail de confirmation de l'inscription.
-		echo '<br />'._T('gestion:confirmation_mail').$email['email'];
+		// echo '<br />'._T('gestion:confirmation_mail').$email['email'];
 	}
     // On ferme la boite.
 	echo fin_boite_info();
