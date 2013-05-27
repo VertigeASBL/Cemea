@@ -39,7 +39,7 @@ if ($pdf != 1) {
 	<tbody>
 	
 	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
-<BOUCLE_participants(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=I}{pagination #ENV{pagination}}>
+<BOUCLE_participants(auteurs_articles auteurs articles){id_article}{inscrit=Y}{statutsuivi=I}{pagination #ENV{pagination}}>
 	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
 		<td>
 			[(#ENV{pdf}|non)
@@ -65,7 +65,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
-				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
 				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 			</td>
 		]
@@ -96,7 +96,7 @@ if ($pdf != 1) {
 	<tbody>
 	
 	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
-<BOUCLE_reserve(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=X}{pagination #ENV{pagination}}>
+<BOUCLE_reserve(auteurs_articles auteurs articles){id_article}{inscrit=Y}{statutsuivi=X}{pagination #ENV{pagination}}>
 	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
 		<td>
 			[(#ENV{pdf}|non)
@@ -122,7 +122,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
-				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
 				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 			</td>
 		]
@@ -153,7 +153,7 @@ if ($pdf != 1) {
 	<tbody>
 	
 	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
-<BOUCLE_refuse(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=R}{pagination #ENV{pagination}}>
+<BOUCLE_refuse(auteurs_articles auteurs articles){id_article}{inscrit=Y}{statutsuivi=R}{pagination #ENV{pagination}}>
 	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
 		<td>
 			[(#ENV{pdf}|non)
@@ -178,7 +178,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="id_article" value="#ID_ARTICLE" />
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
-				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
 				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 			</td>	
 		]
@@ -208,7 +208,7 @@ if ($pdf != 1) {
 	<tbody>
 	
 	[(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
-<BOUCLE_cemea(auteurs_articles auteurs){id_article}{inscrit=Y}{statutsuivi=C}{pagination #ENV{pagination}}>
+<BOUCLE_cemea(auteurs_articles auteurs articles){id_article}{inscrit=Y}{statutsuivi=C}{pagination #ENV{pagination}}>
 	<tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
 		<td>
 			[(#ENV{pdf}|non)
@@ -234,7 +234,7 @@ if ($pdf != 1) {
 					<input type="hidden" name="email" value="#EMAIL" />
 				</form>
 				
-				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR}
+				#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
 				[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 			</td>	
 		]
@@ -245,3 +245,61 @@ if ($pdf != 1) {
 [<p class="pagination">(#PAGINATION)</p>]
 </B_cemea>
 <//B_cemea>
+
+<div class="nettoyeur"></div>
+<h2>Liste des "A traiter"</h2>
+<B_traiter>
+[<p class="pagination">(#PAGINATION)</p>]
+<table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
+    <thead>
+        <tr>
+            <th><:gestion:nom:></th>
+            <th><:gestion:prenom:></th>
+            <th><:gestion:age:></th>
+            [(#ENV{pdf}|non)
+                
+                <th><:gestion:statut:></th>
+            ]
+        </tr>
+    </thead>
+    <tbody>
+    
+    [(#REM) On calcule la pagination. Si PDF, pas de pagination. ]
+<BOUCLE_traiter(auteurs_articles auteurs articles){id_article}{inscrit=Y}{statutsuivi=T}{pagination #ENV{pagination}}>
+    <tr [class="(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})"]>
+        <td>
+            [(#ENV{pdf}|non)
+                [<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#NOM)</a>]
+            ]
+            [(#ENV{pdf}|oui) #NOM ]
+        </td>
+        <td>
+            [(#ENV{pdf}|non)
+                [<a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="Fiche">(#PRENOM)</a>]
+            ]
+            [(#ENV{pdf}|oui) #PRENOM ]
+        </td>
+        <td>[(#DATE_NAISSANCE|age)]</td>
+        [(#ENV{pdf}|non)
+            
+            <td>
+                <form method="post" action="#SELF" class="autosubmit">
+                <ul class="suivi_statut_ul">
+                    <INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+                </ul>
+                    <input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+                    <input type="hidden" name="id_article" value="#ID_ARTICLE" />
+                    <input type="hidden" name="email" value="#EMAIL" />
+                </form>
+                #FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
+                [(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
+            </td>
+        ]
+    </tr>
+</BOUCLE_traiter>
+    </tbody>
+</table>
+[<p class="pagination">(#PAGINATION)</p>]
+</B_traiter>
+<p>Il n'y a aucune personne inscrite à cette action.</p>
+<//B_traiter>
