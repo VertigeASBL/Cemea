@@ -69,7 +69,7 @@ function fonclistewhere(&$lilang) {
 	 // Didier: Si une action est envoyée, on filtre uniquement selon les inscrit à cette action 
 	if (_request('action_eti') != 'none') {
 		$tab = _request('action_eti');
-		$sql .= ' AND id_auteur IN (SELECT id_auteur FROM `spip_auteurs_articles` WHERE id_article = '.sql_quote($tab).')';
+		$sql .= ' AND id_auteur IN (SELECT id_auteur FROM `spip_auteurs_articles` WHERE id_article = '.sql_quote($tab).' AND statutsuivi='.sql_quote('I').')';
 	}
 
 	// Didier: si un statut d'envoie de mail est envoyé.
