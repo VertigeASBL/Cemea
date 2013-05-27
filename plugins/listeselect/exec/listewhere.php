@@ -78,7 +78,6 @@ function fonclistewhere(&$lilang) {
         $sql .= ' AND send_email='.sql_quote($tab); 
     }
 
-
 	return $sql;
 }
 ?>

@@ -21,8 +21,8 @@ function exec_gestion_dompdf_exec() {
 
 		return str_replace($search, $replace, $str);
 	}
-
-	// Récupération des variables
+    
+    // Récupération des variables
 
 	// Le squelette ou l'article qui sera utilisé pour créer le pdf.
 	$modele = _request('modele');
