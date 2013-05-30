@@ -1,6 +1,6 @@
 <?php
 // Fonction d'envoie de mail via la lib swift mailer
-function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream = false) {
+function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream = false, $filename = 'fichier.pdf') {
     // Inclusion de la librairie swift mail
 	include_once('lib_swift/swift_required.php');
 
@@ -25,7 +25,7 @@ function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream
         // On si on veux envoyer un fichier 
 		if (!empty($fichier) and !$stream) $mail->attach(Swift_Attachment::fromPath($fichier));
 		elseif (!empty($fichier) and $stream) {
-			$mail->attach(Swift_Attachment::newInstance($fichier, 'fichier.pdf', 'application/pdf'));
+			$mail->attach(Swift_Attachment::newInstance($fichier, $filename, 'application/pdf'));
 		}
         // Send the message
         $result = $mailer->send($mail);

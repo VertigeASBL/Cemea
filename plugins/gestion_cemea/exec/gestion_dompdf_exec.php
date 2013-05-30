@@ -60,13 +60,13 @@ function exec_gestion_dompdf_exec() {
 	// On créer le nom du fichier pour vérifier son éventuel existance.
 	$filename = $personne['nom'].'_'.$personne['prenom'].'_'.$action['reference'];
 	if ($modele == 'liste_participant') {
-		$filename = $modele.'_'.$action['reference'];
+		$filename = $action['reference'].'_'.$modele;
 	}
 	elseif (!empty($id_certif)) {
 		// Dans le cas d'un certificat, on va rechercher le titre du certificat.
 		$certificat = sql_fetsel('titre', 'spip_articles', 'id_article='.sql_quote($id_certif));
 		
-		$filename = supprimer_numero($action['titre']).'_'.$certificat['titre'];
+		$filename = $action['reference'].'_'.supprimer_numero($action['titre']).'_'.$certificat['titre'];
 	}
 	else {
 		// Dans le cas d'un modèle générique, on va chercher le titre du document
@@ -275,7 +275,7 @@ function exec_gestion_dompdf_exec() {
 				$body = $pdf_par_mail;
 
                 // On envoie le tout à la personne
-				swift_envoyer_mail($send, $sujet, $body, $file, true);
+				swift_envoyer_mail($send, $sujet, $body, $file, true, $filename.'.pdf');
 			}
 		}
 		if ($redirect) header('location: '.urldecode($redirect).'&pdf_envoye=1');
