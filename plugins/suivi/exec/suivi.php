@@ -30,10 +30,11 @@ function exec_suivi() {
 
 
 	//----------- lire DB ---------- AND id_secteur=2
-	$req = sql_select('id_article,idact,titre', 'spip_articles', "id_article=$id_article");
+	$req = sql_select('id_article,idact,titre,date_debut', 'spip_articles', "id_article=$id_article");
 	if ($data = sql_fetch($req)) {
-		$idact = $data['idact'];
+        $idact = $data['idact'];
 		$titre = $data['titre'];
+        $date_debut = $data['date_debut'];
 	}
 	else
 		$id_article = 0;
@@ -177,13 +178,14 @@ function exec_suivi() {
                     
                     $p .= 'id_auteur : '.$id_auteur."\n";
                     $p .= 'Statut : '.$statutsuivi."\n";
-                    $p .= 'Action : '.$actiontitre."\n";
-                    $p .= 'Dates : '.$datesaction."\n";
-                    $p .= 'id_article : '.$list_articles."\n";
+                    $p .= 'Action : '.$titre."\n";
+                    $p .= 'Dates : '.$date_debut."\n";
+                    $p .= 'id_article : '.$id_article."\n";
                     $p .= "\n".'-----'."\n";
 
 
                     $envoyer_mail = charger_fonction('envoyer_mail','inc');
+                    
                     $p = $envoyer_mail(
                                         $GLOBALS['meta']['email_webmaster'].', inscriptions@cemea.be',
                                         $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$list_articles.'-'.$id_auteur, 
