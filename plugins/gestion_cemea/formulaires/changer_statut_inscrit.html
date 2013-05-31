@@ -1,0 +1,12 @@
+
+[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+<form action="#ENV{action}" method="post" class="autosubmit">
+    #ACTION_FORMULAIRE{#ENV{action}}
+    <ul class="suivi_statut_ul">
+        #SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
+        <li class="editer_#FORM obligatoire[ (#GET{erreurs}|oui)erreur]">
+            <INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>            
+        </li>
+    </ul>
+</form>

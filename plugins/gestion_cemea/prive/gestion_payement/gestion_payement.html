@@ -42,16 +42,10 @@
 					#FORMULAIRE_CHANGER_STATUT{#ID_AUTEUR, #ID_ARTICLE, #STATUT_PAYEMENT}
 				</td>
 				<td>
-					<form method="post" action="#SELF" class="autosubmit">
-					<ul class="suivi_statut_ul">
-						<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
-					</ul>
-						<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
-						<input type="hidden" name="id_article" value="#ID_ARTICLE" />
-						<input type="hidden" name="email" value="#EMAIL" />
-					</form>
-						#FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
-						[(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
+					#FORMULAIRE_CHANGER_STATUT_INSCRIT{#STATUTSUIVI, #ID_AUTEUR, #ID_ARTICLE}
+                    
+                    #FORMULAIRE_CREER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}
+                    [(#EMAIL|oui|et{#SEND_EMAIL|oui}) #FORMULAIRE_ENVOYER_PDF{#ID_ARTICLE, #ID_AUTEUR, #ASBL}]
 				</td>
 				<td>
 					[(#GET{solde}|>{0}|oui) <span class="error_inscrit">#GET{solde}</span>]

@@ -27,13 +27,7 @@
 				<td>[(#DATE_DEBUT|affdate)]</td>
 				<td><a href="#URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}" title="#NOM #PRENOM">#NOM #PRENOM</a></td>
 				<td>
-					<form method="post" action="#SELF" class="autosubmit">
-					<ul class="suivi_statut_ul">
-						<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
-					</ul>
-						<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
-						<input type="hidden" name="id_article" value="#ID_ARTICLE" />
-					</form>
+					#FORMULAIRE_CHANGER_STATUT_INSCRIT{#STATUTSUIVI, #ID_AUTEUR, #ID_ARTICLE}
 					
 					#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
 					[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
