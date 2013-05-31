@@ -213,6 +213,8 @@ function exec_gestion_dompdf_exec() {
 				);
 		}
 
+        // echo $html;
+
         if ($modele != 'etiquette') {
 			// On fix les problèmes de BR avec une fonctione personnalisée.
             $html = spip_fix_br($html);
