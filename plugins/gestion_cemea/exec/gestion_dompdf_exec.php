@@ -214,7 +214,10 @@ function exec_gestion_dompdf_exec() {
 		}
 
         if ($modele != 'etiquette') {
-			// On charge le HTML
+			// On fix les problèmes de BR avec une fonctione personnalisée.
+            $html = spip_fix_br($html);
+
+            // On charge le HTML
 			$dompdf->load_html($html);
 			// Render !
 			$dompdf->render();

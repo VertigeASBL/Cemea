@@ -208,4 +208,15 @@ function explode_payement($str, $sigle = '') {
 
     return $output;
 }
+
+/*
+*   Nettoyage des BR dans les articles SPIP
+*
+*   Dieu seul sais pourquoi mais SPIP ajoute parfois des <p><br /></p> dans les *   articles, cela créer des lignes fântome atroce.
+*/
+function spip_fix_br($str) {
+    // Si c'est aussi moche c'est parce qu'il faut garder cette syntaxe pour que le replace fonctionne.
+    return str_replace('<p>
+<br /></p>', '', $str);
+}
 ?>
