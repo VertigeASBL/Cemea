@@ -77,6 +77,17 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
     // Calcule du solde de la personne.
     $solde = $prix - calculer_payement($inscription['historique_payement']);
 
+    // Création de l'adresse_fenêtre
+    $adresse_fenetre = '
+    <div class="adresse_fenetre">
+        '.$auteur['nom'].' '.$auteur['prenom'].'
+        <br />'.$auteur['adresse'].'
+        <br />'.$auteur['codepostal'].' '.$auteur['localite'].'
+    </div>';
+
+    // On remplace la balise #ADRESSE_FENETRE
+    $texte = str_replace('#ADRESSE_FENETRE', $adresse_fenetre, $texte);
+
     $balise_pdf = array(
 		'#DATE_ANNULATION',
 		'#DATE_DEBUT',
@@ -101,7 +112,8 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         '#LIEU_TITRE',
         '#LIEU_ADRESSE',
         '#LIEU_CHEMIN',
-        '#DATE_FIN'
+        '#DATE_FIN',
+        '#DIVERS'
 		);
 
 	$conversion = array(
@@ -128,7 +140,8 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
         $lieu_titre,
         propre($lieu_adresse),
         propre($lieu_chemin),
-        affdate($activite['date_fin'])
+        affdate($activite['date_fin']),
+        propre($activite['divers'])
 		);
 
 	// On remplace les balises
@@ -150,6 +163,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
 		}	
 	}
 
+    // On remplace le code de courtoisie (Mr, Mdm)
 	$texte = str_replace('#CODECOURTOISIE', code_courtoisie($auteur['codecourtoisie']), $texte);
 
 	return $texte;
