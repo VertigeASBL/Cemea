@@ -1,8 +1,11 @@
 <?php
+/*
+*   Fonction non utilisée ?
+*/
 // Si on veux jeter un auteur à la poubelle
-if (isset($_GET['poubelle'])) {
-	delete_inscrit($_GET['poubelle']);
-}
+// if (isset($_GET['poubelle'])) {
+// 	delete_inscrit($_GET['poubelle']);
+// }
 
 if (isset($_GET['pdf_envoye'])) {
 	include_spip('inc/presentation');
