@@ -32,48 +32,6 @@ function swift_envoyer_mail($destinataire, $sujet, $body, $fichier = '', $stream
 	}
 }
 
-// Fonction qui met à jour le statut d'une inscription
-function change_statut_inscrit($statut, $id_auteur, $id_article) {
-    // Mise à jour de la base de donnée 
-	sql_updateq('spip_auteurs_articles', 
-		array('statutsuivi' => $statut), 
-		'id_auteur='.$id_auteur.' AND id_article='.$id_article);
-	
-    // On affiche une boite pour confirmer le changement à l'utilisateur.
-	echo debut_boite_info();
-
-    // On affiche le message de confirmation.
-	echo _T('gestion:changement_statut');
-
-    // Si le statut est une confirmation de l'inscription.
-	if ($statut == 'X' or $statut == 'I') {
-        // On ajoute la date a laquel le payement à été validé
-		sql_update('spip_auteurs_articles', 
-			array('date_validation' => 'NOW()'), 
-			'id_auteur='.sql_quote($id_auteur).' AND id_article='.sql_quote($id_article));
-
-        // On récupère le mail de l'auteur en question.
-		// $email = sql_fetsel('email, nom, prenom', 'spip_auteurs', 'id_auteur='.sql_quote($id_auteur));
-
-		// $destinataire = array($email['email'] => $email['nom'].' '.$email['prenom']);
-
-        // On récupère le titre de l'activité
-		// $titre_activite = sql_getfetsel('titre', 'spip_articles', 'id_article='.$id_article);
-
-        // On récupère les informations du message dans la base de donnée des articles
-		// $body = sql_getfetsel('texte', 'spip_articles', 'id_article=271');
-
-        // On envoie un mail à la personne pour la prévenir du changement via swiftmail plutôt que envoyer_mail
-        // Désactiver sur demande du client.
-		// swift_envoyer_mail($destinataire, 'CEMEA', $body);
-
-        // On envoie un mail de confirmation de l'inscription.
-		// echo '<br />'._T('gestion:confirmation_mail').$email['email'];
-	}
-    // On ferme la boite.
-	echo fin_boite_info();
-}
-
 function delete_inscrit($id_auteur) {
 	sql_updateq('spip_auteurs', 
 		array('statut' => '5poubelle'), 
@@ -87,46 +45,6 @@ function delete_inscrit($id_auteur) {
 
     // On ferme la boite.
 	echo fin_boite_info();
-}
-
-// Cette fonction inscrit une personne a une action.
-function inscrire_action($id_auteur, $id_article) {
-	
-	$output = '';
-
-    // On vérifie que l'auteur n'est pas déjà inscrit a l'activité.
-	$deja_inscrit = sql_getfetsel('id_article', 'spip_auteurs_articles', 'id_auteur='.sql_quote($id_auteur).' and id_article='.sql_quote($id_article).' and inscrit=\'Y\'');
-
-    // Si il n'est pas déjà inscrit
-	if (empty($deja_inscrit)) {
-        // On ajoute l'entrée dans la base de donnée.
-		sql_insertq('spip_auteurs_articles', 
-			array('id_auteur'=>$id_auteur, 'id_article'=>$id_article, 'inscrit'=>'Y', 
-				'statutsuivi'=>'T', 'date_suivi'=>date('Y-m-d'), 'heure_suivi'=>date('H:i:s'),
-				));
-
-        // On affiche une boite pour confirmer le changement à l'utilisateur.
-		$output .= debut_boite_info(true);
-
-        // On affiche le message de confirmation.
-		$output .=  _T('gestion:confirmer_inscription');
-
-        // On ferme la boite.
-		$output .=  fin_boite_info(true);
-	}
-    // Si il est déjà inscrit, on affiche un message d'erreur
-	else {
-        // On affiche une boite pour confirmer le changement à l'utilisateur.
-		$output .= debut_boite_alerte();
-
-        // On affiche le message de confirmation.
-		$output .= _T('gestion:deja_inscrit');
-
-        // On ferme la boite.
-		$output .= fin_boite_alerte();
-	}
-
-	return $output;
 }
 
 /*
