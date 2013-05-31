@@ -1,9 +1,4 @@
 <?php
-// Si un nouveau statut de payement est envoyé
-if (isset($_POST['statut_payement'])) {
-	change_statut_payement($_POST['statut_payement'], $_POST['id_auteur'], $_POST['id_article'], $_POST['email']);
-}
-
 // Si on veux jeter un auteur à la poubelle
 if (isset($_GET['poubelle'])) {
 	delete_inscrit($_GET['poubelle']);
