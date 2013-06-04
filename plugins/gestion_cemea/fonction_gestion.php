@@ -34,7 +34,7 @@ function gestion_header_prive($flux) {
     $flux .= '<script type="text/javascript" src="'.(find_in_path('js/jquery.formStatut.js')).'"></script>';
     
     // Champs SCIR-RA
-    $flux .= '<script type="text/javascript" src="'.(find_in_path('js/SCIR-RA.js')).'"></script>';
+    $flux .= '<script type="text/javascript" src="'.(find_in_path('js/SCIR-RA.min.js')).'"></script>';
 
     // On ajoute le CSS général du plugin
     $flux .= '<link rel="stylesheet" href="'.(find_in_path('gestion_cemea.css')).'" type="text/css" media="all" />';
