@@ -13,6 +13,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'acompte' => 'Acompte',
 	'ajouter_inscrire' => 'Ajouter une personne',
 	'activite_proche' => 'Activité proche',
+    'no_no_mail' => 'Aucune personne sans adresse mail',
 
 	// C
 	'confirmation_mail' => 'Un email de confirmation à été envoyer à l\'adresse: ',
