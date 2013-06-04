@@ -21,7 +21,7 @@ function exec_tableau() {
 		echo minipres('Vous n\'avez pas les autorisations.');
 	}
 	else {
-		// On affiche un titre.
+        // On affiche un titre.
 		gros_titre(_T('gestion:tableau_de_bord'));
 		
 		// On commence le cadre principal

@@ -234,7 +234,7 @@ function exec_gestion_dompdf_exec() {
             if (count($pdf_static) > 0) {
     			// On fusion les PDF ensemble
     			$merge = new PDFMerger;
-    			 // Page 1, le PDF qu'on viens de créer avec domPDF 
+    			// Page 1, le PDF qu'on viens de créer avec domPDF 
     			$merge->addPDF(sous_repertoire(_DIR_IMG, 'gestion').$filename.'.pdf');
     			// On ajoute les PDF lié
                 foreach ($pdf_static as $key => $value) {
