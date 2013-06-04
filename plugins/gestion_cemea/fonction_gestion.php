@@ -12,7 +12,8 @@ function gestion_header_prive($flux) {
         'editer_activite_exec', 
         'auteur_infos', 
         'inscrire_personne_exec',
-        'articles_edit'
+        'articles_edit', 
+        'exportfiche'
         );
 
     // Si on est pas dans un page avec des calendriers 
