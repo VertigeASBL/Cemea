@@ -249,6 +249,18 @@ function exec_exportfiche() {
 	echo '<option value="1"',$typfich==1 ? ' selected="selected"' : '','>personnes</option>';
 	echo '<option value="2"',$typfich==2 ? ' selected="selected"' : '','>suivi des inscriptions</option>';
 	echo '</select>',"\n";
+
+    /*
+    *   Didier: On va ajouter un filtre sur id_article pour n'avoir que les personnes d'un action.
+    */
+    $actions = sql_allfetsel('id_article, idact, titre', 'spip_articles', 'idact != \'\'');
+    echo '<select name="action" id="actions">';
+    echo '<option>--</option>';
+    foreach ($actions as $key => $value) {
+        echo '<option value="'.$value['id_article'].'">#'.$value['idact'].' '.$value['titre'].'</option>';
+    }
+    echo '</select>';
+
 	echo '<br /><br />A partir de la date <input type="text" name="date_cond" id="date_cond" value="',date('d/m/Y', time() - 2592000),'" class="text date" />',"\n";
 	echo '<br /><br />Format CSV avec s&eacute;parateur : virgule <input name="exportdlim" type="radio" value="v"',$exportdlim=='v' ? ' checked="checked"' : '',' /> ou point-virgule <input name="exportdlim" type="radio" value="p"',$exportdlim!='v' ? ' checked="checked"' : '',' />',"\n";
 	echo '<br /><br /><input name="okconfirm" type="submit" value="Confirmer" class="fondo" /><br />&nbsp;',"\n",'</form>',"\n";
