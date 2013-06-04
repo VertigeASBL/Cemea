@@ -8,7 +8,7 @@
 		<li class="editer_#FORM obligatoire[ (#GET{erreurs}|oui)erreur]">
 			[<span class='erreur_message'>(#GET{erreurs})</span>]
 			<select name="envoyer_mass_pdf" class="size_select">
-				<option value="">Envoyer PDF</option>
+				<option value="">Créer PDF</option>
 
 				<BOUCLE_listePDF(ARTICLES){id_rubrique=56}{asbl=#ASBL}{par titre}>
                     <option value="#ID_ARTICLE">[(#TITRE|supprimer_numero)]</option>
