@@ -1,5 +1,5 @@
 <?php
-set_time_limit(0);
+// set_time_limit(0);
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
