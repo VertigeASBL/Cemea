@@ -31,7 +31,7 @@ function gestion_header_prive($flux) {
     }
 
     // L'auto submit du <select> des statuts
-    $flux .= '<script type="text/javascript" src="'.(find_in_path('js/jquery.formStatut.js')).'"></script>';
+    $flux .= '<script type="text/javascript" src="'.(find_in_path('js/jquery.formStatut.min.js')).'"></script>';
     
     // Champs SCIR-RA
     $flux .= '<script type="text/javascript" src="'.(find_in_path('js/SCIR-RA.min.js')).'"></script>';
