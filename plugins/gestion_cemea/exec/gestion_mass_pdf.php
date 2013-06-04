@@ -39,7 +39,7 @@ function exec_gestion_mass_pdf() {
 		$filename = 'tmp';
 
 		/* On va boucler sur tout les inscrits de l'article */
-		$inscrits = sql_allfetsel('a.id_auteur, email, nom, prenom', 'spip_auteurs_articles AS a INNER JOIN spip_auteurs AS b ON a.id_auteur = b.id_auteur', 'a.id_article='.sql_quote($id_article).' AND a.inscrit =\'Y\' AND b.send_email = \'oui\'');
+		$inscrits = sql_allfetsel('a.id_auteur, email, nom, prenom', 'spip_auteurs_articles AS a INNER JOIN spip_auteurs AS b ON a.id_auteur = b.id_auteur', 'a.id_article='.sql_quote($id_article).' AND a.inscrit =\'Y\' AND b.send_email ='.sql_quote('oui'));
 
 		echo '<ul>';
 		/* On boucle sur tout les inscrits, pour créer et envoyer les PDF */
