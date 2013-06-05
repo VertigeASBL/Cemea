@@ -80,7 +80,7 @@ function pdf_syntaxe($texte, $id_activite, $id_personne) {
     // Création de l'adresse_fenêtre
     $adresse_fenetre = '
     <div class="adresse_fenetre">
-        '.$auteur['nom'].' '.$auteur['prenom'].'
+        '.code_courtoisie($auteur['codecourtoisie']).' '.$auteur['nom'].' '.$auteur['prenom'].'
         <br />'.$auteur['adresse'].'
         <br />'.$auteur['codepostal'].' '.$auteur['localite'].'
     </div>';
