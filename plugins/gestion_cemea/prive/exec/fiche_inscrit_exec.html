@@ -77,19 +77,35 @@ echo icone_inline(_T('gestion:modifier_inscrit'), generer_url_ecrire("editer_ins
 	</tr>
 	<tr>
 		<td>Statut Form Cemea</td>
-		<td>[(#STATUT_FORM_CEMEA)]</td>
+		<td>
+            <BOUCLE_get_desc_sfc(MOTS){titre=#STATUT_FORM_CEMEA}>
+                [(#DESCRIPTIF|supprimer_tags) [ ((#STATUT_FORM_CEMEA)) ]]
+            </BOUCLE_get_desc_sfc>
+        </td>
 	</tr>
 	<tr class="tr_liste">
 		<td>Statut anim Cemea</td>
-		<td>[(#STATUT_ANIM_CEMEA)]</td>
+		<td>
+            <BOUCLE_get_desc_sac(MOTS){titre=#STATUT_ANIM_CEMEA}>
+                [(#DESCRIPTIF|supprimer_tags) [ ((#STATUT_ANIM_CEMEA)) ]]
+            </BOUCLE_get_desc_sac>
+        </td>
 	</tr>
 	<tr>
 		<td>Statut EP</td>
-		<td>[(#STATUT_EP)]</td>
+		<td>
+            <BOUCLE_get_desc_se(MOTS){titre=#STATUT_EP}>
+                [(#DESCRIPTIF|supprimer_tags) [ ((#STATUT_EP)) ]]
+            </BOUCLE_get_desc_se>
+        </td>
 	</tr>
 	<tr class="tr_liste">
 		<td>Statut SJ</td>
-		<td>[(#STATUT_SJ)]</td>
+		<td>
+            <BOUCLE_get_desc_sj(MOTS){titre=#STATUT_SJ}>
+                [(#DESCRIPTIF|supprimer_tags) [ ((#STATUT_SJ)) ]]
+            </BOUCLE_get_desc_sj>
+        </td>
 	</tr>
 	<tr>
 		<td>Stage pratique animateur</td>
