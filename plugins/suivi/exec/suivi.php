@@ -188,8 +188,8 @@ function exec_suivi() {
                     
                     $p = $envoyer_mail(
                                         $GLOBALS['meta']['email_webmaster'].', inscriptions@cemea.be',
-                                        $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$list_articles.'-'.$id_auteur, 
-                                        $p, 
+                                        $GLOBALS['meta']['nom_site'].' : nouvelle inscription '.$data['idact'].'-'.$id_auteur, 
+                                        $p,
                                         $GLOBALS['meta']['email_webmaster']);
                     
                 }
