@@ -23,33 +23,28 @@
     </style>   
 </head>
 <body>
-	<B_CreerCertif>
 	<BOUCLE_CreerCertif(AUTEURS auteurs_articles){id_article=#ENV{id_activite}} {inscrit=Y}{statutsuivi IN I,X}>
 		#SET{id_personne, #ID_AUTEUR}
 		<div style="height: 600px; width: 100%; clear: both;">
 			<table>
+                <tbody>
 				<tr>
-					<B_dataCertif>
 					<BOUCLE_dataCertif(ARTICLES){id_article=#ENV{id_certif}}>
 						<td>
-							[(#LOGO_ARTICLE|oui) #LOGO_ARTICLE]
-							[(#LOGO_ARTICLE|non) #LOGO_RUBRIQUE]
+							[(#LOGO_ARTICLE|oui) [(#LOGO_ARTICLE|image_reduire{323,564})] ]
+							[(#LOGO_ARTICLE|non) [(#LOGO_RUBRIQUE|image_reduire{323,564})] ]
 						</td>
-					<td>
-						[(#TEXTE|pdf_syntaxe{
-											#ENV{id_activite}, 
-											#GET{id_personne}
-											})]
-					</td>	
+    					<td>
+    						[(#TEXTE|pdf_syntaxe{
+    											#ENV{id_activite}, 
+    											#GET{id_personne}
+    											})]
+    					</td>	
 					</BOUCLE_dataCertif>
-					</B_dataCertif>
-					<//B_dataCertif>
-					
 				</tr>
+                </tbody>
 			</table>
 		</div>
 	</BOUCLE_CreerCertif>
-	</B_CreerCertif>
-	<//B_CreerCertif>
 </body>
 </html>
