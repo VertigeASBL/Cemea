@@ -36,7 +36,7 @@ function exec_gestion_mass_pdf() {
 		$action = sql_fetsel('titre, idact as reference', 'spip_articles', 'id_article='.sql_quote($id_article));
 
 		// le fichier temporaire
-		$filename = 'tmp';
+		$filename = $action['reference'].'_'.$action['titre'];
 
 		/* On va boucler sur tout les inscrits de l'article */
 		$inscrits = sql_allfetsel('a.id_auteur, email, nom, prenom', 'spip_auteurs_articles AS a INNER JOIN spip_auteurs AS b ON a.id_auteur = b.id_auteur', 'a.id_article='.sql_quote($id_article).' AND a.inscrit =\'Y\' AND b.send_email ='.sql_quote('oui'));
@@ -73,7 +73,7 @@ function exec_gestion_mass_pdf() {
 			$body = 'Corps du texte.';
 			
 			// On envoie le tout à la personne
-			/* swift_envoyer_mail($send, $sujet, $body, $file, true); */
+			/* swift_envoyer_mail($send, $sujet, $body, $file, true, $filename.'.pdf'); */
 
 			/* Messag de confirmation */
 			echo '<li>Un email à été envoyé à '.$value['nom'].' '.$value['prenom'].' ('.$value['email'].')</li>';
