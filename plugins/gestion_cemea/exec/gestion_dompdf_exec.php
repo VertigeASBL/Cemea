@@ -304,11 +304,11 @@ function exec_gestion_dompdf_exec() {
 				$send = array($personne['email'] => $personne['nom'].' '.$personne['prenom']);
 				
                 // On va chercher l'article PDF par mail
-                $pdf_par_mail = sql_getfetsel('texte', 'spip_articles', 'titre=\'PDF par mail\'');
+                $pdf_par_mail = sql_allfetsel('titre, texte', 'spip_articles', 'id_article=270');
 
                 // On créer les éléments du mail.
-                $sujet = 'CEMEA';
-				$body = $pdf_par_mail;
+                $sujet = $pdf_par_mail[0]['titre'];
+				$body = $pdf_par_mail[0]['texte'];
 
                 // On envoie le tout à la personne
 				swift_envoyer_mail($send, $sujet, $body, $file, true, $filename.'.pdf');
