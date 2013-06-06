@@ -58,7 +58,7 @@ function exec_gestion_dompdf_exec() {
 	$action = sql_fetsel('titre, idact as reference', 'spip_articles', 'id_article='.sql_quote($id_article));
 
 	// On créer le nom du fichier pour vérifier son éventuel existance.
-	$filename = $personne['nom'].'_'.$personne['prenom'].'_'.$action['reference'];
+	$filename = $action['reference'].'_'.$personne['nom'].'_'.$personne['prenom'];
 	if ($modele == 'liste_participant') {
 		$filename = $action['reference'].'_'.$modele;
 	}
