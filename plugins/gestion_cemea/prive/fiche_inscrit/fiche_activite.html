@@ -51,7 +51,14 @@
 			</form>
 		</td>
 		<td>
-            #FORMULAIRE_CHANGER_STATUT_INSCRIT{#STATUTSUIVI, #ID_AUTEUR, #ID_ARTICLE}
+			<form method="post" action="#SELF" class="autosubmit">
+				<ul class="suivi_statut_ul">
+					<INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
+				</ul>
+				<input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
+				<input type="hidden" name="id_article" value="#ID_ARTICLE" />
+				<input type="hidden" name="email" value="#EMAIL" />
+			</form>
 			
 			#SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
 			[(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
