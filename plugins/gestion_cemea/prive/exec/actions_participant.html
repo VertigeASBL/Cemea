@@ -1,0 +1,25 @@
+<?php 
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+include_spip('fonctions_gestion_cemea');
+include_spip('prive/gestion_update_db');
+?>
+
+[(#REM) On récupère le titre de l'article pour l'afficher dans le titre de la page/PDF ]
+<BOUCLE_getTitre(ARTICLES){id_article}>
+	<?php gros_titre('<:gestion:liste_participant:> - [(#TITRE|supprimer_numero)]'); ?>
+</BOUCLE_getTitre>
+
+<?php
+// On récupère la variable PDF pour déterminer si on est dans un PDF ou non
+$pdf = '#ENV{pdf}';
+// Si on est pas dans un PDF, on affiche le bouton pour télécharger le PDF
+if ($pdf != 1) {
+	echo icone_inline(_T('gestion:telecharger_pdf'), generer_url_ecrire('gestion_dompdf_exec','id_article=#ID_ARTICLE&modele=liste_actions_participant'), 'doc-24.gif', '', 'right');
+
+	echo icone_inline(_T('gestion:retour'), generer_url_ecrire('gestion_activite_exec'), find_in_path('img/gestion-24.png'), '', 'left');
+}
+?>
+<div class="nettoyeur"></div>
+<h2>Liste des inscrits</h2>
+<INCLURE{fond=prive/gestion_activite/export_activite_pdf, env}>

@@ -62,6 +62,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'limit' => 'Limite',
 	'liste_participant' => 'Liste des participants',
     'liste_payement' => 'Liste des payements',
+    'liste_actions_participant' => 'Liste des actions par participants.',
 
 	// N
 	'nom' => 'Nom',

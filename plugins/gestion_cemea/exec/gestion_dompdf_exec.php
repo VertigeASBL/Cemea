@@ -158,6 +158,33 @@ function exec_gestion_dompdf_exec() {
             $html .= recuperer_fond('prive/fiche_inscrit/fiche_activite', array('pdf' => 1, 'id_auteur' => $id_auteur, 'pagination' => 9999999), array('ajax' => false));
             $html .= '</body></html>';
         }
+        elseif ($modele === 'liste_actions_participant') {
+            // On met cette liste en paysage.
+            $dompdf->set_paper('A4', 'landscape');
+            
+            $html = '
+            <html>
+            <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 50px;
+                padding-left: 125px;
+                padding-right: 125px;
+            }
+            .pied_page {
+                position: absolute;
+                bottom: 30;
+            }
+            </style>
+            </head>
+            <body>';
+            $html .= recuperer_fond('prive/gestion_activite/export_activite_pdf', array('pdf' => 1, 'id_article' => $id_article, 'pagination' => 9999999), array('ajax' => false));
+            $html .= '</body></html>';
+        }
         // Dans le cas d'un listing de payement
         elseif ($modele === 'listing_payement') {
 
@@ -212,8 +239,12 @@ function exec_gestion_dompdf_exec() {
 				array('ajax' => false)
 				);
 		}
+        
+        
 
-        // echo $html;
+        // echo '<pre>';
+        // echo htmlentities($html);
+        // echo '</pre>';
 
         if ($modele != 'etiquette') {
 			// On fix les problèmes de BR avec une fonctione personnalisée.
