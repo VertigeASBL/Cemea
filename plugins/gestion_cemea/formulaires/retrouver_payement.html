@@ -13,16 +13,18 @@
             }, 50);
         });
 
-		$("#activite").autocomplete({
-			source: [
-							<BOUCLE_action(ARTICLES mots_rubriques){id_mot IN 5,3627}>
-								{
-									value: '[(#IDACT)]',
-									label: "[(#IDACT)] [(#TITRE|supprimer_numero|addslashes|html_entity_decode)] [(#DATE_DEBUT|affdate)]",
-								},
-							</BOUCLE_action>
-						]
-		});
+        $("#activite").keypress(function(event) {
+            setTimeout(function () {
+                var value = $("#activite").val();
+                $.getJSON('?exec=action_json', {search: value}).done(function (json) {
+                    $("#activite").autocomplete({
+                        source: json
+                    });
+                }).fail(function (jqxhr, textStatus, error) {
+                    console.log(error);
+                });
+            }, 50);
+        });
 	});
 </script>
 
