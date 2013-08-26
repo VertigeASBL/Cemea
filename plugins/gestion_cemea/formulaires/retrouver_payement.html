@@ -1,12 +1,17 @@
 <script type="text/javascript">
 	$(document).ready(function () {
-		$("#participant").autocomplete({
-			source: [
-							<BOUCLE_dataNom(AUTEURS){tout}>
-								{value: '#NOM #PRENOM'},
-							</BOUCLE_dataNom>
-						]
-		});
+		$("#participant").keypress(function(event) {
+            setTimeout(function () {
+                var value = $("#participant").val();
+                $.getJSON('?exec=auteur_json', {search: value}).done(function (json) {
+                    $("#participant").autocomplete({
+                        source: json
+                    });
+                }).fail(function (jqxhr, textStatus, error) {
+                    console.log(error);
+                });
+            }, 50);
+        });
 
 		$("#activite").autocomplete({
 			source: [

@@ -12,17 +12,20 @@ gros_titre(_T('gestion:gestion_inscrit'));
 ?>
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		$("#recherche").autocomplete({
-			source: [
-							<BOUCLE_dataNom(AUTEURS){tout}>
-								{
-									value: '#NOM #PRENOM'
-								},
-							</BOUCLE_dataNom>
-						]
-		});
-	});
+    jQuery(document).ready(function ($) {
+        $("#recherche").keypress(function(event) {
+            setTimeout(function () {
+                var value = $("#recherche").val();
+                $.getJSON('?exec=auteur_json', {search: value}).done(function (json) {
+                    $("#recherche").autocomplete({
+                        source: json
+                    });
+                }).fail(function (jqxhr, textStatus, error) {
+                    console.log(error);
+                });
+            }, 50);
+        });
+    });
 </script>
 
 <form action="#" method="get" style="float: left;">
