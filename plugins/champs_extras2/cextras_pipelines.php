@@ -261,10 +261,10 @@ function cextras_editer_contenu_objet($flux){
 		//--- Personnes ---
 		switch ($flux['args']['contexte']['form']) {
 		case 'editer_auteur': //--- cote admin
-			$taff = array('idper','typepart','archive_per','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','description_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','tel2','gsm1','gsm2','fax1','fax2','email2','date_creation','date_maj','statut_form_cemea','statut_anim_cemea','statut_ep','statut_sj','personne_reference','centre_reference','envoi_diffusion','date_debut_diffusion','date_fin_diffusion','diffusion','ndiffusion','adherent', 'demandeur_emploi', 'stage_pratique_animateur', 'stage_pratique_coordinateur_adjoint', 'stage_pratique_coordinateur', 'membre', 'send_email');
+			$taff = array('idper','typepart','archive_per','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','description_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','tel2','gsm1','gsm2','fax1','fax2','email2','date_creation','date_maj','statut_form_cemea','statut_anim_cemea','statut_ep','statut_sj','personne_reference','centre_reference','envoi_diffusion','date_debut_diffusion','date_fin_diffusion','diffusion','ndiffusion','adherent', 'demandeur_emploi', 'stage_pratique_animateur', 'stage_pratique_coordinateur_adjoint', 'stage_pratique_coordinateur', 'membre', 'send_email', 'pays');
 			break;
 		case 'editer_auteur_hack': //--- cote admin pour le hack // => Vertige Didier
-			$taff = array('idper','typepart','archive_per','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','description_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','tel2','gsm1','gsm2','fax1','fax2','email2','date_creation','date_maj','statut_form_cemea','statut_anim_cemea','statut_ep','statut_sj','personne_reference','centre_reference','envoi_diffusion','date_debut_diffusion','date_fin_diffusion','diffusion','ndiffusion','adherent','adherent', 'demandeur_emploi', 'stage_pratique_animateur', 'stage_pratique_coordinateur_adjoint', 'stage_pratique_coordinateur', 'membre', 'send_email');
+			$taff = array('idper','typepart','archive_per','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','description_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','tel2','gsm1','gsm2','fax1','fax2','email2','date_creation','date_maj','statut_form_cemea','statut_anim_cemea','statut_ep','statut_sj','personne_reference','centre_reference','envoi_diffusion','date_debut_diffusion','date_fin_diffusion','diffusion','ndiffusion','adherent','adherent', 'demandeur_emploi', 'stage_pratique_animateur', 'stage_pratique_coordinateur_adjoint', 'stage_pratique_coordinateur', 'membre', 'send_email', 'pays');
 			break;
 		
 		case 'select_auteur': //--- selection des destinataires
@@ -275,7 +275,7 @@ function cextras_editer_contenu_objet($flux){
 			break;
 		case 'inscrire_auteur': //--- cote public : modifier un auteur, inscrire a une action
                         //Added extra action fields (only those for all actions)
-			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion', 'send_email'
+			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion', 'send_email', 'pays'
                             
                             );
                         //,'description_institution'
