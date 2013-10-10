@@ -57,6 +57,11 @@
         <nom>affiche_gauche</nom>
         <inclure>fonction_gestion.php</inclure>
     </pipeline>
+
+    <pipeline>
+        <nom>autoriser</nom>
+        <inclure>cemea_autorisation.php</inclure>
+    </pipeline>
     
     <necessite id="lib:h5c1accba-fpdf17" src="http://www.fpdf.org/fr/download/fpdf17.zip" />   
 </plugin>
