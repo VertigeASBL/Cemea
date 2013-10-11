@@ -10,7 +10,7 @@ include_spip('prive/gestion_update_db');
 gros_titre('Fiche de l\'inscrit');
 
 // Pour les administrateurs, afficher l'icone de modification.
-if (session_get('status') == '0minirezo') {
+if (session_get('statut') == '0minirezo') {
     echo icone_inline(_T('gestion:modifier_inscrit'), generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "auteur-24.gif","edit.gif", 'left');
 }
 ?>

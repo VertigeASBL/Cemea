@@ -8,6 +8,6 @@ gros_titre(_T('gestion:editer_inscrit'));
 echo icone_inline(_T('gestion:retour'), generer_url_ecrire("fiche_inscrit_exec","id_auteur=#ID_AUTEUR"), "auteur-24.gif","rien.gif", 'left');
 
 ?>
-[(#SESSION{status}|=={0minirezo}|oui)
+[(#SESSION{statut}|=={0minirezo}|oui)
     #FORMULAIRE_EDITER_AUTEUR{#ID_AUTEUR, #URL_ECRIRE{fiche_inscrit_exec, id_auteur=#ID_AUTEUR}}
 ]

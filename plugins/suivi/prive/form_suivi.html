@@ -1,3 +1,16 @@
+[(#REM) On va désactiver le formulaire via javascript, pas le choix... ]
+[(#SESSION{statut}|=={1comite}|oui)
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        var form = $(".formulaire_spip input, .formulaire_spip textarea, .formulaire_spip select");
+
+        form.each(function () {
+            $(this).attr("disabled", true);
+        });
+    });
+    </script>
+]
+
 <div class='formulaire_spip formulaire_editer'>
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]

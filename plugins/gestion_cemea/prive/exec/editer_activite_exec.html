@@ -12,7 +12,7 @@ echo icone_inline(_T('gestion:retour'), generer_url_ecrire('gestion_activite_exe
 	Une fois l'article créer 
 ]
 
-[(#SESSION{status}|=={0minirezo}|oui)
+[(#SESSION{statut}|=={0minirezo}|oui)
     #FORMULAIRE_EDITER_ARTICLE{
 							#ENV{new}, 
 							#ENV{id_rubrique}, 
