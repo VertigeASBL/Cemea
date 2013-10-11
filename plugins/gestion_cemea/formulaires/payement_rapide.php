@@ -1,7 +1,7 @@
 <?php
 function formulaires_payement_rapide_charger_dist($id_auteur, $id_article) {
 	// Seul les admin peuvent utiliser ce formulaire
-    if (session_get('status') != '0minirezo')
+    if (session_get('statut') != '0minirezo')
         return false;
     $contexte = array(
 		'' => '',

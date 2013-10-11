@@ -2,7 +2,7 @@
 function formulaires_ajouter_inscrit_charger_dist() {
 
     // Seul les admin peuvent utiliser ce formulaire
-    if (session_get('status') != '0minirezo')
+    if (session_get('statut') != '0minirezo')
         return false;
     
     $contexte = array();
