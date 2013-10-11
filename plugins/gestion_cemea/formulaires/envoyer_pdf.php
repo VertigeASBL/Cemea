@@ -1,5 +1,9 @@
 <?php
 function formulaires_envoyer_pdf_charger_dist($id_article, $id_auteur, $asbl) {
+    // Seul les admin peuvent utiliser ce formulaire
+    if (session_get('status') != '0minirezo')
+        return false;
+    
         $contexte = array(
                 'asbl' => $asbl,
         );

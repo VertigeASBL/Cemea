@@ -1,6 +1,11 @@
 <?php
 function formulaires_changer_statut_charger_dist($id_auteur, $id_article, $statut_payement) {
-	$contexte = array(
+	
+    // Seul les admin peuvent utiliser ce formulaire
+    if (session_get('status') != '0minirezo')
+        return false;
+    
+    $contexte = array(
 		'statut_payement' => $statut_payement
 		);
 	return $contexte;

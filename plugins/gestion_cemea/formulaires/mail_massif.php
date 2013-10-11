@@ -1,8 +1,13 @@
 <?php
 function formulaires_mail_massif_charger_dist($id_article, $asbl) {
-	$contexte = array(
+	// Seul les admin peuvent utiliser ce formulaire
+    if (session_get('status') != '0minirezo')
+        return false;
+
+    $contexte = array(
 		'asbl' => $asbl,
 		);
+
 	return $contexte;
 }
 

@@ -1,5 +1,10 @@
 <?php
 function formulaires_changer_statut_inscrit_charger_dist($statutsuivi, $id_auteur, $id_article) {
+
+    // Seul les admin peuvent utiliser ce formulaire
+    if (session_get('status') != '0minirezo')
+        return false;
+    
     $contexte = array(
             'statutsuivi' => $statutsuivi,
     );

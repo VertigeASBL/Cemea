@@ -36,28 +36,10 @@
                 <INCLURE{fond=prive/gestion_activite/max_inscrit}{id_article}{env}>
             </td>      
             <td>
-                <form method="post" action="#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE}" class="autosubmit">
-                    <ul class="suivi_statut_ul">
-                        <select name="statut_payement">
-                            <option value="1" [(#STATUT_PAYEMENT|=={1}|oui) selected="selected"]>En attente</option>
-                            <option value="2" [(#STATUT_PAYEMENT|=={2}|oui) selected="selected"]>Acompte payé</option>
-                            <option value="3" [(#STATUT_PAYEMENT|=={3}|oui) selected="selected"]>Payement terminé</option>
-                            <option value="4" [(#STATUT_PAYEMENT|=={4}|oui) selected="selected"]>A rembourser</option>
-                        </select>
-                    </ul>
-                    <input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
-                    <input type="hidden" name="id_article" value="#ID_ARTICLE" />
-                </form>
+                #FORMULAIRE_CHANGER_STATUT{#ID_AUTEUR, #ID_ARTICLE, #STATUT_PAYEMENT}
             </td>
             <td>
-                <form method="post" action="#SELF" class="autosubmit">
-                    <ul class="suivi_statut_ul">
-                        <INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
-                    </ul>
-                    <input type="hidden" name="id_auteur" value="#ID_AUTEUR" />
-                    <input type="hidden" name="id_article" value="#ID_ARTICLE" />
-                    <input type="hidden" name="email" value="#EMAIL" />
-                </form>
+                #FORMULAIRE_CHANGER_STATUT_INSCRIT{#STATUTSUIVI, #ID_AUTEUR, #ID_ARTICLE}
                 
                 #SET{autoriser_pdf, #ARRAY{0,X,1,I,2,E,3,L}}
                 [(#GET{autoriser_pdf}|find{#STATUTSUIVI}|oui)
