@@ -1,16 +1,18 @@
 <script type="text/javascript">
-	$(document).ready(function () {
-		$("#activite").autocomplete({
-			source: [
-							<BOUCLE_action(ARTICLES mots_rubriques){id_mot IN 5,3627}{origine_traduction}>
-								{
-									value: "[(#IDACT)]",
-									label: "[(#IDACT)] [(#TITRE|utf8_decode|supprimer_numero|addslashes|html_entity_decode|utf8_encode|replace{\&\#8217\;, "'" })] [(#DATE_DEBUT|affdate)]"
-								},
-							</BOUCLE_action>
-						]
-		});
-	});
+	jQuery(document).ready(function ($) {
+        $("#activite").keypress(function(event) {
+            setTimeout(function () {
+                var value = $("#activite").val();
+                $.getJSON('?exec=action_json', {search: value}).done(function (json) {
+                    $("#activite").autocomplete({
+                        source: json
+                    });
+                }).fail(function (jqxhr, textStatus, error) {
+                    console.log(error);
+                });
+            }, 50);
+        });
+    });
 </script>
 
 <div class="formulaire_spip formulaire_#FORM">
