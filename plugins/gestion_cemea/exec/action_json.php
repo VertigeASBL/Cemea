@@ -16,7 +16,7 @@ function exec_action_json() {
     foreach ($sql_action as $key => $value) {
         $recherche[] = array(
             'value' => $value['idact'],
-            'label' => $value['idact'].' '.(addslashes(supprimer_numero($value['titre']))).' '.affdate($value['date_debut'])
+            'label' => $value['idact'].' '.(supprimer_numero($value['titre'])).' | '.(affdate($value['date_debut'], 'd/m/Y'))
             );
     }
 
