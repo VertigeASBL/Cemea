@@ -1,6 +1,24 @@
-[(#REM) 
+[(#REM)
     Fichier de fiche de détail d'une inscription.
 ]
+<?php
+if (!defined("_ECRIRE_INC_VERSION")) return;
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+
+include_spip('fonctions_gestion_filtre');
+
+gros_titre("Fiche d'inscription");
+
+// Pour les administrateurs, afficher l'icone de modification.
+if (session_get('statut') == '0minirezo') {
+    $titre_complet = _T('gestion:modifier_inscrit').' '._T('gestion:personne');
+    echo icone_inline($titre_complet, generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "auteur-24.gif","edit.gif", 'left');
+
+    echo icone_inline(_T('gestion:modifier_inscription'), generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "breve-24.gif","edit.gif", 'left');
+}
+
+?>
 
 <B_fiche_inscription>
 <table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
@@ -12,8 +30,128 @@
     <tbody>
         <BOUCLE_fiche_inscription(AUTEURS articles){id_auteur}{id_article}>
         <tr class="tr_liste">
-            <td>Action:</td>
-            <td>#TITRE</td>
+            <td><:gestion:activite:>:</td>
+            <td><strong>[(#TITRE|supprimer_numero)]</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:reference:>:</td>
+            <td><strong>[(#IDACT)]</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td><:gestion:nom:>:</td>
+            <td><strong>#NOM</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:prenom:>:</td>
+            <td><strong>#PRENOM</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td>idper:</td>
+            <td><strong>#IDPER</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:statut:>:</td>
+            <td><strong>[(#STATUTSUIVI|statut_suivi)]</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td><:gestion:date_suivi:></td>
+            <td><strong>[(#DATE_SUIVI|affdate)] #HEURE_SUIVI</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:alimentation:></td>
+            <td><strong>#ALIMENTATION</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td><:gestion:remarque:></td>
+            <td><strong>#REMARQUE_INSCRIPTION</strong></td>
+        </tr>
+
+        [(#REM) Si on est dans le cas "Animation" ]
+        [(#TYPE_ACT|=={A}|oui)
+            <tr>
+                <td><:gestion:responsable:></td>
+                <td><strong>#RESPONSABLE</strong></td>
+            </tr>
+            <tr class="tr_liste">
+                <td><:gestion:responsable_lien:></td>
+                <td><strong>#RESPONSABLE_LIEN</strong></td>
+            </tr>
+            <tr>
+                <td><:gestion:sante_comportement:></td>
+                <td><strong>#SANTE_COMPORTEMENT</strong></td>
+            </tr>
+            <tr class="tr_liste">
+                <td><:gestion:ecole:></td>
+                <td><strong>#ECOLE</strong></td>
+            </tr>
+            <tr>
+                <td><:gestion:fiche_medical:></td>
+                <td><strong>#RECUS_FICHE_MEDICAL</strong></td>
+            </tr>
+        ]
+        [(#TYPE_ACT|=={F}|oui)
+            <tr>
+                <td><:gestion:etablissement:></td>
+                <td><strong>#ETUDE_ETABLISSEMENT</strong></td>
+            </tr>
+            <tr class="tr_liste">
+                <td><:gestion:profession:></td>
+                <td><strong>#PROFESSION</strong></td>
+            </tr>
+            <tr>
+                <td><:gestion:pratique:></td>
+                <td><strong>#PRATIQUE</strong></td>
+            </tr>
+            <tr class="tr_liste">
+                <td><:gestion:formation:></td>
+                <td><strong>#FORMATION</strong></td>
+            </tr>
+            <tr>
+                <td><:gestion:brevet_animateur:></td>
+                <td><strong>#BREVET_ANIMATEUR</strong></td>
+            </tr>
+            <tr class="tr_liste">
+                <td><:gestion:places_voiture:></td>
+                <td><strong>#PLACES_VOITURES</strong></td>
+            </tr>
+            <tr>
+                <td><:gestion:membre_assoc:></td>
+                <td><strong>#MEMBRE_ASSOC</strong></td>
+            </tr>
+            <tr class="tr_liste">
+                <td><:gestion:demandeur_emploi:></td>
+                <td><strong>#DEMANDEUR_EMPLOI</strong></td>
+            </tr>
+        ]
+
+        [(#REM) Les autres champs générique ]
+        <tr class="tr_liste">
+            <td><:gestion:liste_payement:></td>
+            <td><strong>[(#HISTORIQUE_PAYEMENT|explode_payement)]</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:extrait_compte:></td>
+            <td><strong>#EXTRAIT_DE_COMPTE</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td><:gestion:statut_payement:></td>
+            <td><strong>[(#STATUT_PAYEMENT|statut_payement)]</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:prix_special:></td>
+            <td><strong>#PRIX_SPECIAL</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td><:gestion:facture:></td>
+            <td><strong>#FACTURE</strong></td>
+        </tr>
+        <tr>
+            <td><:gestion:adresse_facturation:></td>
+            <td><strong>#ADRESSE_FACTURATION</strong></td>
+        </tr>
+        <tr class="tr_liste">
+            <td><:gestion:tableau_exception:></td>
+            <td><strong>#TABLEAU_EXCEPTION</strong></td>
         </tr>
         </BOUCLE_fiche_inscription>
     </tbody>
