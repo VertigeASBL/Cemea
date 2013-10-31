@@ -15,7 +15,7 @@ if (session_get('statut') == '0minirezo') {
     $titre_complet = _T('gestion:modifier_inscrit').' '._T('gestion:personne');
     echo icone_inline($titre_complet, generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "auteur-24.gif","edit.gif", 'left');
 
-    echo icone_inline(_T('gestion:modifier_inscription'), generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "breve-24.gif","edit.gif", 'left');
+    echo icone_inline(_T('gestion:modifier_inscription'), generer_url_ecrire("suivi","id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE"), "breve-24.gif","edit.gif", 'left');
 }
 
 ?>
