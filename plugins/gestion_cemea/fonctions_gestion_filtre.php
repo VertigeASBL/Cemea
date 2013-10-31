@@ -233,4 +233,64 @@ function spip_fix_br($str) {
     return str_replace('<p>
 <br /></p>', '', $str);
 }
+
+/*
+*   Cette fonction va convertir le code du statut suivi en quelques choses lisible pour un humain.
+*   #SET{vtab, #ARRAY{T,A traiter,A,Annulé,C,Cemea,E,Encadrant,D,Désisté,I,Inscrit,L,Liste d'attente,R,Refusé,X,Réservé}}]
+*/
+function statut_suivi($statut) {
+    switch ($statut){
+        case 'T':
+            return 'A traiter';
+            break;
+        case 'A':
+            return 'Annulé';
+            break;
+        case 'C':
+            return 'Cemea';
+            break;
+        case 'E':
+            return 'Encadrant';
+            break;
+        case 'D':
+            return 'Désisté';
+            break;
+        case 'I':
+            return 'Inscrit';
+            break;
+        case 'L':
+            return "Liste d'attente";
+            break;
+        case 'R':
+            return 'Refusé';
+            break;
+        case 'X':
+            return 'Réservé';
+            break;
+        default:
+            return 'Statut suivit inconnu !';
+    }
+}
+
+/*
+*   Cette fonction va convertir un statut payment.
+*/
+function statut_payement($statut) {
+    switch ($statut) {
+        case 1:
+            return 'En attente';
+            break;
+        case 2:
+            return 'Acompte payé';
+            break;
+        case 3:
+            return 'Payement terminé';
+            break;
+        case 4:
+            return 'A rembourser';
+            break;
+        default:
+            return 'Statut du payement inconnu';
+    }
+}
 ?>
