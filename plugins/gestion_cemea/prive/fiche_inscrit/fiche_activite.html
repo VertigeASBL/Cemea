@@ -10,7 +10,7 @@
 <B_activite>
 <table class="arial2" cellpadding="2" cellspacing="0" style="width: 100%; border: 0px;">
     <thead>
-        <tr>   
+        <tr>
             <th><:gestion:reference:></th>
             <th><:gestion:nom_activite:></th>
             <th><:gestion:date_debut:></th>
@@ -27,14 +27,14 @@
         <tr class="[(#COMPTEUR_BOUCLE|alterner{'tr_liste',''})][(#CLOTURER|oui) cloturer]">
             <td>#IDACT</td>
             <td>
-                [(#PDF|non)<a href="[(#URL_ECRIRE{suivi, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">[(#TITRE|supprimer_numero)]</a>]
+                [(#PDF|non)<a href="[(#URL_ECRIRE{fiche_inscription, id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE})]" title="[(#TITRE|supprimer_numero)]">[(#TITRE|supprimer_numero)]</a>]
                 [(#PDF|oui) [(#TITRE|supprimer_numero)] ]
             </td>
             <td>[(#DATE_DEBUT|affdate)]</td>
             [(#PDF|non)
             <td>
                 <INCLURE{fond=prive/gestion_activite/max_inscrit}{id_article}{env}>
-            </td>      
+            </td>
             <td>
                 #FORMULAIRE_CHANGER_STATUT{#ID_AUTEUR, #ID_ARTICLE, #STATUT_PAYEMENT}
             </td>
