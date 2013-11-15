@@ -6,7 +6,7 @@
     <ul class="suivi_statut_ul">
         #SET{erreurs,#ENV**{erreurs}|table_valeur{NomErreur}}
         <li class="editer_#FORM obligatoire[ (#GET{erreurs}|oui)erreur]">
-            <INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>            
+            <INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi, valeur_extra=#STATUTSUIVI}>
         </li>
     </ul>
 </form>
