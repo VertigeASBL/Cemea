@@ -47,6 +47,12 @@
         <titre>Gestion des actions</titre>
         <url>gestion_activite_exec</url>
     </bouton>
+
+    <bouton id="gestion_sql" parent="gestion">
+        <icone>img/sql-24.png</icone>
+        <titre>Requête SQL</titre>
+        <url>sql</url>
+    </bouton>
     
     <pipeline>
         <nom>header_prive</nom>
