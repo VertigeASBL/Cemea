@@ -37,6 +37,8 @@ function formulaires_sql_traiter_dist() {
 
     $sql = sql_query(_request('sql_command'));
 
+    spip_log(_request('sql_command'), 'sql_cemea');
+
     // C'est partit pour un export CSV
     $exporter_csv = charger_fonction('exporter_csv', 'inc');
 
