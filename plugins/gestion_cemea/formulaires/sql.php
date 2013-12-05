@@ -43,6 +43,7 @@ function formulaires_sql_traiter_dist() {
     $exporter_csv = charger_fonction('exporter_csv', 'inc');
 
     $exporter_csv('export_sql', $sql);
+    exit();
 
     // Donnée de retour.
     return array(
