@@ -44,14 +44,13 @@ function formulaires_inscrire_auteur_charger_dist($id_auteur='new', $retour='', 
         $valeurs["places_voitures"]=_request("places_voitures");
         $valeurs["brevet_animateur"]=_request("brevet_animateur");
         $valeurs["remarques_inscription"]=_request("remarques_inscription");
-        
-        
+        $valeurs["facture"]=_request("facture");
+        $valeurs["adresse_facturation"]=_request("adresse_facturation");
+
         // forcer la prise en compte du post, sans verifier si c'est bien le meme formulaire, c'est trop hasardeux selon le contenud de $row
 	$valeurs['_forcer_request'] = true;
 	$valeurs['cotepublic'] = 'y';
-        
-        //print_r($valeurs);
-        
+
 	return $valeurs;
 }
 
@@ -294,13 +293,15 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 	$auteurnom = _request('nom');
 	$auteurprenom = _request('prenom');
 	$auteurmail = _request('email');
-        
-        //Action Fields
-        $sante_comportement = _request("sante_comportement");
-        $alimentation = _request("alimentation");
-        $remarques_inscription = _request("remarques_inscription");
-        $ecole = _request("ecole");
-                
+
+    //Action Fields
+    $sante_comportement = _request("sante_comportement");
+    $alimentation = _request("alimentation");
+    $remarques_inscription = _request("remarques_inscription");
+    $ecole = _request("ecole");
+    $facture = _request('facture');
+    $adresse_facturation = _request('adresse_facturation');
+
 	$p = $auteurnaiss = _request('date_naissance');
 //        echo($p);
 //	if (preg_match('|^\d{2}\D\d{2}\D\d{4}$|', $p)) { //--- renverser la date
@@ -336,13 +337,9 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                     }
                     $auteurlogin=$auteurlogin.$next_login_index;
 		}
-//                print_r($found_logins);
-//                echo($auteurlogin);
-//                exit;
-                
                 $userlogin = $auteurlogin;
 		set_request('login', $userlogin);
-                
+
 		$userpasse = substr(md5(time()), 0, 8);
 		set_request('pass', $userpasse);
 		set_request('statut', '6forum');
@@ -425,13 +422,13 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
 		$id_auteur = (int) $res['id_auteur'];
 
 	$envoyer_mail = charger_fonction('envoyer_mail','inc');
-//        
+
         //--- inscrire : relation auteurs_articles
 	if ($bSubscription && $id_auteur) {
             if($id_article_array) {
                 foreach ($id_article_array as $key => $value) {
                     $p = sql_getfetsel('S.id_auteur', "spip_auteurs AS A,spip_auteurs_articles AS S", "S.id_auteur=$id_auteur AND S.id_article=$value AND A.id_auteur=$id_auteur");
-                    
+
                     if ($p)
 			sql_updateq('spip_auteurs_articles', 
                                 array('inscrit'=>'Y', 
@@ -441,9 +438,10 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                                     'sante_comportement'=>$sante_comportement,
                                     'alimentation'=>$alimentation,
                                     'remarques_inscription'=>$remarques_inscription,
-                                    'ecole'=>$ecole
-                                    
-                                ), 
+                                    'ecole'=>$ecole,
+                                    'facture' => $facture,
+                                    'adresse_facturation' => $adresse_facturation
+                                ),
                                 "id_auteur=$id_auteur AND id_article=$value"
                         );
                     else
@@ -453,7 +451,9 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                                     'sante_comportement'=>$sante_comportement,
                                     'alimentation'=>$alimentation,
                                     'remarques_inscription'=>$remarques_inscription,
-                                    'ecole'=>$ecole
+                                    'ecole'=>$ecole,
+                                    'facture' => $facture,
+                                    'adresse_facturation' => $adresse_facturation
                                     ));
 
                 }
@@ -473,7 +473,9 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                                 'sante_comportement'=>$sante_comportement,
                                 'alimentation'=>$alimentation,
                                 'remarques_inscription'=>$remarques_inscription,
-                                'ecole'=>$ecole
+                                'ecole'=>$ecole,
+                                'facture' => $facture,
+                                'adresse_facturation' => $adresse_facturation
 
                             ), 
                             "id_auteur=$id_auteur AND id_article=$id_article"
@@ -486,7 +488,9 @@ function formulaires_inscrire_auteur_traiter_dist($id_auteur='new', $retour='', 
                                 'alimentation'=>$alimentation,
                                 'remarques_inscription'=>$remarques_inscription,
                                 'ecole'=>$ecole,
-                                'etudiant' => _request('demandeur_emploi')
+                                'etudiant' => _request('demandeur_emploi'),
+                                'facture' => $facture,
+                                'adresse_facturation' => $adresse_facturation
                                 ));
                 $list_articles=$id_article;
 

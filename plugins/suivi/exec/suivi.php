@@ -27,6 +27,8 @@ function exec_suivi() {
 	$statut_payement = '';
 	$tableau_exception = '';
 	$recus_fiche_medical = '';
+    $facture = '';
+    $adresse_facturation = '';
 
 
 	//----------- lire DB ---------- AND id_secteur=2
@@ -64,6 +66,8 @@ function exec_suivi() {
 			$tableau_exception = $data['tableau_exception'];
 			$recus_fiche_medical = $data['recus_fiche_medical'];
 			$prix_special = $data['prix_special'];
+            $facture = $data['facture'];
+            $adresse_facturation = $data['adresse_facturation'];
 		}
 	}
 	else
@@ -90,6 +94,8 @@ function exec_suivi() {
                 $tableau_exception = _request('tableau_exception');
                 $recus_fiche_medical = _request('recus_fiche_medical');
                 $prix_special = _request('prix_special');
+                $facture = _request('facture');
+                $adresse_facturation = _request('adresse_facturation');
 
 			include_spip('inc/date_gestion');
 			$contexte['erreurs'] = array();
@@ -115,25 +121,27 @@ function exec_suivi() {
 				}
 			if ($id_auteur && ! $contexte['message_erreur']) {
 				sql_updateq('spip_auteurs_articles', 
-                                        array(
-                                        		'inscrit'=>'Y', 
-                                        		'statutsuivi'=>$statutsuivi, 
-                                        		'date_suivi'=>$date_suivi, 
-                                        		'heure_suivi'=>$heure_suivi,
-                                               	'sante_comportement'=>$sante_comportement,
-                                               	'alimentation'=>$alimentation,
-                                               	'remarques_inscription'=>$remarques_inscription,
-                                               	'ecole'=>$ecole,
-                                               	'brevet_animateur'=>$brevet_animateur,
-                                               	'places_voitures'=>$places_voitures,
-                                               	'extrait_de_compte' => $extrait_de_compte,
-                                               	'historique_payement' => $historique_payement,
-                                               	'statut_payement' => $statut_payement,
-                                               	'tableau_exception' => $tableau_exception,
-                                               	'recus_fiche_medical' => $recus_fiche_medical,
-                                               	'prix_special' => $prix_special
-                                            ), "id_auteur=$id_auteur AND id_article=$id_article");
-                
+                    array(
+            		'inscrit'=>'Y', 
+            		'statutsuivi'=>$statutsuivi, 
+            		'date_suivi'=>$date_suivi, 
+            		'heure_suivi'=>$heure_suivi,
+                   	'sante_comportement'=>$sante_comportement,
+                   	'alimentation'=>$alimentation,
+                   	'remarques_inscription'=>$remarques_inscription,
+                   	'ecole'=>$ecole,
+                   	'brevet_animateur'=>$brevet_animateur,
+                   	'places_voitures'=>$places_voitures,
+                   	'extrait_de_compte' => $extrait_de_compte,
+                   	'historique_payement' => $historique_payement,
+                   	'statut_payement' => $statut_payement,
+                   	'tableau_exception' => $tableau_exception,
+                   	'recus_fiche_medical' => $recus_fiche_medical,
+                   	'prix_special' => $prix_special,
+                    'facture' => $facture,
+                    'adresse_facturation' => $adresse_facturation
+                        ), "id_auteur=$id_auteur AND id_article=$id_article");
+
                 // On fait l'update de la date_validation via sql_update plutôt que sql_updateq.
                 sql_update('spip_auteurs_articles', array('date_validation' => 'NOW()'), 'id_auteur='.sql_quote($id_auteur).' AND id_article='.sql_quote($id_article));
 				$contexte['message_ok'] = 'Ok, l\'inscription est mise à jour';
@@ -259,6 +267,8 @@ function exec_suivi() {
 		$contexte['tableau_exception'] = $tableau_exception;
 		$contexte['recus_fiche_medical'] = $recus_fiche_medical;
 		$contexte['prix_special'] = $prix_special;
+        $contexte['facture'] = $facture;
+        $contexte['adresse_facturation'] = $adresse_facturation;
 
 		$contexte['editable'] = ' ';
 

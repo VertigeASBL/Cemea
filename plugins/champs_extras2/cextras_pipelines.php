@@ -275,11 +275,11 @@ function cextras_editer_contenu_objet($flux){
 			break;
 		case 'inscrire_auteur': //--- cote public : modifier un auteur, inscrire a une action
                         //Added extra action fields (only those for all actions)
-			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion', 'send_email', 'pays'
-                            
-                            );
-                        //,'description_institution'
-                        $other_extras=cextras_get_extras_match("auteurs_article");
+			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion', 'send_email', 'pays', 'facture', 'adresse_facturation');
+
+                //,'description_institution'
+                $other_extras = cextras_get_extras_match("auteurs_article");
+                var_dump($other_extras);
 			break;
 
 		case 'adherer_auteur': //--- adherent
@@ -289,7 +289,7 @@ function cextras_editer_contenu_objet($flux){
 	}
 	else if ($flux['args']['type']=='auteurs_article') {
 		//--- Suivi des inscriptions ---
-		$taff = array('statutsuivi','date_suivi','heure_suivi','alimentation','responsable','responsable_lien','remarques_inscription','sante_comportement','ecole','places_voitures','brevet_animateur','statut_payement', 'historique_payement', 'extrait_de_compte', 'tableau_exception', 'recus_fiche_medical', 'prix_special');
+		$taff = array('statutsuivi','date_suivi','heure_suivi','alimentation','responsable','responsable_lien','remarques_inscription','sante_comportement','ecole','places_voitures','brevet_animateur','statut_payement', 'historique_payement', 'extrait_de_compte', 'tableau_exception', 'recus_fiche_medical', 'prix_special', 'facture', 'adresse_facturation');
 	}
 // echo '<pre>'; print_r($flux['args']['contexte']); echo '</pre><hr />',"\n";
 	if (! count($taff))
@@ -357,7 +357,7 @@ function cextras_editer_contenu_objet($flux){
                         array_push($taff,
                                 'places_voitures','brevet_animateur','remarques_inscription',
                                 'etude_etablissement','profession','demandeur_emploi','membre_assoc','pratique',
-                                'formation','facture','adresse_facturation');
+                                'formation');
                     }
                 }
                 
@@ -441,10 +441,8 @@ function cextras_editer_contenu_objet($flux){
                 //Add extras from action (auteur_article) if needed
                 if($other_extras && (($id_action) || ($id_meta_action_rub))) {
                     
-                    
                     //For single Actions
                     if($id_action) {
-                        
 //                        if($add_anim_fields) { //Removed condition because alimentation is always required
                             //Get values from DB
                             $req = sql_select('sante_comportement,ecole,remarques_inscription,alimentation,places_voitures,brevet_animateur', 'spip_auteurs_articles', "id_article=".$id_action." AND id_auteur=".$flux['args']['id'].' AND inscrit != \'\'');
@@ -479,41 +477,34 @@ function cextras_editer_contenu_objet($flux){
                             }
 //                        }
                     }
-                    
-//                    echo("add_fields: $add_anim_fields");
+
                     if($add_anim_fields) {
                         array_push($taff,
                                     'ecole','sante_comportement','remarques_inscription');
                     }
-                    
-                    
-                    
-//                    print_r($flux['args']);
-                    
+
                     foreach($other_extras as $c) {
                         if (! in_array($c->champ, $taff)) //--- richir vertige
                             continue;
-                        
+
                         // on affiche seulement les champs dont la saisie est autorisee
-			$type = $c->_type . '_' . $c->champ;
-			include_spip('inc/autoriser');
-			if (autoriser('modifierextra', $type, $flux['args']['id'], '', array(
-				'type' => $flux['args']['type'],
-				'id_objet' => $flux['args']['id'],
-				'contexte' => $flux['args']['contexte'])))
-			{
+            			$type = $c->_type . '_' . $c->champ;
+            			include_spip('inc/autoriser');
+            			if (autoriser('modifierextra', $type, $flux['args']['id'], '', array(
+            				'type' => $flux['args']['type'],
+            				'id_objet' => $flux['args']['id'],
+            				'contexte' => $flux['args']['contexte'])))
+            			{
                             if ($c->saisie_externe) {
-                                    list($f, $contexte) = ce_calculer_saisie_externe($c, $flux['args']['contexte'], $prefixe);
+                                list($f, $contexte) = ce_calculer_saisie_externe($c, $flux['args']['contexte'], $prefixe);
                             } else {
-                                    list($f, $contexte) = ce_calculer_saisie_interne($c, $flux['args']['contexte'], $prefixe);
+                                list($f, $contexte) = ce_calculer_saisie_interne($c, $flux['args']['contexte'], $prefixe);
                             }
                             // Si un prefixe de champ est demande par le pipeline
                             // par exemple pour afficher et completer un objet different dans
                             // le formulaire d'un premier objet (ex: spip_auteurs_etendus et spip_auteurs)
                             // l'indiquer !
-                            
-//                            print_r($contexte);
-                            
+
                             $saisie = recuperer_fond($f, $contexte);
 
                             // Signaler a cextras_pre_edition que le champ est edite
@@ -524,9 +515,6 @@ function cextras_editer_contenu_objet($flux){
                             // ajouter la saisie.
                             $inserer_saisie .= $saisie;
                         }
-                        
-                            
-
                     }
                 }
 
@@ -540,7 +528,7 @@ function cextras_editer_contenu_objet($flux){
 		$doc = phpQuery::newDocument($inserer_saisie);
 		/*On récupère le champ diffusion avec un séléecteur*/
 		$diffusion = pq('.editer_diffusion');
-		/*On retir le champs diffusion*/
+		/*On retire le champs diffusion*/
 		pq('.editer_diffusion')->remove();
 
 		/*On modifie la saisie pour quelle s'affiche correctement, en placant diffusion à la fin.*/
