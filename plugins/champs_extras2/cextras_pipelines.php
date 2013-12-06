@@ -279,7 +279,6 @@ function cextras_editer_contenu_objet($flux){
 
                 //,'description_institution'
                 $other_extras = cextras_get_extras_match("auteurs_article");
-                var_dump($other_extras);
 			break;
 
 		case 'adherer_auteur': //--- adherent
