@@ -275,7 +275,7 @@ function cextras_editer_contenu_objet($flux){
 			break;
 		case 'inscrire_auteur': //--- cote public : modifier un auteur, inscrire a une action
                         //Added extra action fields (only those for all actions)
-			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion', 'send_email', 'pays', 'facture', 'adresse_facturation');
+			$taff = array('alimentation','typepart','codecourtoisie','prenom','fonction','nom_court_institution','nom_long_institution','date_naissance','lieunaissance','adresse','adresse_no','codepostal','localite','tel1','gsm1','fax1','diffusion','ndiffusion', 'send_email', 'pays');
 
                 //,'description_institution'
                 $other_extras = cextras_get_extras_match("auteurs_article");
@@ -355,8 +355,7 @@ function cextras_editer_contenu_objet($flux){
 //                        echo("req = $req");
                         array_push($taff,
                                 'places_voitures','brevet_animateur','remarques_inscription',
-                                'etude_etablissement','profession','demandeur_emploi','membre_assoc','pratique',
-                                'formation');
+                                'etude_etablissement','profession','demandeur_emploi','membre_assoc','pratique', 'formation', 'facture', 'adresse_facturation');
                     }
                 }
                 
