@@ -10,6 +10,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
     'activite_proche' => 'Activité proche',
     'adresse' => 'Adresse',
     'adresse_facturation' => 'Adresse de facturation',
+    'facture' => 'Facture',
     'age' => 'Age',
     'ajouter_inscrire' => 'Ajouter une personne',
     'alimentation' => 'Alimentation',
