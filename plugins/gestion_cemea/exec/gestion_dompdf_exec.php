@@ -95,7 +95,8 @@ function exec_gestion_dompdf_exec() {
 		echo '<br />';
 		echo '<br />';
 		// On propose de télécharger le fichier existant
-		echo '<a href="'.sous_repertoire(_DIR_IMG, "gestion").$filename.'.pdf'.'" title="télécharger">'._T('gestion:telecharger_existant').'</a>';
+
+        echo '<a href="'.generer_url_ecrire('get_file', 'fichier='.$filename.'.pdf').'" title="télécharger">'._T('gestion:telecharger_existant').'</a>';
 		if ($envoyer_par_mail != 0) echo '<br /><a href="'.self().'&renvoyer=1" title="télécharger">'._T('gestion:renvoyer_existant').'</a>';
 		
 		echo fin_page();
