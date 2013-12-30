@@ -39,5 +39,4 @@ function exec_get_file() {
         include_spip('inc/minipres');
         echo minipres("Ce fichier n'existe pas.");
     }
-
 }
