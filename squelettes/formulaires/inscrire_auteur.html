@@ -1,6 +1,11 @@
 #CACHE{0}
-[(#REM) ----- les infos de l'action ou de la meta-action ----- ]
 
+[(#REM) On va inclure le javascript de désactivation des champs quand on est sur une inscription (connecté et avec un idaction = inscription) ]
+[(#SESSION{statut}|oui|et{#ENV{lier_id_article}|oui})
+    [<script type="text/javascript" src="(#CHEMIN{formulaires/javascript/desactiver_champs.js})"></script>]
+]
+
+[(#REM) ----- les infos de l'action ou de la meta-action ----- ]
 #SET{idaction,#ENV{lier_id_article}|plus{0}|?{#ENV{lier_id_article},0}}
 #SET{idrubrique,#ENV{lier_id_rubrique}|plus{0}|?{#ENV{lier_id_rubrique},0}}
 <BOUCLE_action(ARTICLES){id_article=#GET{idaction}}{mots_rubriques.id_mot=5}{archive_act!=Y}{id_trad IN 0,#GET{idaction}}>
