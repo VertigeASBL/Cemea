@@ -287,6 +287,11 @@ ul ul ul ul ul .forum-chapo { background: #FFF; }
 .pagination .on { font-weight: bold; color: #666; }
 
 
+/* mettre en valeur les champ en lecture seul */
+input[readonly] {
+  background: #c2c2c2;
+}
+
 /*--- Rubriques
 .rubriques ul { border: 0; }
 .rubriques ul li { background: #EEE; border: 0; }
