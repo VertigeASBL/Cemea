@@ -15,7 +15,7 @@ if (session_get('statut') == '0minirezo') {
     $titre_complet = _T('gestion:modifier_inscrit').' '._T('gestion:personne');
     echo icone_inline($titre_complet, generer_url_ecrire("editer_inscrit_exec","id_auteur=#ID_AUTEUR"), "auteur-24.gif","edit.gif", 'left');
 
-    echo icone_inline(_T('gestion:modifier_inscription'), generer_url_ecrire("suivi","id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE"), "breve-24.gif","edit.gif", 'left');
+    echo icone_inline(_T('gestion:modifier_inscription'), generer_url_ecrire("editer_fiche","id_auteur=#ID_AUTEUR&id_article=#ID_ARTICLE"), "breve-24.gif","edit.gif", 'left');
 }
 
 ?>
@@ -120,7 +120,7 @@ if (session_get('statut') == '0minirezo') {
             </tr>
             <tr class="tr_liste">
                 <td><:gestion:demandeur_emploi:></td>
-                <td><strong>#DEMANDEUR_EMPLOI</strong></td>
+                <td><strong>[(#DEMANDEUR_EMPLOI|?{oui,non})]</strong></td>
             </tr>
         ]
 
