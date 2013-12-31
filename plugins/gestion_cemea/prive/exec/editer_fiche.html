@@ -1,0 +1,16 @@
+<?php
+if (!defined("_ECRIRE_INC_VERSION")) return;
+include_spip('inc/presentation');
+include_spip('gestion_autorisation');
+
+include_spip('fonctions_gestion_filtre');
+
+gros_titre("Fiche d'inscription");
+
+// Pour les administrateurs, afficher l'icone de modification.
+if (session_get('statut') == '0minirezo') {
+    echo icone_inline(_T('gestion:retour'), generer_url_ecrire('fiche_inscription', 'id_auteur='._request('id_auteur').'&id_article='._request('id_article')), find_in_path('img/gestion-24.png'), 'rien.gif', 'left');
+}
+?>
+
+#FORMULAIRE_EDITER_FICHE{#ENV{id_auteur}, #ENV{id_article}}

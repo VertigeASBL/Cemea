@@ -1,0 +1,164 @@
+<div class="formulaire_spip formulaire_#FORM">
+
+[<p class="reponse_formulaire reponse_formulaire_erreur">
+    (#ENV*{message_erreur})
+</p>]
+[<p class="reponse_formulaire reponse_formulaire_ok">
+    (#ENV*{message_ok})
+</p>]
+
+<form action="#SELF" method="post">
+    #ACTION_FORMULAIRE{#ENV{action}}
+    <ul>
+        [(#REM) On affiche quelques information de l'action ]
+        <BOUCLE_ation(ARTICLES){id_article=#ID_ARTICLE}>
+            [(#SET{type_act, #TYPE_ACT})]
+            [<li>(#TITRE|supprimer_numero)</li>]
+            [<li>(#IDACT)</li>]
+        </BOUCLE_ation>
+
+        [(#SAISIE{
+                input,
+                nom,
+                obligatoire=oui,
+                label=<:gestion:nom:>})]
+
+        [(#SAISIE{
+                input,
+                prenom,
+                obligatoire=oui,
+                label=<:gestion:prenom:>})]
+
+        [(#SAISIE{
+                input,
+                idper,
+                label=idper})]
+
+        <INCLURE{fond=extra-saisies/choixselect, champ_extra=statutsuivi,label_extra=<:gestion:statut:>,valeur_extra=#ENV{statutsuivi}, env}>
+
+        [(#SAISIE{
+                date,
+                date_suivit_comb,
+                horaire=oui,
+                label=<:gestion:date_suivi:>})]
+
+        <INCLURE{fond=extra-saisies/choixselect, champ_extra=alimentation,label_extra=<:gestion:alimentation:>,valeur_extra=#ENV{alimentation}, env}>
+
+        [(#SAISIE{
+                textarea,
+                remarques_inscription,
+                label=<:gestion:remarque:>})]
+
+        [(#REM) Champ spécifique à un type d'action ]
+        [(#GET{type_act}=={A}|oui)
+            [(#SAISIE{
+                    input,
+                    responsable,
+                    label=<:gestion:responsable:>})]
+
+            [(#SAISIE{
+                    input,
+                    responsable_lien,
+                    label=<:gestion:responsable_lien:>})]
+
+            [(#SAISIE{
+                    textarea,
+                    sante_comportement,
+                    label=<:gestion:sante_comportement:>})]
+
+            [(#SAISIE{
+                    input,
+                    ecole,
+                    label=<:gestion:ecole:>})]
+
+            [(#SAISIE{
+                    oui_non,
+                    recus_fiche_medical,
+                    label=<:gestion:fiche_medical:>})]
+        ]
+
+        [(#GET{type_act}|=={F}|oui)
+            [(#SAISIE{
+                    input,
+                    etude_etablissement,
+                    label=<:gestion:etablissement:>})]
+            [(#SAISIE{
+                    input,
+                    profession,
+                    label=<:gestion:profession:>})]
+
+            [(#SAISIE{
+                    textarea,
+                    pratique,
+                    label=<:gestion:pratique:>})]
+
+            [(#SAISIE{
+                    input,
+                    formation,
+                    label=<:gestion:formation:>})]
+
+            [(#SAISIE{
+                    input,
+                    places_voiture,
+                    label=<:gestion:places_voiture:>})]
+
+            [(#SAISIE{
+                    input,
+                    membre_assoc,
+                    label=<:gestion:membre_assoc:>})]
+
+            [(#SAISIE{
+                    oui_non,
+                    demandeur_emploi,
+                    label=<:gestion:demandeur_emploi:>})]
+        ]
+
+        [(#SAISIE{
+                input,
+                historique_payement,
+                label=<:gestion:liste_payement:>})]
+
+        [(#SAISIE{
+                input,
+                extrait_de_compte,
+                label=<:gestion:extrait_compte:>})]
+
+        <li class="editer_#FORM[ (#GET{erreurs}|oui)erreur]">
+            <label><:gestion:statut_payement:></label>
+            [<span class='erreur_message'>(#GET{erreurs})</span>]
+            <select name="statut_payement">
+                <option value="1" [(#STATUT_PAYEMENT|=={1}|oui) selected="selected"]>En attente</option>
+                <option value="2" [(#STATUT_PAYEMENT|=={2}|oui) selected="selected"]>Acompte payé</option>
+                <option value="3" [(#STATUT_PAYEMENT|=={3}|oui) selected="selected"]>Payement terminé</option>
+                <option value="4" [(#STATUT_PAYEMENT|=={4}|oui) selected="selected"]>A rembourser</option>
+            </select>
+        </li>
+
+        [(#SAISIE{
+                input,
+                prix_special,
+                label=<:gestion:prix_special:>})]
+
+        [(#SAISIE{
+                oui_non,
+                facture,
+                label=<:gestion:facture:>})]
+
+        [(#SAISIE{
+                textarea,
+                adresse_facturation,
+                label=<:gestion:adresse_facturation:>})]
+
+        [(#SAISIE{
+                oui_non,
+                tableau_exception,
+                valeur_oui=oui,
+                label=<:gestion:tableau_exception:>})]
+    </ul>
+
+    <p class="boutons">
+        <input type="submit" class="submit" value="<:pass_ok:>" />
+    </p>
+</form>
+
+</div>
