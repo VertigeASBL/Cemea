@@ -91,6 +91,16 @@ function formulaires_editer_fiche_charger_dist($id_auteur, $id_article) {
 function formulaires_editer_fiche_verifier_dist($id_auteur, $id_article) {
     $erreurs = array();
 
+    if (!_request('nom')) {
+       $erreurs['message_erreur'] = 'Erreur dans la saisie';
+       $erreurs['nom'] = _T('info_obligatoire');;
+    }
+
+    if (!_request('prenom')) {
+       $erreurs['message_erreur'] = 'Erreur dans la saisie';
+       $erreurs['prenom'] = _T('info_obligatoire');;
+    }
+
     return $erreurs;
 }
 
