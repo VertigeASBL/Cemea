@@ -150,7 +150,7 @@ if (session_get('statut') == '0minirezo') {
         <BOUCLE_insc(spip_auteurs_articles){id_article}{id_auteur}>
             <tr>
                 <td><:gestion:facture:></td>
-                <td><strong>[(#_insc:FACTURE|?{#_insc:FACTURE, non})]</strong></td>
+                <td><strong>[(#_insc:FACTURE|?{oui, non})]</strong></td>
             </tr>
             <tr class="tr_liste">
                 <td><:gestion:adresse_facturation:></td>
