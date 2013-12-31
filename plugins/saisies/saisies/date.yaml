@@ -10,6 +10,13 @@ options:
       label: '<:saisies:option_groupe_description:>'
     saisies:
       -
+        saisie: 'case'
+        options:
+          nom: 'horaire'
+          label: '<:saisies:option_horaire_label:>'
+          label_case: '<:saisies:option_horaire_label_case:>'
+          valeur_oui: 'oui'
+      -
         saisie: 'input'
         options:
           nom: 'label'
@@ -36,6 +43,24 @@ options:
       label: '<:saisies:option_groupe_utilisation:>'
     saisies:
       -
+        saisie: 'selection'
+        options:
+          nom: 'heure_pas'
+          label: '<:saisies:option_heure_pas_label:>'
+          explication: '<:saisies:option_heure_pas_explication:>'
+          datas:
+            1: '1 minute'
+            2: '2 minutes'
+            5: '5 minutes'
+            15: '15 minutes'
+            30: '30 minutes'
+          defaut: 30
+        verifier:
+          type: 'entier'
+          options:
+            min: 1
+            max: 30
+      -
         saisie: 'oui_non'
         options:
           nom: 'disable'
@@ -59,6 +84,20 @@ options:
       nom: 'affichage'
       label: '<:saisies:option_groupe_affichage:>'
     saisies:
+      -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si'
+          label: '<:saisies:option_afficher_si_label:>'
+          explication: '<:saisies:option_afficher_si_explication:>'
+          rows: 5
+      -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si_remplissage'
+          label: '<:saisies:option_afficher_si_remplissage_label:>'
+          explication: '<:saisies:option_afficher_si_remplissage_explication:>'
+          rows: 5
       -
         saisie: 'input'
         options:
@@ -89,6 +128,12 @@ options:
         options:
           nom: 'obligatoire'
           label: '<:saisies:option_obligatoire_label:>'
+      -
+        saisie: 'input'
+        options:
+          nom: 'erreur_obligatoire'
+          label: '<:saisies:option_erreur_obligatoire_label:>'
+          explication: '<:saisies:option_erreur_obligatoire_explication:>'
 defaut:
   options:
     label: '<:saisies:saisie_date_titre:>'
@@ -97,3 +142,5 @@ defaut:
     sql: "datetime DEFAULT '0000-00-00 00:00:00' NOT NULL"
   verifier:
     type: 'date'
+    options:
+      normaliser: 'datetime'

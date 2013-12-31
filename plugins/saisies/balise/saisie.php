@@ -1,5 +1,7 @@
 <?php
 
+if (!defined("_ECRIRE_INC_VERSION")) return;
+
 // pour ne pas interferer avec d'eventuelles futures fonctions du core
 // on met le tout dans un namespace ; les fonctions sont autonomes.
 
@@ -8,7 +10,7 @@ class Pile {
 
 	// les arguments sont dans l'entree 0 du tableau param.
 	// param[0][0] vaut toujours '' (ou presque ?)
-	function recuperer_argument_balise($pos, $p) {
+	static function recuperer_argument_balise($pos, $p) {
 		if (!isset($p->param[0])) {
 			return null;
 		}
@@ -22,7 +24,7 @@ class Pile {
 	
 	// les arguments sont dans l'entree 0 du tableau param.
 	// param[0][0] vaut toujours '' (ou presque ?)
-	function supprimer_argument_balise($pos, $p) {
+	static function supprimer_argument_balise($pos, $p) {
 		if (!isset($p->param[0])) {
 			return null;
 		}
@@ -41,7 +43,7 @@ class Pile {
 	
 	
 	
-	function recuperer_et_supprimer_argument_balise($pos, &$p) {
+	static function recuperer_et_supprimer_argument_balise($pos, &$p) {
 		$arg = Pile::recuperer_argument_balise($pos, $p);
 		$p   = Pile::supprimer_argument_balise($pos, $p);
 		return $arg;
@@ -52,7 +54,7 @@ class Pile {
 	
 	// les arguments sont dans l'entree 0 du tableau param.
 	// param[0][0] vaut toujours '' (ou presque ?)
-	function ajouter_argument_balise($element, $p) {
+	static function ajouter_argument_balise($element, $p) {
 		if (isset($p->param[0][0])) {
 			$zero = array_shift($p->param[0]);
 			array_unshift($p->param[0], $element);
@@ -71,7 +73,7 @@ class Pile {
 	// creer_argument_balise(nom) = {nom}
 	// creer_argument_balise(nom, 'coucou') = {nom=coucou}
 	// creer_argument_balise(nom, $balise) = {nom=#BALISE}
-	function creer_argument_balise($nom, $valeur = null) {
+	static function creer_argument_balise($nom, $valeur = null) {
 		include_spip('public/interfaces');
 		$s = new Texte;
 		$s->texte = $nom;
@@ -104,7 +106,7 @@ class Pile {
 	
 	
 	
-	function creer_et_ajouter_argument_balise($p, $nom, $valeur = null) {
+	static function creer_et_ajouter_argument_balise($p, $nom, $valeur = null) {
 		$new = Pile::creer_argument_balise($nom, $valeur); 
 		return Pile::ajouter_argument_balise($new, $p);
 	}
@@ -112,7 +114,7 @@ class Pile {
 
 
 	// creer une balise
-	function creer_balise($nom, $opt) {
+	static function creer_balise($nom, $opt) {
 		include_spip('public/interfaces');
 		$b = new Champ;
 		$b->nom_champ = strtoupper($nom);

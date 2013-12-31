@@ -25,6 +25,20 @@ options:
       label: '<:saisies:option_groupe_affichage:>'
     saisies:
       -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si'
+          label: '<:saisies:option_afficher_si_label:>'
+          explication: '<:saisies:option_afficher_si_explication:>'
+          rows: 5
+      -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si_remplissage'
+          label: '<:saisies:option_afficher_si_remplissage_label:>'
+          explication: '<:saisies:option_afficher_si_remplissage_explication:>'
+          rows: 5
+      -
         saisie: 'input'
         options:
           nom: 'li_class'
@@ -34,4 +48,5 @@ defaut:
   options:
     texte: '<:saisies:saisie_explication_titre:>'
     # champs extras (definition du champ sql)
-    sql: "text DEFAULT '' NOT NULL"
+    # Non, cette saisie n'a rien à saisir en bdd !
+    # sql: "text DEFAULT '' NOT NULL"

@@ -38,6 +38,18 @@ options:
           label: '<:saisies:option_defaut_label:>'
           rows: 10
           cols: 50
+      -
+        saisie: 'oui_non'
+        options:
+          nom: 'choix_alternatif'
+          label: '<:saisies:option_choix_alternatif_label:>'
+          defaut: '' 
+      -
+        saisie: 'input'
+        options:
+          nom: 'choix_alternatif_label'
+          label: '<:saisies:option_choix_alternatif_label_label:>'
+          defaut: '<:saisies:option_choix_alternatif_label_defaut:>'
   -
     saisie: 'fieldset'
     options:
@@ -69,6 +81,20 @@ options:
       label: '<:saisies:option_groupe_affichage:>'
     saisies:
       -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si'
+          label: '<:saisies:option_afficher_si_label:>'
+          explication: '<:saisies:option_afficher_si_explication:>'
+          rows: 5
+      -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si_remplissage'
+          label: '<:saisies:option_afficher_si_remplissage_label:>'
+          explication: '<:saisies:option_afficher_si_remplissage_explication:>'
+          rows: 5
+      -
         saisie: 'input'
         options:
           nom: 'attention'
@@ -92,6 +118,12 @@ options:
         options:
           nom: 'obligatoire'
           label: '<:saisies:option_obligatoire_label:>'
+      -
+        saisie: 'input'
+        options:
+          nom: 'erreur_obligatoire'
+          label: '<:saisies:option_erreur_obligatoire_label:>'
+          explication: '<:saisies:option_erreur_obligatoire_explication:>'
 defaut:
   options:
     label: '<:saisies:saisie_checkbox_titre:>'

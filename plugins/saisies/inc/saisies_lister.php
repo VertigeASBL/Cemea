@@ -13,14 +13,15 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
  */
 function saisies_lister_par_identifiant($contenu, $avec_conteneur=true){
 	$saisies = array();
-	
+
 	if (is_array($contenu)){
 		foreach ($contenu as $ligne){
-			if (is_array($ligne)){
-				if (array_key_exists('saisie', $ligne) and (!is_array($ligne['saisies']) or $avec_conteneur)){
+			if (is_array($ligne)) {
+				$enfants_presents = (isset($ligne['saisies']) and is_array($ligne['saisies']));
+				if (array_key_exists('saisie', $ligne) and (!$enfants_presents or $avec_conteneur)){
 					$saisies[$ligne['identifiant']] = $ligne;
 				}
-				if (is_array($ligne['saisies'])){
+				if ($enfants_presents) {
 					$saisies = array_merge($saisies, saisies_lister_par_identifiant($ligne['saisies']));
 				}
 			}
@@ -44,10 +45,10 @@ function saisies_lister_par_nom($contenu, $avec_conteneur=true){
 	if (is_array($contenu)){
 		foreach ($contenu as $ligne){
 			if (is_array($ligne)){
-				if (array_key_exists('saisie', $ligne) and (!is_array($ligne['saisies']) or $avec_conteneur)){
+				if (array_key_exists('saisie', $ligne) and (!isset($ligne['saisies']) OR !is_array($ligne['saisies']) or $avec_conteneur)){
 					$saisies[$ligne['options']['nom']] = $ligne;
 				}
-				if (is_array($ligne['saisies'])){
+				if (isset($ligne['saisies']) AND is_array($ligne['saisies'])){
 					$saisies = array_merge($saisies, saisies_lister_par_nom($ligne['saisies']));
 				}
 			}
@@ -70,7 +71,8 @@ function saisies_lister_par_nom($contenu, $avec_conteneur=true){
 function saisies_lister_avec_option($option, $saisies, $tri = 'nom') {
 	$saisies_option = array();
 	// tri par nom si ce n'est pas le cas
-	if (is_int(array_shift(array_keys($saisies)))) {
+	$s = array_keys($saisies);
+	if (is_int(array_shift($s))) {
 		$trier = 'saisies_lister_par_' . $tri;
 		$saisies = $trier($saisies);
 	}
@@ -283,14 +285,20 @@ function saisies_lister_disponibles_sql() {
  * @return array Un tableau contenant le YAML décodé
  */
 function saisies_charger_infos($type_saisie){
-	include_spip('inc/yaml');
-	$fichier = find_in_path("saisies/$type_saisie.yaml");
-	$saisie = yaml_decode_file($fichier);
-	if (is_array($saisie)){
-		$saisie['titre'] = $saisie['titre'] ? _T_ou_typo($saisie['titre']) : $type_saisie;
-		$saisie['description'] = $saisie['description'] ? _T_ou_typo($saisie['description']) : '';
-		$saisie['icone'] = $saisie['icone'] ? find_in_path($saisie['icone']) : '';
-	}
+	if(defined('_DIR_PLUGIN_YAML')){
+		include_spip('inc/yaml');
+		$fichier = find_in_path("saisies/$type_saisie.yaml");
+		$saisie = yaml_decode_file($fichier);
+		if (is_array($saisie)){
+			$saisie['titre'] = (isset($saisie['titre']) AND $saisie['titre'])
+				? _T_ou_typo($saisie['titre']) : $type_saisie;
+			$saisie['description'] = (isset($saisie['description']) AND $saisie['description'])
+				? _T_ou_typo($saisie['description']) : '';
+			$saisie['icone'] = (isset($saisie['icone']) AND $saisie['icone'])
+				? find_in_path($saisie['icone']) : '';
+		}
+	}else
+		$saisie = array();
 	return $saisie;
 }
 

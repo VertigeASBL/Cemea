@@ -1,6 +1,6 @@
 <?php
 // This is a SPIP language file  --  Ceci est un fichier langue de SPIP
-// extrait automatiquement de http://www.spip.net/trad-lang/
+// extrait automatiquement de http://trad.spip.net/tradlang_module/saisies?lang_cible=de
 // ** ne pas modifier le fichier **
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
@@ -37,6 +37,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'construire_verifications_label' => 'Art der Überprüfung',
 
 	// E
+	'erreur_generique' => 'Fehler im folgenden Feld. Bitte überprüfen Sie Ihre Eingabe.',
 	'erreur_option_nom_unique' => 'Dieser Name wird bereits für ein anderes Feld verwendet; er kann in diesem Formular nur einmal verwendet werden.',
 
 	// I
@@ -67,13 +68,15 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'option_class_label' => 'Zusätzliche CSS-Klassen',
 	'option_cols_explication' => 'Breite des Blocks in Zeichen. Diese Option kann durch ihre CSS-Stile unwirksam grmacht werden.',
 	'option_cols_label' => 'Breite',
-	'option_datas_explication' => 'Sie müssen in jeder Zeile eine Option im Format "Schlüssel|Bezeichnung" angeben.',
+	'option_datas_explication' => 'Sie müssen in jeder Zeile eine Option im Format "Schlüssel|Bezeichnung" angeben.', # MODIF
 	'option_datas_label' => 'Mögliche Angaben',
 	'option_defaut_label' => 'Standardwert',
 	'option_disable_avec_post_explication' => 'Identisch mit voriger Option, jedoch wird der Wert in ein verstecktes Feld eingefügt.',
 	'option_disable_avec_post_label' => 'Senden trotz Deaktivierung',
 	'option_disable_explication' => 'Das Feld erhält keinen Fokus.',
 	'option_disable_label' => 'Feld deaktivieren',
+	'option_erreur_obligatoire_explication' => 'Sie können eine eigene Fehlermeldung bei nicht ausgefüllten Pflichtfeldern eingeben oder darauf verzichten.',
+	'option_erreur_obligatoire_label' => 'Hinweis Pflichtfeld',
 	'option_explication_explication' => 'Falls erforderlich kurze Beschreibung des Feldobjekts',
 	'option_explication_label' => 'Erläuterung',
 	'option_groupe_affichage' => 'Anzeige',
@@ -97,6 +100,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'option_nom_label' => 'Feldname',
 	'option_obligatoire_label' => 'Pflichtfeld',
 	'option_option_intro_label' => 'Bezeichnung der ersten leeren Auswahl',
+	'option_option_statut_label' => 'Status anzeigen',
 	'option_pliable_label' => 'Klappbar',
 	'option_pliable_label_case' => 'Die Feldgruppe kann zugeklappt werden',
 	'option_plie_label' => 'Bereits zugeklappt',
@@ -111,13 +115,15 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'option_size_label' => 'Feldgröße',
 	'option_type_choix_plusieurs' => 'Auswahl <strong>mehrerer</strong> Empfänger erlauben',
 	'option_type_choix_tous' => '<strong>Alle</strong> diese Autoren als Empfänger hinzufügen. Der Besucher kann keine Auswahl treffen.',
-	'option_type_choix_un' => 'Der Besucher kann nur <strong>einen einzigen</strong> Empfänger auswählen.',
+	'option_type_choix_un' => 'Der Besucher kann nur <strong>einen einzigen</strong> Empfänger auswählen.', # MODIF
 	'option_type_explication' => 'Im "versteckten" Modus wird der Inhalt dieses Felds nicht angezeigt.',
 	'option_type_label' => 'Feldtyp',
 	'option_type_password' => 'Versteckt',
 	'option_type_text' => 'Normal',
 
 	// S
+	'saisie_auteurs_explication' => 'Ermöglicht einen oder mehrere Autoren auszuwählen',
+	'saisie_auteurs_titre' => 'Autoren',
 	'saisie_case_explication' => 'Ermöglicht Dinge zu aktivieren und deaktivieren',
 	'saisie_case_titre' => 'Nur eine Option',
 	'saisie_checkbox_explication' => 'Erlaubt mehrer Optionen auszuwählen',
@@ -158,6 +164,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// T
 	'tous_visiteurs' => 'Alle Besucher (auch nicht eingeschriebene)',
+	'tout_selectionner' => 'Alles auswählen',
 
 	// V
 	'vue_sans_reponse' => '<i>Ohne Antwort</i>',

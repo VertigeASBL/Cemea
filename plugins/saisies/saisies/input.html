@@ -9,16 +9,16 @@
   - maxlength : nombre de caracteres maximum
   - disable : champ insaisissable ? 'oui' (defaut : '')
   - valeur_forcee : valeur utilisee meme si une valeur est dans l'environnement
+  - autofocus : indique si le champ prend le focus a l'affichage (HTML5 requis)
   
   Exemple d'appel :
 	[(#SAISIE{input,couleur_foncee,
 		label=<:spa:couleur_foncee:>,
 		size=7,
-                datas=#ARRAY{
-                        0,valeur0,
-                        1,valeur1,
-                        2,valeur2}})]
-		
+		datas=#ARRAY{
+				0,valeur0,
+				1,valeur1,
+				2,valeur2}})]
 ]
 
 #SET{type,#ENV{type,text}}
@@ -35,12 +35,14 @@
 #SET{val_autocomplete, #GET{val_autocomplete}|push{on}}
 #SET{val_autocomplete, #GET{val_autocomplete}|push{off}}
 
+[(#REM) permettre de donner un identifiant de list specifique en option de la saisie
+]#SET{list_id,#ENV{list}}
 <B_selection>
-#SET{list_id,champ_#ENV{nom}_datas}
+[(#SET{list_id,[(#GET{list_id,[champ_(#ENV{nom})_datas]})]})]
 <datalist id="#GET{list_id}">
 <BOUCLE_selection(POUR){tableau #GET{datas}}
->[        <option value="(#VALEUR|attribut_html)"></option>
+>[	<option value="(#VALEUR|attribut_html)"></option>
 ]</BOUCLE_selection>
 </datalist>
 </B_selection>
-<input type="#GET{type}" name="#ENV{nom}" class="#GET{type}[ (#ENV{class})]" id="champ_#ENV{nom}"[ list="(#GET{list_id})"][ value="(#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}})"][ size="(#ENV{size})"][ maxlength="(#ENV{maxlength})"][ disabled="(#ENV{disable})"][ readonly="(#ENV{readonly})"][(#ENV{obligatoire}|et{#HTML5}|oui) required="required"][(#GET{val_autocomplete}|find{#ENV{autocomplete}}|oui) autocomplete="#ENV{autocomplete}"] />
+<input type="#GET{type}" name="#ENV{nom}" class="#GET{type}[ (#ENV{class})]" id="champ_[(#ENV{nom}|saisie_nom2classe)]"[ list="(#GET{list_id})"][ value="(#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}})"][ size="(#ENV{size})"][ maxlength="(#ENV{maxlength})"][ disabled="(#ENV{disable})"][ readonly="(#ENV{readonly})"][ placeholder="(#ENV{placeholder})"][(#ENV{obligatoire}|et{#ENV{obligatoire}!={non}}|et{#HTML5}|oui) required="required"][(#ENV{autofocus}|et{#ENV{autofocus}!={non}}|et{#HTML5}|oui) autofocus="autofocus"][(#GET{val_autocomplete}|find{#ENV{autocomplete}}|oui) autocomplete="#ENV{autocomplete}"][ (#ENV*{attributs})] />

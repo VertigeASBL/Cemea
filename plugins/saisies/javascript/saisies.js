@@ -1,22 +1,22 @@
-$(function(){
+jQuery(function(){
 	saisies_fieldset_pliable();
 	onAjaxLoad(saisies_fieldset_pliable);
 });
 
 function saisies_fieldset_pliable(){
 	// On cherche les groupes de champs pliables
-	$('li.fieldset.pliable')
+	jQuery('li.fieldset.pliable')
 		.each(function(){
-			var li = $(this);
-			var ul = $(this).find('> fieldset > ul');
-			var h3 = $(this).find('> fieldset > h3');
+			var li = jQuery(this);
+			var ul = jQuery(this).find('> fieldset > ul');
+			var legend = jQuery(this).find('> fieldset > .legend');
 			
 			// S'il est déjà plié on cache le contenu
 			if (li.is('.plie'))
 				ul.hide();
 			
 			// Ensuite on ajoute une action sur le titre
-			h3
+			legend
 				.unbind('click')
 				.click(
 					function(){

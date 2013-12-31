@@ -1,6 +1,6 @@
 <?php
 // This is a SPIP language file  --  Ceci est un fichier langue de SPIP
-// extrait automatiquement de http://www.spip.net/trad-lang/
+// extrait automatiquement de http://trad.spip.net/tradlang_module/saisies?lang_cible=fa
 // ** ne pas modifier le fichier **
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
@@ -12,35 +12,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'bouton_parcourir_docs_breve' => 'مرور خبر',
 	'bouton_parcourir_docs_rubrique' => 'مرور بخش',
 	'bouton_parcourir_mediatheque' => 'مرور كتابخانه چندرسانه‌اي',
-
-	// C
-	'construire_action_annuler' => 'Annuler', # NEW
-	'construire_action_configurer' => 'Configurer', # NEW
-	'construire_action_deplacer' => 'Déplacer', # NEW
-	'construire_action_dupliquer' => 'Dupliquer', # NEW
-	'construire_action_dupliquer_copie' => '(copie)', # NEW
-	'construire_action_supprimer' => 'Supprimer', # NEW
-	'construire_ajouter_champ' => 'Ajouter un champ', # NEW
-	'construire_attention_enregistrer' => 'N\'oubliez pas d\'enregistrer vos modifications !', # NEW
-	'construire_attention_modifie' => 'Le formulaire ci-dessous est diff&eacute;rent du formulaire initial. Vous avez la possibilit&eacute; de le r&eacute;initialiser &agrave; son &eacute;tat avant vos modifications.', # NEW
-	'construire_attention_supprime' => 'Vos modifications comportent des suppressions de champs. Veuillez confirmer l\'enregistrement de cette nouvelle version du formulaire.', # NEW
-	'construire_aucun_champs' => 'Il n\'y a pour l\'instant aucun champ dans ce formulaire.', # NEW
-	'construire_confirmer_supprimer_champ' => 'Voulez-vous vraiment supprimer ce champ ?', # NEW
-	'construire_info_nb_champs_masques' => '@nb@ champ(s) masqué(s) le temps de configurer le groupe.', # NEW
-	'construire_position_explication' => 'Indiquez devant quel autre champ sera plac&eacute; celui-ci.', # NEW
-	'construire_position_fin_formulaire' => '&Agrave; la fin du formulaire', # NEW
-	'construire_position_fin_groupe' => '&Agrave; la fin du groupe @groupe@', # NEW
-	'construire_position_label' => 'Position du champ', # NEW
-	'construire_reinitialiser' => 'R&eacute;initialiser le formulaire', # NEW
-	'construire_reinitialiser_confirmer' => 'Vous allez perdre toutes vos modifications. &Ecirc;tes-vous s&ucirc;r de vouloir revenir au formulaire initial ?', # NEW
-	'construire_verifications_aucune' => 'Aucune', # NEW
-	'construire_verifications_label' => 'Type de v&eacute;rification &agrave; effectuer', # NEW
-
-	// E
-	'erreur_option_nom_unique' => 'Ce nom est déjà utilisé par un autre champ et il doit être unique dans ce formulaire.', # NEW
-
-	// I
-	'info_configurer_saisies' => 'Page de test des Saisies', # NEW
 
 	// L
 	'label_annee' => 'سال',
@@ -56,18 +27,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'option_aff_rub_interface_label' => 'نمايش چندزبانه',
 	'option_attention_explication' => 'پيامي مهم‌تر از توضيح.',
 	'option_attention_label' => 'هشدار',
-	'option_autocomplete_defaut' => 'Laisser par défaut', # NEW
-	'option_autocomplete_explication' => 'Au chargement de la page, votre navigateur peut pré-remplir le champ en fonction de son historique', # NEW
-	'option_autocomplete_label' => 'Pré-remplissage du champ', # NEW
-	'option_autocomplete_off' => 'Désactiver', # NEW
-	'option_autocomplete_on' => 'Activer', # NEW
 	'option_cacher_option_intro_label' => 'پنهان‌سازي نخستين انتخاب خالي ',
-	'option_choix_destinataires_explication' => 'يك يا چند نويسنده كه كاربر مي‌تواند از ميانشان انتخاب كند. اگر كسي انتخاب نشود،‌ نويسنده‌اي كه سايت را نصب كرده انتخاب خواهد شد.<NEW>Un ou plusieurs auteurs parmis lesquels l\'utilisateur pourra faire son choix. Si rien n\'est sélectionné, c\'est l\'auteur qui a installé le site qui sera choisi.',
+	'option_choix_destinataires_explication' => 'يك يا چند نويسنده كه كاربر مي‌تواند از ميانشان انتخاب كند. اگر كسي انتخاب نشود،‌ نويسنده‌اي كه سايت را نصب كرده انتخاب خواهد شد.<NEW>Un ou plusieurs auteurs parmis lesquels l’utilisateur pourra faire son choix. Si rien n’est sélectionné, c’est l’auteur qui a installé le site qui sera choisi.',
 	'option_choix_destinataires_label' => '<دريافت‌ كنندگان محتمل',
 	'option_class_label' => 'كلاس‌هاي سي.اس.اس اضافي ',
 	'option_cols_explication' => 'پهناي بلوك به تعداد كارآكترها. اين گزينه هميشه كاربرد ندارد چرا كه شيوه‌هاي سي.اس.اس سايت شما مي‌تواند آن را منتفي سازد.',
 	'option_cols_label' => 'پهنا',
-	'option_datas_explication' => 'لازم است براي هر رديف يك گزينه در قالب «گزينه‌ي كليد|برچسبِ» انتخاب كنيد.',
+	'option_datas_explication' => 'لازم است براي هر رديف يك گزينه در قالب «گزينه‌ي كليد|برچسبِ» انتخاب كنيد.', # MODIF
 	'option_datas_label' => 'فهرست گزينه‌هاي ممكن ',
 	'option_defaut_label' => 'مقدار پيش‌ گزيده',
 	'option_disable_avec_post_explication' => 'همانند وضعيت گزينه‌ي قبلي اما هنوز مقدار در ميدان مخفي پست شود.',
@@ -111,7 +77,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'option_size_label' => 'اندازه‌ي ميدان',
 	'option_type_choix_plusieurs' => 'اجازه به كاربر در انتخاب <strong> چند</strong> دريافت كننده‌ي ايميل.',
 	'option_type_choix_tous' => '<strong>تمام</strong> مؤلفان دريافت‌كننده شوند. كاربر گزينه‌اي نخواهد داشت.',
-	'option_type_choix_un' => 'اجازه به كاربر براي گزينش <strong> فقط يك </strong> دريافت‌كننده ',
+	'option_type_choix_un' => 'اجازه به كاربر براي گزينش <strong> فقط يك </strong> دريافت‌كننده ', # MODIF
 	'option_type_explication' => 'در حالت «پوشيده»، محتواي ميدان قابل رؤيت نخواهد بود. ',
 	'option_type_label' => 'نوع ميدان',
 	'option_type_password' => 'پوشيده',

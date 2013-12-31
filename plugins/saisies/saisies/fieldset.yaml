@@ -16,12 +16,33 @@ options:
           label: '<:saisies:option_label_label:>'
           explication: '<:saisies:option_label_explication:>'
           size: 50
+      -
+        saisie: 'input'
+        options:
+          nom: 'explication'
+          label: '<:saisies:option_explication_label:>'
+          explication: '<:saisies:option_explication_explication:>'
+          size: 50
   -
     saisie: 'fieldset'
     options:
       nom: 'affichage'
       label: '<:saisies:option_groupe_affichage:>'
     saisies:
+      -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si'
+          label: '<:saisies:option_afficher_si_label:>'
+          explication: '<:saisies:option_afficher_si_explication:>'
+          rows: 5
+      -
+        saisie: 'textarea'
+        options:
+          nom: 'afficher_si_remplissage'
+          label: '<:saisies:option_afficher_si_remplissage_label:>'
+          explication: '<:saisies:option_afficher_si_remplissage_explication:>'
+          rows: 5
       -
         saisie: 'case'
         options:
@@ -44,5 +65,6 @@ defaut:
   options:
     label: '<:saisies:saisie_fieldset_titre:>'
     # champs extras (definition du champ sql)
-    sql: "text DEFAULT '' NOT NULL"
+    # Non, cette saisie n'a rien à saisir en bdd !
+    # sql: "text DEFAULT '' NOT NULL"
   saisies: []
